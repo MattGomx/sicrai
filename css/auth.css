@@ -1,0 +1,188 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins', sans-serif;
+    background:#f6f5f2;
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+    position:relative;
+}
+
+.bg-circle{
+    position:absolute;
+
+    width:900px;
+    height:900px;
+
+    border-radius:50%;
+
+    background:#ece9e3;
+
+    top:-250px;
+    right:-300px;
+}
+
+.container{
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+    z-index:2;
+}
+
+.card{
+    width:420px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.06);
+}
+
+.card h1{
+    text-align:center;
+
+    color:#146b35;
+
+    font-size:48px;
+    font-weight:800;
+}
+
+.card p{
+    text-align:center;
+
+    color:#666;
+
+    margin-top:10px;
+    margin-bottom:30px;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+input{
+    width:100%;
+    height:58px;
+
+    border:2px solid #e5e5e5;
+    border-radius:14px;
+
+    padding:0 18px;
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:.3s;
+}
+
+input:focus{
+    border-color:#249341;
+}
+
+button{
+    height:58px;
+
+    border:none;
+    border-radius:14px;
+
+    background:#249341;
+    color:white;
+
+    font-size:17px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+
+    background:#1e7f38;
+}
+
+.links{
+    margin-top:25px;
+
+    text-align:center;
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.links a{
+    text-decoration:none;
+
+    color:#249341;
+    font-weight:600;
+}
+
+@media(max-width:500px){
+
+    .card{
+        width:90%;
+        padding:30px 25px;
+    }
+
+    .card h1{
+        font-size:40px;
+    }
+
+}
+
+.top-actions{
+    display:flex;
+    justify-content:flex-start;
+
+    margin-bottom:25px;
+}
+
+.back-btn{
+    text-decoration:none;
+
+    color:#249341;
+
+    background:#eef8f0;
+
+    border:2px solid #d9efdf;
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.back-btn:hover{
+    background:#249341;
+    color:white;
+
+    border-color:#249341;
+
+    transform:translateY(-2px);
+}
