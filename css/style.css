@@ -451,3 +451,80 @@ footer h3{
         grid-template-columns:1fr;
     }
 }
+
+.page{
+    width:90%;
+    max-width:1200px;
+    margin:60px auto;
+}
+
+.page h1{
+    text-align:center;
+    color:#146b35;
+    margin-bottom:50px;
+    font-size:48px;
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:25px;
+}
+
+.step{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.step span{
+    width:60px;
+    height:60px;
+    background:#249341;
+    color:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.cards-about{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+    margin-top:40px;
+}
+
+.about-card,
+.info-box{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.texto{
+    text-align:center;
+    max-width:900px;
+    margin:auto;
+    line-height:32px;
+    color:#555;
+}
+
+.info-box{
+    margin-bottom:25px;
+}
+
+@media(max-width:900px){
+
+    .steps,
+    .cards-about{
+        grid-template-columns:1fr;
+    }
+
+}
