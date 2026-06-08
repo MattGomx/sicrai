@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Recompensas | SICRAI</title>
+
+<link rel="stylesheet"
+href="assets/css/dashboard.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-recycle"></i>
+
+        <span>SICRAI</span>
+
+    </div>
+
+    <nav>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-chart-line"></i>
+            Dashboard
+        </a>
+
+        <a href="ranking.html">
+            <i class="fa-solid fa-trophy"></i>
+            Ranking
+        </a>
+
+        <a href="recompensas-dashboard.html"
+        class="active">
+            <i class="fa-solid fa-gift"></i>
+            Recompensas
+        </a>
+
+        <a href="configuracoes.html">
+            <i class="fa-solid fa-gear"></i>
+            Configurações
+        </a>
+
+    </nav>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>🎁 Loja de Recompensas</h1>
+
+            <p>
+                Seus pontos disponíveis:
+                <strong>2450</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="store-grid">
+
+        <div class="store-card">
+
+            <i class="fa-solid fa-burger"></i>
+
+            <h3>Vale Lanche</h3>
+
+            <p>500 pontos</p>
+
+            <button>
+                Resgatar
+            </button>
+
+        </div>
+
+        <div class="store-card">
+
+            <i class="fa-solid fa-mug-hot"></i>
+
+            <h3>Caneca</h3>
+
+            <p>800 pontos</p>
+
+            <button>
+                Resgatar
+            </button>
+
+        </div>
+
+        <div class="store-card">
+
+            <i class="fa-solid fa-shirt"></i>
+
+            <h3>Camiseta</h3>
+
+            <p>1200 pontos</p>
+
+            <button>
+                Resgatar
+            </button>
+
+        </div>
+
+        <div class="store-card">
+
+            <i class="fa-solid fa-bottle-water"></i>
+
+            <h3>Garrafa Térmica</h3>
+
+            <p>1500 pontos</p>
+
+            <button>
+                Resgatar
+            </button>
+
+        </div>
+
+        <div class="store-card">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            <h3>Kit Sustentável</h3>
+
+            <p>2000 pontos</p>
+
+            <button>
+                Resgatar
+            </button>
+
+        </div>
+
+        <div class="store-card">
+
+            <i class="fa-solid fa-crown"></i>
+
+            <h3>Prêmio Premium</h3>
+
+            <p>5000 pontos</p>
+
+            <button disabled>
+                Pontos insuficientes
+            </button>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+
+document
+.querySelectorAll(".store-card button")
+.forEach(botao=>{
+
+    if(!botao.disabled){
+
+        botao.addEventListener("click",()=>{
+
+            alert(
+            "🎉 Recompensa resgatada!"
+            );
+
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

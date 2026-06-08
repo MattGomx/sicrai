@@ -1,0 +1,1051 @@
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    text-decoration:none;
+    list-style:none;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+
+    --dark-green:#146b35;
+    --primary-green:#249341;
+    --light-green:#48a840;
+
+    --white:#ffffff;
+    --background:#f5f7f6;
+
+    --text:#222;
+    --text-light:#666;
+
+    --shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+body{
+
+    background:var(--background);
+
+    color:var(--text);
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+
+    width:270px;
+
+    background:linear-gradient(
+    180deg,
+    #146b35,
+    #249341
+    );
+
+    color:white;
+
+    padding:30px 20px;
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    height:100vh;
+
+    overflow-y:auto;
+
+}
+
+.logo{
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    font-size:1.6rem;
+    font-weight:700;
+
+    margin-bottom:50px;
+
+}
+
+.logo i{
+
+    font-size:2rem;
+
+}
+
+.sidebar nav{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.sidebar nav a{
+
+    color:white;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    transition:.3s;
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.sidebar nav a:hover{
+
+    background:rgba(255,255,255,.15);
+
+}
+
+.sidebar nav a.active{
+
+    background:white;
+
+    color:var(--primary-green);
+
+    font-weight:600;
+
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+
+    flex:1;
+
+    margin-left:270px;
+
+    padding:40px;
+
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+
+}
+
+.topbar h1{
+
+    font-size:2rem;
+
+    margin-bottom:5px;
+
+}
+
+.topbar p{
+
+    color:var(--text-light);
+
+}
+
+.dark-btn{
+
+    width:50px;
+    height:50px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:white;
+
+    box-shadow:var(--shadow);
+
+    font-size:1.2rem;
+
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
+
+    margin-bottom:40px;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:30px;
+
+    box-shadow:var(--shadow);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.card i{
+
+    font-size:2rem;
+
+    color:var(--primary-green);
+
+    margin-bottom:15px;
+
+}
+
+.card h4{
+
+    color:var(--text-light);
+
+    margin-bottom:10px;
+
+}
+
+.card h2{
+
+    font-size:2rem;
+
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.dashboard-section{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    box-shadow:var(--shadow);
+
+    margin-bottom:30px;
+
+}
+
+.dashboard-section h2{
+
+    margin-bottom:20px;
+
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-container{
+
+    width:100%;
+
+    height:15px;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    background:#e8e8e8;
+
+    margin-bottom:15px;
+
+}
+
+.progress-fill{
+
+    width:0;
+
+    height:100%;
+
+    border-radius:30px;
+
+    background:linear-gradient(
+    90deg,
+    #249341,
+    #48a840
+    );
+
+    transition:1.5s ease;
+
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:30px;
+
+    margin-bottom:30px;
+
+}
+
+.box{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:30px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.box h2{
+
+    margin-bottom:20px;
+
+}
+
+/* =========================
+   HISTÓRICO
+========================= */
+
+#historicoLista{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+#historicoLista li{
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:#f5f7f6;
+
+}
+
+#historicoLista i{
+
+    color:var(--primary-green);
+
+    margin-right:10px;
+
+}
+
+/* =========================
+   RANKING
+========================= */
+
+.ranking-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    margin-bottom:12px;
+
+    border-radius:12px;
+
+    background:#f5f7f6;
+
+}
+
+.ranking-item strong{
+
+    flex:1;
+
+    margin-left:15px;
+
+}
+
+/* =========================
+   RECOMPENSAS
+========================= */
+
+.rewards-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+    gap:25px;
+
+}
+
+.reward-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    border:1px solid #eee;
+
+    transition:.3s;
+
+}
+
+.reward-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.reward-card h3{
+
+    margin-bottom:10px;
+
+}
+
+.reward-card p{
+
+    color:var(--text-light);
+
+    margin-bottom:20px;
+
+}
+
+.reward-card button{
+
+    width:100%;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+    135deg,
+    #249341,
+    #48a840
+    );
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark{
+
+    background:#121212;
+
+    color:white;
+
+}
+
+body.dark .card,
+body.dark .box,
+body.dark .dashboard-section,
+body.dark .reward-card,
+body.dark .dark-btn{
+
+    background:#1e1e1e;
+
+    color:white;
+
+}
+
+body.dark .ranking-item,
+body.dark #historicoLista li{
+
+    background:#2a2a2a;
+
+}
+
+body.dark .card h4,
+body.dark .reward-card p,
+body.dark .topbar p{
+
+    color:#bdbdbd;
+
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#eee;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#249341;
+
+    border-radius:30px;
+
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:1100px){
+
+    .grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+
+        width:80px;
+
+    }
+
+    .sidebar .logo span{
+
+        display:none;
+
+    }
+
+    .sidebar nav a{
+
+        justify-content:center;
+
+    }
+
+    .sidebar nav a span{
+
+        display:none;
+
+    }
+
+    .main{
+
+        margin-left:80px;
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .main{
+
+        padding:20px;
+
+    }
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+}
+
+@media(max-width:500px){
+
+    .sidebar{
+
+        display:none;
+
+    }
+
+    .main{
+
+        margin-left:0;
+
+    }
+
+}
+
+/* =========================
+   CONFIGURAÇÕES
+========================= */
+
+.config-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.config-card h2{
+
+    margin-bottom:25px;
+
+    color:#249341;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:20px;
+
+}
+
+.input-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.input-group label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+.input-group input{
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    outline:none;
+
+}
+
+.input-group input:focus{
+
+    border-color:#249341;
+
+}
+
+.settings-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.setting-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:#f5f7f6;
+
+}
+
+.setting-item p{
+
+    color:#666;
+
+    font-size:.9rem;
+
+    margin-top:5px;
+
+}
+
+.save-btn{
+
+    width:100%;
+
+    border:none;
+
+    padding:16px;
+
+    cursor:pointer;
+
+    border-radius:15px;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    #249341,
+    #48a840
+    );
+
+}
+
+/* SWITCH */
+
+.switch{
+
+    position:relative;
+
+    width:60px;
+
+    height:32px;
+
+}
+
+.switch input{
+
+    display:none;
+
+}
+
+.slider{
+
+    position:absolute;
+
+    cursor:pointer;
+
+    inset:0;
+
+    background:#ccc;
+
+    border-radius:50px;
+
+    transition:.3s;
+
+}
+
+.slider::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:24px;
+    height:24px;
+
+    left:4px;
+    top:4px;
+
+    background:white;
+
+    border-radius:50%;
+
+    transition:.3s;
+
+}
+
+.switch input:checked + .slider{
+
+    background:#249341;
+
+}
+
+.switch input:checked + .slider::before{
+
+    transform:translateX(28px);
+
+}
+
+/* =========================
+   RANKING PAGE
+========================= */
+
+.podium{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-end;
+
+    gap:25px;
+
+    margin-bottom:40px;
+
+    flex-wrap:wrap;
+
+}
+
+.podium-card{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    min-width:220px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.first{
+
+    transform:scale(1.08);
+
+}
+
+.medal{
+
+    font-size:3rem;
+
+    margin-bottom:10px;
+
+}
+
+.ranking-table-container{
+
+    background:white;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.ranking-header{
+
+    background:
+    linear-gradient(
+    135deg,
+    #249341,
+    #48a840
+    );
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+.ranking-header,
+.ranking-row{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 3fr 2fr;
+
+    padding:18px 25px;
+
+}
+
+.ranking-row{
+
+    border-bottom:
+    1px solid #eee;
+
+}
+
+.ranking-row:hover{
+
+    background:#f5f7f6;
+
+}
+
+.current-user{
+
+    background:#e8f7ec;
+
+    font-weight:700;
+
+}
+
+/* =========================
+   LOJA DE RECOMPENSAS
+========================= */
+
+.store-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+}
+
+.store-card{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.store-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.store-card i{
+
+    font-size:3rem;
+
+    color:#249341;
+
+    margin-bottom:15px;
+
+}
+
+.store-card h3{
+
+    margin-bottom:10px;
+
+}
+
+.store-card p{
+
+    margin-bottom:20px;
+
+    color:#666;
+
+    font-weight:600;
+
+}
+
+.store-card button{
+
+    width:100%;
+
+    border:none;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-weight:600;
+
+    background:
+    linear-gradient(
+    135deg,
+    #249341,
+    #48a840
+    );
+
+}
+
+.store-card button:disabled{
+
+    background:#bdbdbd;
+
+    cursor:not-allowed;
+
+}

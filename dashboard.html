@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SICRAI Dashboard</title>
+
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-recycle"></i>
+            <span>SICRAI</span>
+
+        </div>
+
+        <nav>
+
+            <a href="#" class="active">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-recycle"></i>
+                Reciclagens
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-gift"></i>
+                Recompensas
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-trophy"></i>
+                Ranking
+            </a>
+
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                Configurações
+            </a>
+
+            <a href="index.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 id="dashboardGreeting"></h1>
+
+                <p>
+                    Acompanhe seu desempenho sustentável.
+                </p>
+
+            </div>
+
+            <button id="toggleDark" class="dark-btn">
+
+                <i class="fa-solid fa-moon"></i>
+
+            </button>
+
+        </div>
+
+        <!-- CARDS -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <i class="fa-solid fa-star"></i>
+
+                <h4>Pontos Acumulados</h4>
+
+                <h2 id="pontosCard">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-recycle"></i>
+
+                <h4>Latinhas Recicladas</h4>
+
+                <h2 id="latinhasCard">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-ranking-star"></i>
+
+                <h4>Posição Ranking</h4>
+
+                <h2 id="rankingCard">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-gift"></i>
+
+                <h4>Recompensas</h4>
+
+                <h2 id="recompensasCard">0</h2>
+
+            </div>
+
+        </section>
+
+        <!-- META -->
+
+        <section class="dashboard-section">
+
+            <h2>Meta Mensal</h2>
+
+            <div class="progress-container">
+
+                <div class="progress-fill"
+                    id="metaProgress">
+                </div>
+
+            </div>
+
+            <p>
+                2450 de 3000 pontos
+            </p>
+
+        </section>
+
+        <!-- GRID -->
+
+        <section class="grid">
+
+            <!-- HISTÓRICO -->
+
+            <div class="box">
+
+                <h2>Histórico</h2>
+
+                <ul id="historicoLista"></ul>
+
+            </div>
+
+            <!-- RANKING -->
+
+            <div class="box">
+
+                <h2>Top Recicladores</h2>
+
+                <div id="rankingLista"></div>
+
+            </div>
+
+        </section>
+
+        <!-- RECOMPENSAS -->
+
+        <section class="dashboard-section">
+
+            <h2>Recompensas Disponíveis</h2>
+
+            <div id="rewardContainer"
+                class="rewards-grid">
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="assets/js/dashboard.js"></script>
+
+</body>
+
+</html>

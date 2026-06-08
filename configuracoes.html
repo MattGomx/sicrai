@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Configurações | SICRAI</title>
+
+<link rel="stylesheet" href="assets/css/dashboard.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-recycle"></i>
+        <span>SICRAI</span>
+
+    </div>
+
+    <nav>
+
+        <a href="dashboard.html">
+            <i class="fa-solid fa-chart-line"></i>
+            Dashboard
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-recycle"></i>
+            Reciclagens
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-gift"></i>
+            Recompensas
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-trophy"></i>
+            Ranking
+        </a>
+
+        <a href="configuracoes.html" class="active">
+            <i class="fa-solid fa-gear"></i>
+            Configurações
+        </a>
+
+        <a href="index.html">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Sair
+        </a>
+
+    </nav>
+
+</aside>
+
+<!-- CONTEÚDO -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                Configurações da Conta
+            </h1>
+
+            <p>
+                Gerencie suas informações e preferências.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- PERFIL -->
+
+    <section class="config-card">
+
+        <h2>
+            <i class="fa-solid fa-user"></i>
+            Perfil
+        </h2>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+
+                <label>Nome Completo</label>
+
+                <input
+                type="text"
+                value="Mateus">
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                type="email"
+                value="mateus@email.com">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SEGURANÇA -->
+
+    <section class="config-card">
+
+        <h2>
+            <i class="fa-solid fa-lock"></i>
+            Segurança
+        </h2>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+
+                <label>Nova Senha</label>
+
+                <input
+                type="password"
+                placeholder="Digite sua nova senha">
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Confirmar Senha</label>
+
+                <input
+                type="password"
+                placeholder="Confirme sua senha">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- PREFERÊNCIAS -->
+
+    <section class="config-card">
+
+        <h2>
+            <i class="fa-solid fa-sliders"></i>
+            Preferências
+        </h2>
+
+        <div class="settings-list">
+
+            <div class="setting-item">
+
+                <div>
+
+                    <strong>Receber Notificações</strong>
+
+                    <p>
+                        Receba avisos sobre recompensas e metas.
+                    </p>
+
+                </div>
+
+                <label class="switch">
+
+                    <input type="checkbox" checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+            <div class="setting-item">
+
+                <div>
+
+                    <strong>Tema Escuro</strong>
+
+                    <p>
+                        Alterar aparência do sistema.
+                    </p>
+
+                </div>
+
+                <label class="switch">
+
+                    <input
+                    type="checkbox"
+                    id="darkMode">
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- BOTÃO -->
+
+    <section>
+
+        <button
+        class="save-btn"
+        onclick="salvarConfiguracoes()">
+
+            Salvar Alterações
+
+        </button>
+
+    </section>
+
+</main>
+
+<script>
+
+function salvarConfiguracoes(){
+
+    alert(
+    "✅ Configurações salvas com sucesso!"
+    );
+
+}
+
+const darkMode =
+document.getElementById("darkMode");
+
+darkMode.addEventListener("change",()=>{
+
+    document.body.classList.toggle("dark");
+
+});
+
+</script>
+
+</body>
+
+</html>

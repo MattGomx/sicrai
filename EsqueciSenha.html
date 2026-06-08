@@ -1,62 +1,256 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Recuperar Senha - SICRAI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="css/auth.css">
+    <title>Recuperar Senha | SICRAI</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 
 <body>
 
-<div class="bg-circle"></div>
+    <div class="auth-container">
 
-<div class="container">
+        <div class="auth-card">
 
-    <div class="card">
+            <div class="auth-logo">
 
-        <h1>SICRAI</h1>
+                <i class="fa-solid fa-lock"></i>
 
-        <p class="subtitle">
-            Informe seu email para recuperar sua senha
-        </p>
+                <h2>Recuperar Senha</h2>
 
-        <form>
+            </div>
 
-            <input
-                type="email"
-                placeholder="Digite seu email"
-                required
-            >
+            <!-- ETAPA 1 -->
 
-            <button type="submit">
-                Enviar código
-            </button>
+            <div id="etapa1">
 
-        </form>
+                <h1>Esqueceu sua senha?</h1>
 
-        <div class="links">
+                <p>
+                    Informe seu email para receber um código de recuperação.
+                </p>
 
-            <a href="login.html">
-                Voltar para login
-            </a>
+                <div class="input-group">
 
-            <a href="index.html" class="back-link">
-                Voltar para página inicial
-            </a>
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Digite seu email">
+
+                </div>
+
+                <button
+                    class="btn-primary auth-btn"
+                    onclick="enviarCodigo()">
+
+                    Enviar Código
+
+                </button>
+
+            </div>
+
+            <!-- ETAPA 2 -->
+
+            <div
+                id="etapa2"
+                style="display:none;">
+
+                <h1>Verificação</h1>
+
+                <p>
+                    Digite o código enviado para seu email.
+                </p>
+
+                <div class="input-group">
+
+                    <label>Código</label>
+
+                    <input
+                        type="text"
+                        id="codigo"
+                        placeholder="Ex: 123456">
+
+                </div>
+
+                <button
+                    class="btn-primary auth-btn"
+                    onclick="verificarCodigo()">
+
+                    Confirmar Código
+
+                </button>
+
+            </div>
+
+            <!-- ETAPA 3 -->
+
+            <div
+                id="etapa3"
+                style="display:none;">
+
+                <h1>Nova Senha</h1>
+
+                <p>
+                    Defina uma nova senha para sua conta.
+                </p>
+
+                <div class="input-group">
+
+                    <label>Nova Senha</label>
+
+                    <input
+                        type="password"
+                        id="novaSenha">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Confirmar Senha</label>
+
+                    <input
+                        type="password"
+                        id="confirmarSenha">
+
+                </div>
+
+                <button
+                    class="btn-primary auth-btn"
+                    onclick="alterarSenha()">
+
+                    Salvar Senha
+
+                </button>
+
+            </div>
+
+            <div class="back-home">
+
+                <a href="login.html">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Voltar ao Login
+
+                </a>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    <script>
+
+        let codigoGerado = "123456";
+
+        function enviarCodigo(){
+
+            const email =
+            document.getElementById("email").value;
+
+            if(email === ""){
+
+                alert(
+                "Digite um email válido."
+                );
+
+                return;
+
+            }
+
+            alert(
+            "Código enviado com sucesso!\n\nCódigo de teste: 123456"
+            );
+
+            document.getElementById(
+            "etapa1"
+            ).style.display = "none";
+
+            document.getElementById(
+            "etapa2"
+            ).style.display = "block";
+
+        }
+
+        function verificarCodigo(){
+
+            const codigo =
+            document.getElementById("codigo").value;
+
+            if(codigo !== codigoGerado){
+
+                alert(
+                "Código inválido."
+                );
+
+                return;
+
+            }
+
+            document.getElementById(
+            "etapa2"
+            ).style.display = "none";
+
+            document.getElementById(
+            "etapa3"
+            ).style.display = "block";
+
+        }
+
+        function alterarSenha(){
+
+            const senha =
+            document.getElementById("novaSenha").value;
+
+            const confirmar =
+            document.getElementById("confirmarSenha").value;
+
+            if(senha.length < 6){
+
+                alert(
+                "A senha deve possuir pelo menos 6 caracteres."
+                );
+
+                return;
+
+            }
+
+            if(senha !== confirmar){
+
+                alert(
+                "As senhas não coincidem."
+                );
+
+                return;
+
+            }
+
+            alert(
+            "Senha alterada com sucesso!"
+            );
+
+            window.location.href =
+            "login.html";
+
+        }
+
+    </script>
 
 </body>
+
 </html>

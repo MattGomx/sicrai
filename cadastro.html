@@ -1,81 +1,173 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cadastro - SICRAI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="css/auth.css">
+    <title>Cadastro | SICRAI</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 
 <body>
 
-<div class="bg-circle"></div>
+    <div class="auth-container">
 
-<div class="container">
+        <div class="auth-card">
 
-    <div class="card">
+            <div class="auth-logo">
 
-        <h1>SICRAI</h1>
+                <i class="fa-solid fa-recycle"></i>
 
-        <p class="subtitle">
-            Crie sua conta
-        </p>
+                <h2>SICRAI</h2>
 
-        <form>
+            </div>
 
-            <input
-                type="text"
-                placeholder="Nome completo"
-                required
-            >
+            <h1>Criar Conta</h1>
 
-            <input
-                type="email"
-                placeholder="Email"
-                required
-            >
+            <p>
+                Cadastre-se e comece a ganhar recompensas.
+            </p>
 
-            <input
-                type="password"
-                placeholder="Senha"
-                required
-            >
+            <form id="cadastroForm">
 
-            <input
-                type="password"
-                placeholder="Confirmar senha"
-                required
-            >
+                <div class="input-group">
 
-            <button type="submit">
-                Criar conta
-            </button>
+                    <label>Nome Completo</label>
 
-        </form>
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Digite seu nome"
+                        required>
 
-        <div class="links">
+                </div>
 
-            <span>
-                Já possui conta?
-                <a href="login.html">Entrar</a>
-            </span>
+                <div class="input-group">
 
-            <a href="index.html" class="back-link">
-                Voltar para página inicial
-            </a>
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Digite seu email"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Senha</label>
+
+                    <input
+                        type="password"
+                        id="senha"
+                        placeholder="Digite sua senha"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Confirmar Senha</label>
+
+                    <input
+                        type="password"
+                        id="confirmarSenha"
+                        placeholder="Confirme sua senha"
+                        required>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn-primary auth-btn">
+
+                    Criar Conta
+
+                </button>
+
+            </form>
+
+            <div class="auth-links">
+
+                <a href="login.html">
+                    Já possuo conta
+                </a>
+
+            </div>
+
+            <div class="back-home">
+
+                <a href="index.html">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Voltar ao início
+
+                </a>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    <script>
+
+        const form =
+        document.getElementById("cadastroForm");
+
+        form.addEventListener("submit",(e)=>{
+
+            e.preventDefault();
+
+            const senha =
+            document.getElementById("senha").value;
+
+            const confirmar =
+            document.getElementById("confirmarSenha").value;
+
+            if(senha.length < 6){
+
+                alert(
+                "A senha deve possuir pelo menos 6 caracteres."
+                );
+
+                return;
+
+            }
+
+            if(senha !== confirmar){
+
+                alert(
+                "As senhas não coincidem."
+                );
+
+                return;
+
+            }
+
+            alert(
+            "Cadastro realizado com sucesso!"
+            );
+
+            window.location.href =
+            "login.html";
+
+        });
+
+    </script>
 
 </body>
+
 </html>
