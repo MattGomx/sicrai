@@ -2,6 +2,20 @@
    SICRAI DASHBOARD
 ===================================== */
 
+async function init() {
+    const { data: { session } } = await client.auth.getSession();
+    
+    if (!session) {
+        window.location.href = "login.html";
+        return;
+    }
+    
+    carregarDados();
+}
+
+// Substitui o carregarDados() no final do arquivo por:
+init();
+
 // DARK MODE - aplica antes de tudo pra evitar flash
 (function(){
     if(localStorage.getItem("tema") === "dark"){
@@ -300,7 +314,6 @@ async function carregarDados(){
     carregarRanking();
 }
 
-carregarDados();
 
 /* =====================================
    DARK MODE
