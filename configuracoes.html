@@ -3,257 +3,414 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Configurações | SICRAI</title>
+    <title>Configurações | SICRAI</title>
 
-<link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        /* ── ZONA DE PERIGO ── */
+        .danger-zone {
+            border: 2px solid #e53935;
+            border-radius: 12px;
+            padding: 1.5rem 1.8rem;
+            margin-top: .5rem;
+            background: rgba(229, 57, 53, 0.05);
+        }
+
+        .danger-zone .danger-header {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            color: #e53935;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: .4rem;
+        }
+
+        .danger-zone .danger-desc {
+            font-size: .88rem;
+            color: #888;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .btn-danger {
+            background: #e53935;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: .7rem 1.4rem;
+            font-size: .92rem;
+            font-weight: 600;
+            font-family: "Poppins", sans-serif;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            transition: background .2s, transform .1s, opacity .2s;
+        }
+
+        .btn-danger:hover   { background: #c62828; }
+        .btn-danger:active  { transform: scale(.97); }
+        .btn-danger:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        body.dark .danger-zone {
+            background: rgba(229, 57, 53, 0.1);
+        }
+
+        body.dark .danger-zone .danger-desc {
+            color: #aaa;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
+    <script>
+        if (localStorage.getItem("tema") === "dark") {
+            document.body.classList.add("dark");
+        }
+    </script>
 
-<aside class="sidebar">
+    <!-- SIDEBAR -->
 
-    <div class="logo">
+    <aside class="sidebar">
 
-        <i class="fa-solid fa-recycle"></i>
-        <span>SICRAI</span>
-
-    </div>
-
-    <nav>
-
-        <a href="dashboard.html">
-            <i class="fa-solid fa-chart-line"></i>
-            Dashboard
-        </a>
-
-        <a href="#">
+        <div class="logo">
             <i class="fa-solid fa-recycle"></i>
-            Reciclagens
-        </a>
-
-        <a href="#">
-            <i class="fa-solid fa-gift"></i>
-            Recompensas
-        </a>
-
-        <a href="#">
-            <i class="fa-solid fa-trophy"></i>
-            Ranking
-        </a>
-
-        <a href="configuracoes.html" class="active">
-            <i class="fa-solid fa-gear"></i>
-            Configurações
-        </a>
-
-        <a href="index.html">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Sair
-        </a>
-
-    </nav>
-
-</aside>
-
-<!-- CONTEÚDO -->
-
-<main class="main">
-
-    <div class="topbar">
-
-        <div>
-
-            <h1>
-                Configurações da Conta
-            </h1>
-
-            <p>
-                Gerencie suas informações e preferências.
-            </p>
-
+            <span>SICRAI</span>
         </div>
 
-    </div>
+        <nav>
 
-    <!-- PERFIL -->
+            <a href="dashboard.html">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
 
-    <section class="config-card">
+            <a href="reciclagens.html">
+                <i class="fa-solid fa-recycle"></i>
+                Reciclagens
+            </a>
 
-        <h2>
-            <i class="fa-solid fa-user"></i>
-            Perfil
-        </h2>
+            <a href="recompensas-dashboard.html">
+                <i class="fa-solid fa-gift"></i>
+                Recompensas
+            </a>
 
-        <div class="form-grid">
+            <a href="ranking.html">
+                <i class="fa-solid fa-trophy"></i>
+                Ranking
+            </a>
 
-            <div class="input-group">
+            <a href="configuracoes.html" class="active">
+                <i class="fa-solid fa-gear"></i>
+                Configurações
+            </a>
 
-                <label>Nome Completo</label>
+            <a href="#" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </a>
 
-                <input
-                type="text"
-                value="Mateus">
+        </nav>
 
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>Configurações da Conta</h1>
+                <p>Gerencie suas informações e preferências.</p>
             </div>
-
-            <div class="input-group">
-
-                <label>Email</label>
-
-                <input
-                type="email"
-                value="mateus@email.com">
-
-            </div>
-
         </div>
 
-    </section>
+        <!-- PERFIL -->
 
-    <!-- SEGURANÇA -->
+        <section class="config-card">
 
-    <section class="config-card">
+            <h2>
+                <i class="fa-solid fa-user"></i>
+                Perfil
+            </h2>
 
-        <h2>
-            <i class="fa-solid fa-lock"></i>
-            Segurança
-        </h2>
+            <div class="form-grid">
 
-        <div class="form-grid">
-
-            <div class="input-group">
-
-                <label>Nova Senha</label>
-
-                <input
-                type="password"
-                placeholder="Digite sua nova senha">
-
-            </div>
-
-            <div class="input-group">
-
-                <label>Confirmar Senha</label>
-
-                <input
-                type="password"
-                placeholder="Confirme sua senha">
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- PREFERÊNCIAS -->
-
-    <section class="config-card">
-
-        <h2>
-            <i class="fa-solid fa-sliders"></i>
-            Preferências
-        </h2>
-
-        <div class="settings-list">
-
-            <div class="setting-item">
-
-                <div>
-
-                    <strong>Receber Notificações</strong>
-
-                    <p>
-                        Receba avisos sobre recompensas e metas.
-                    </p>
-
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="nomeInput" placeholder="Seu nome">
                 </div>
 
-                <label class="switch">
-
-                    <input type="checkbox" checked>
-
-                    <span class="slider"></span>
-
-                </label>
-
-            </div>
-
-            <div class="setting-item">
-
-                <div>
-
-                    <strong>Tema Escuro</strong>
-
-                    <p>
-                        Alterar aparência do sistema.
-                    </p>
-
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="emailInput" placeholder="Seu email" disabled>
                 </div>
 
-                <label class="switch">
+            </div>
 
-                    <input
-                    type="checkbox"
-                    id="darkMode">
+        </section>
 
-                    <span class="slider"></span>
+        <!-- SEGURANÇA -->
 
-                </label>
+        <section class="config-card">
+
+            <h2>
+                <i class="fa-solid fa-lock"></i>
+                Segurança
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Nova Senha</label>
+                    <input type="password" id="novaSenha" placeholder="Digite sua nova senha">
+                </div>
+
+                <div class="input-group">
+                    <label>Confirmar Senha</label>
+                    <input type="password" id="confirmarSenha" placeholder="Confirme sua senha">
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
+        <!-- PREFERÊNCIAS -->
 
-    <!-- BOTÃO -->
+        <section class="config-card">
 
-    <section>
+            <h2>
+                <i class="fa-solid fa-sliders"></i>
+                Preferências
+            </h2>
 
-        <button
-        class="save-btn"
-        onclick="salvarConfiguracoes()">
+            <div class="settings-list">
 
-            Salvar Alterações
+                <div class="setting-item">
+                    <div>
+                        <strong>Receber Notificações</strong>
+                        <p>Receba avisos sobre recompensas e metas.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-        </button>
+                <div class="setting-item">
+                    <div>
+                        <strong>Tema Escuro</strong>
+                        <p>Alterar aparência do sistema.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-    </section>
+            </div>
 
-</main>
+        </section>
 
-<script>
+        <!-- BOTÃO SALVAR -->
 
-function salvarConfiguracoes(){
+        <section>
+            <button class="save-btn" onclick="salvarConfiguracoes()">
+                Salvar Alterações
+            </button>
+        </section>
 
-    alert(
-    "✅ Configurações salvas com sucesso!"
-    );
+        <!-- ZONA DE ATENÇÃO -->
 
-}
+        <section class="config-card">
 
-const darkMode =
-document.getElementById("darkMode");
+            <h2>
+                <i class="fa-solid fa-triangle-exclamation" style="color:#e53935"></i>
+                Zona de Atenção
+            </h2>
 
-darkMode.addEventListener("change",()=>{
+            <div class="danger-zone">
 
-    document.body.classList.toggle("dark");
+                <div class="danger-header">
+                    <i class="fa-solid fa-circle-minus"></i>
+                    Remover Latinha
+                </div>
 
-});
+                <p class="danger-desc">
+                    Remove <strong>1 latinha</strong> do seu histórico e desconta <strong>5 pontos</strong>
+                    da sua conta. Use apenas para corrigir registros errados.
+                    <br>Esta ação <strong>não pode ser desfeita</strong>.
+                </p>
 
-</script>
+                <button class="btn-danger" id="btnRemoverLatinha">
+                    <i class="fa-solid fa-trash"></i>
+                    Remover 1 Latinha
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+
+    <script>
+
+        /* CARREGAR USUÁRIO */
+
+        async function carregarUsuario() {
+            const { data: { session } } = await client.auth.getSession();
+            if (!session) {
+                window.location.href = "login.html";
+                return;
+            }
+            const user = session.user;
+            document.getElementById("emailInput").value = user.email;
+            if (user.user_metadata && user.user_metadata.nome) {
+                document.getElementById("nomeInput").value = user.user_metadata.nome;
+            }
+        }
+
+        carregarUsuario();
+
+        /* SALVAR CONFIGURAÇÕES */
+
+        async function salvarConfiguracoes() {
+            const nome           = document.getElementById("nomeInput").value;
+            const novaSenha      = document.getElementById("novaSenha").value;
+            const confirmarSenha = document.getElementById("confirmarSenha").value;
+
+            const updates = { data: { nome } };
+
+            if (novaSenha !== "") {
+                if (novaSenha.length < 6) {
+                    alert("A senha deve ter pelo menos 6 caracteres.");
+                    return;
+                }
+                if (novaSenha !== confirmarSenha) {
+                    alert("As senhas não coincidem.");
+                    return;
+                }
+                updates.password = novaSenha;
+            }
+
+            const { error } = await client.auth.updateUser(updates);
+            if (error) {
+                alert(error.message);
+                return;
+            }
+            alert("Configurações salvas com sucesso!");
+        }
+
+        /* LOGOUT */
+
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+            await client.auth.signOut();
+            window.location.href = "login.html";
+        });
+
+        /* DARK MODE — corrigido */
+
+        const darkToggle = document.getElementById("darkModeToggle");
+
+        // Sincroniza o checkbox com o tema já aplicado
+        darkToggle.checked = localStorage.getItem("tema") === "dark";
+
+        darkToggle.addEventListener("change", () => {
+            if (darkToggle.checked) {
+                document.body.classList.add("dark");
+                localStorage.setItem("tema", "dark");
+            } else {
+                document.body.classList.remove("dark");
+                localStorage.setItem("tema", "light");
+            }
+        });
+
+        /* REMOVER LATINHA — -1 latinha, -5 pontos no Supabase */
+
+        document.getElementById("btnRemoverLatinha").addEventListener("click", async () => {
+
+            const confirmar = confirm(
+                "⚠️ Atenção!\n\nTem certeza que deseja remover 1 latinha?\nVocê perderá 5 pontos e essa ação não pode ser desfeita."
+            );
+            if (!confirmar) return;
+
+            const btn = document.getElementById("btnRemoverLatinha");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Removendo...`;
+
+            const { data: { session } } = await client.auth.getSession();
+
+            if (!session) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
+            }
+
+            const { data: perfil, error: erroGet } = await client
+                .from("perfis")
+                .select("pontos, latinhas")
+                .eq("id", session.user.id)
+                .single();
+
+            if (erroGet || !perfil) {
+                alert("Erro ao buscar seus dados. Tente novamente.");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
+            }
+
+            if ((perfil.latinhas || 0) <= 0) {
+                alert("Você não tem latinhas para remover.");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
+            }
+
+            const novasLatinhas = perfil.latinhas - 1;
+            const novosPontos   = Math.max((perfil.pontos || 0) - 5, 0);
+
+            const { error } = await client
+                .from("perfis")
+                .update({ latinhas: novasLatinhas, pontos: novosPontos })
+                .eq("id", session.user.id);
+
+            if (error) {
+                alert("Erro ao remover latinha. Tente novamente.");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
+            }
+
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Latinha removida!`;
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+            }, 1800);
+
+        });
+
+    </script>
 
 </body>
 

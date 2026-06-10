@@ -2,107 +2,80 @@
    SICRAI DASHBOARD
 ===================================== */
 
+// DARK MODE - aplica antes de tudo pra evitar flash
+(function(){
+    if(localStorage.getItem("tema") === "dark"){
+        document.body.classList.add("dark");
+    }
+})();
+
 // SAUDAÇÃO
 function obterSaudacao(){
-
     const hora = new Date().getHours();
-
-    if(hora < 12){
-        return "Bom dia";
-    }
-
-    if(hora < 18){
-        return "Boa tarde";
-    }
-
+    if(hora < 12) return "Bom dia";
+    if(hora < 18) return "Boa tarde";
     return "Boa noite";
-
 }
-
-const saudacaoDashboard =
-document.getElementById("dashboardGreeting");
-
-if(saudacaoDashboard){
-
-    saudacaoDashboard.innerHTML =
-    `${obterSaudacao()}, Reciclador! 🌱`;
-
-}
-
-/* =====================================
-   DADOS SIMULADOS
-===================================== */
-
-const usuario = {
-
-    pontos:2450,
-    latinhas:245,
-    ranking:12,
-    recompensas:8
-
-};
 
 /* =====================================
    CONTADORES ANIMADOS
 ===================================== */
 
 function contador(id, destino){
-
-    const elemento =
-    document.getElementById(id);
-
+    const elemento = document.getElementById(id);
     if(!elemento) return;
-
     let atual = 0;
-
-    const incremento =
-    Math.ceil(destino / 100);
-
+    const incremento = Math.ceil(destino / 100) || 1;
     const timer = setInterval(() => {
-
         atual += incremento;
-
         if(atual >= destino){
-
             atual = destino;
-
             clearInterval(timer);
-
         }
-
-        elemento.innerHTML =
-        atual.toLocaleString("pt-BR");
-
-    },15);
-
+        elemento.innerHTML = atual.toLocaleString("pt-BR");
+    }, 15);
 }
 
-contador("pontosCard", usuario.pontos);
-contador("latinhasCard", usuario.latinhas);
-contador("rankingCard", usuario.ranking);
-contador("recompensasCard", usuario.recompensas);
-
 /* =====================================
-   META MENSAL
+   METAS
 ===================================== */
 
-const metaAtual = 2450;
-const metaTotal = 3000;
+function atualizarMetas(pontos){
 
-const porcentagem =
-(metaAtual / metaTotal) * 100;
+    // META SEMANAL (meta menor: 500 pontos)
+    const metaSemanal = 500;
+    const porcentagemSemanal = Math.min((pontos / metaSemanal) * 100, 100);
 
-const progressBar =
-document.getElementById("metaProgress");
+    const baraSemanal = document.getElementById("metaSemanalprogress");
+    const textoSemanal = document.getElementById("metaSemanalTexto");
 
-if(progressBar){
+    if(baraSemanal){
+        setTimeout(() => {
+            baraSemanal.style.width = porcentagemSemanal + "%";
+        }, 300);
+    }
 
-    setTimeout(() => {
+    if(textoSemanal){
+        const atual = Math.min(pontos, metaSemanal);
+        textoSemanal.textContent = `${atual.toLocaleString("pt-BR")} de ${metaSemanal.toLocaleString("pt-BR")} pontos`;
+    }
 
-        progressBar.style.width =
-        porcentagem + "%";
+    // META MENSAL (meta maior: 3000 pontos)
+    const metaMensal = 3000;
+    const porcentagemMensal = Math.min((pontos / metaMensal) * 100, 100);
 
-    },300);
+    const baraMensal = document.getElementById("metaProgress");
+    const textoMensal = document.getElementById("metaMensalTexto");
+
+    if(baraMensal){
+        setTimeout(() => {
+            baraMensal.style.width = porcentagemMensal + "%";
+        }, 300);
+    }
+
+    if(textoMensal){
+        textoMensal.textContent = `${pontos.toLocaleString("pt-BR")} de ${metaMensal.toLocaleString("pt-BR")} pontos`;
+    }
 
 }
 
@@ -111,93 +84,51 @@ if(progressBar){
 ===================================== */
 
 const historico = [
-
-"Você reciclou 15 latinhas",
-"Você ganhou 150 pontos",
-"Você subiu para o Top 15",
-"Você resgatou uma caneca",
-"Meta semanal concluída"
-
+    "Você reciclou 15 latinhas",
+    "Você ganhou 150 pontos",
+    "Você subiu para o Top 15",
+    "Você resgatou uma caneca",
+    "Meta semanal concluída"
 ];
 
-const listaHistorico =
-document.getElementById("historicoLista");
+const listaHistorico = document.getElementById("historicoLista");
 
 if(listaHistorico){
-
     historico.forEach(item => {
-
-        const li =
-        document.createElement("li");
-
-        li.innerHTML =
-        `<i class="fa-solid fa-circle-check"></i> ${item}`;
-
+        const li = document.createElement("li");
+        li.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${item}`;
         listaHistorico.appendChild(li);
-
     });
-
 }
 
 /* =====================================
    RANKING
 ===================================== */
 
-const ranking = [
+async function carregarRanking(){
+    const rankingLista = document.getElementById("rankingLista");
+    if(!rankingLista) return;
 
-{
-nome:"João",
-pontos:4500
-},
+    const { data, error } = await client
+        .from("perfis")
+        .select("nome, pontos")
+        .order("pontos", { ascending: false })
+        .limit(5);
 
-{
-nome:"Maria",
-pontos:4100
-},
+    if(error || !data) return;
 
-{
-nome:"Carlos",
-pontos:3900
-},
+    rankingLista.innerHTML = "";
 
-{
-nome:"Ana",
-pontos:3500
-},
-
-{
-nome:"Você",
-pontos:2450
-}
-
-];
-
-const rankingLista =
-document.getElementById("rankingLista");
-
-if(rankingLista){
-
-    ranking.forEach((user,index)=>{
-
-        const item =
-        document.createElement("div");
-
+    data.forEach((user, index) => {
+        const item = document.createElement("div");
         item.classList.add("ranking-item");
-
         item.innerHTML = `
-
-        <span>#${index+1}</span>
-
-        <strong>${user.nome}</strong>
-
-        <span>${user.pontos} pts</span>
-
+            <span>#${index + 1}</span>
+            <strong>${user.nome || "Reciclador"}</strong>
+            <span>${(user.pontos || 0).toLocaleString("pt-BR")} pts</span>
         `;
-
         rankingLista.appendChild(item);
-
     });
-
 }
 
 /* =====================================
@@ -205,116 +136,183 @@ if(rankingLista){
 ===================================== */
 
 const recompensas = [
-
-{
-nome:"Vale Lanche",
-pontos:500
-},
-
-{
-nome:"Caneca Personalizada",
-pontos:800
-},
-
-{
-nome:"Camiseta SICRAI",
-pontos:1200
-},
-
-{
-nome:"Garrafa Térmica",
-pontos:1500
-},
-
-{
-nome:"Kit Sustentável",
-pontos:2000
-}
-
+    { nome: "Vale Lanche",          pontos: 500  },
+    { nome: "Caneca Personalizada", pontos: 800  },
+    { nome: "Camiseta SICRAI",      pontos: 1200 },
+    { nome: "Garrafa Térmica",      pontos: 1500 },
+    { nome: "Kit Sustentável",      pontos: 2000 }
 ];
 
-const containerRewards =
-document.getElementById("rewardContainer");
+const containerRewards = document.getElementById("rewardContainer");
 
 if(containerRewards){
-
     recompensas.forEach(reward => {
-
-        const card =
-        document.createElement("div");
-
+        const card = document.createElement("div");
         card.classList.add("reward-card");
-
         card.innerHTML = `
-
-        <h3>${reward.nome}</h3>
-
-        <p>
-        Necessário:
-        <strong>${reward.pontos} pontos</strong>
-        </p>
-
-        <button class="resgatar">
-        Resgatar
-        </button>
-
+            <h3>${reward.nome}</h3>
+            <p>Necessário: <strong>${reward.pontos} pontos</strong></p>
+            <button class="resgatar" data-pontos="${reward.pontos}">Resgatar</button>
         `;
-
         containerRewards.appendChild(card);
-
     });
-
 }
 
+document.addEventListener("click", async (e) => {
+    if(!e.target.classList.contains("resgatar")) return;
+
+    const { data: { session } } = await client.auth.getSession();
+    if(!session) return;
+
+    const { data: perfil } = await client
+        .from("perfis")
+        .select("pontos")
+        .eq("id", session.user.id)
+        .single();
+
+    const pontosNecessarios = parseInt(e.target.dataset.pontos);
+
+    if(!perfil || perfil.pontos < pontosNecessarios){
+        alert("Pontos insuficientes para resgatar esta recompensa.");
+        return;
+    }
+
+    const { error } = await client
+        .from("perfis")
+        .update({ pontos: perfil.pontos - pontosNecessarios })
+        .eq("id", session.user.id);
+
+    if(error){
+        alert("Erro ao resgatar recompensa.");
+        return;
+    }
+
+    alert("🎉 Recompensa resgatada com sucesso!");
+    carregarDados();
+});
+
 /* =====================================
-   BOTÃO RESGATAR
+   BOTÃO FLUTUANTE - ADICIONAR LATINHA
+   +1 latinha = +5 pontos no Supabase
 ===================================== */
 
-document.addEventListener("click",(e)=>{
+const btnFlutuante = document.createElement("button");
+btnFlutuante.id = "btnAdicionarLatinha";
+btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
+document.body.appendChild(btnFlutuante);
 
-    if(e.target.classList.contains("resgatar")){
+btnFlutuante.addEventListener("click", async () => {
 
-        alert(
-        "🎉 Recompensa resgatada com sucesso!"
-        );
+    btnFlutuante.disabled = true;
+    btnFlutuante.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Salvando...`;
 
+    const { data: { session } } = await client.auth.getSession();
+    if(!session){
+        btnFlutuante.disabled = false;
+        btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
+        return;
     }
+
+    const { data: perfil, error: erroGet } = await client
+        .from("perfis")
+        .select("pontos, latinhas")
+        .eq("id", session.user.id)
+        .single();
+
+    if(erroGet || !perfil){
+        alert("Erro ao buscar seus dados. Tente novamente.");
+        btnFlutuante.disabled = false;
+        btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
+        return;
+    }
+
+    const novasLatinhas = (perfil.latinhas || 0) + 1;
+    const novosPontos   = (perfil.pontos   || 0) + 5; // 5 pontos por latinha
+
+    const { error } = await client
+        .from("perfis")
+        .update({ latinhas: novasLatinhas, pontos: novosPontos })
+        .eq("id", session.user.id);
+
+    if(error){
+        alert("Erro ao adicionar latinha. Tente novamente.");
+        btnFlutuante.disabled = false;
+        btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
+        return;
+    }
+
+    btnFlutuante.innerHTML = `<i class="fa-solid fa-check"></i> Latinha adicionada!`;
+    setTimeout(() => {
+        btnFlutuante.disabled = false;
+        btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
+    }, 1500);
+
+    carregarDados();
 
 });
 
 /* =====================================
-   DARK MODE DASHBOARD
+   CARREGAR DADOS DO USUÁRIO
 ===================================== */
 
-const toggleDark =
-document.getElementById("toggleDark");
+async function carregarDados(){
+
+    const { data: { session } } = await client.auth.getSession();
+
+    if(!session){
+        window.location.href = "login.html";
+        return;
+    }
+
+    const user = session.user;
+
+    const saudacaoDashboard = document.getElementById("dashboardGreeting");
+    if(saudacaoDashboard){
+        const nome = user.user_metadata?.nome || "Reciclador";
+        saudacaoDashboard.innerHTML = `${obterSaudacao()}, ${nome}! 🌱`;
+    }
+
+    const { data: perfil, error } = await client
+        .from("perfis")
+        .select("pontos, latinhas")
+        .eq("id", user.id)
+        .single();
+
+    if(error || !perfil) return;
+
+    const pontos   = perfil.pontos   || 0;
+    const latinhas = perfil.latinhas || 0;
+
+    const { count } = await client
+        .from("perfis")
+        .select("id", { count: "exact" })
+        .gt("pontos", pontos);
+
+    const posicaoRanking = (count || 0) + 1;
+
+    contador("pontosCard",      pontos);
+    contador("latinhasCard",    latinhas);
+    contador("rankingCard",     posicaoRanking);
+    contador("recompensasCard", 0);
+
+    atualizarMetas(pontos);
+
+    carregarRanking();
+}
+
+carregarDados();
+
+/* =====================================
+   DARK MODE
+===================================== */
+
+const toggleDark = document.getElementById("toggleDark");
 
 if(toggleDark){
-
-    toggleDark.addEventListener("click",()=>{
-
+    toggleDark.addEventListener("click", () => {
         document.body.classList.toggle("dark");
-
-        localStorage.setItem(
-            "dashboardTheme",
-            document.body.classList.contains("dark")
-            ? "dark"
-            : "light"
+        localStorage.setItem("tema",
+            document.body.classList.contains("dark") ? "dark" : "light"
         );
-
     });
-
 }
-
-window.addEventListener("load",()=>{
-
-    const tema =
-    localStorage.getItem("dashboardTheme");
-
-    if(tema === "dark"){
-
-        document.body.classList.add("dark");
-
-    }
-
-});

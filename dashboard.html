@@ -16,6 +16,13 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Dark mode sem flash -->
+    <script>
+        if(localStorage.getItem("tema") === "dark"){
+            document.documentElement.classList.add("dark-early");
+        }
+    </script>
+
 </head>
 
 <body>
@@ -25,10 +32,8 @@
     <aside class="sidebar">
 
         <div class="logo">
-
             <i class="fa-solid fa-recycle"></i>
             <span>SICRAI</span>
-
         </div>
 
         <nav>
@@ -58,7 +63,7 @@
                 Configurações
             </a>
 
-            <a href="index.html">
+            <a href="#" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Sair
             </a>
@@ -74,19 +79,12 @@
         <div class="topbar">
 
             <div>
-
                 <h1 id="dashboardGreeting"></h1>
-
-                <p>
-                    Acompanhe seu desempenho sustentável.
-                </p>
-
+                <p>Acompanhe seu desempenho sustentável.</p>
             </div>
 
             <button id="toggleDark" class="dark-btn">
-
                 <i class="fa-solid fa-moon"></i>
-
             </button>
 
         </div>
@@ -96,64 +94,56 @@
         <section class="cards">
 
             <div class="card">
-
                 <i class="fa-solid fa-star"></i>
-
                 <h4>Pontos Acumulados</h4>
-
                 <h2 id="pontosCard">0</h2>
-
             </div>
 
             <div class="card">
-
                 <i class="fa-solid fa-recycle"></i>
-
                 <h4>Latinhas Recicladas</h4>
-
                 <h2 id="latinhasCard">0</h2>
-
             </div>
 
             <div class="card">
-
                 <i class="fa-solid fa-ranking-star"></i>
-
                 <h4>Posição Ranking</h4>
-
                 <h2 id="rankingCard">0</h2>
-
             </div>
 
             <div class="card">
-
                 <i class="fa-solid fa-gift"></i>
-
                 <h4>Recompensas</h4>
-
                 <h2 id="recompensasCard">0</h2>
-
             </div>
 
         </section>
 
-        <!-- META -->
+        <!-- META SEMANAL -->
+
+        <section class="dashboard-section">
+
+            <h2>Meta Semanal</h2>
+
+            <div class="progress-container">
+                <div class="progress-fill" id="metaSemanalprogress"></div>
+            </div>
+
+            <p id="metaSemanalTexto">0 de 500 pontos</p>
+
+        </section>
+
+        <!-- META MENSAL -->
 
         <section class="dashboard-section">
 
             <h2>Meta Mensal</h2>
 
             <div class="progress-container">
-
-                <div class="progress-fill"
-                    id="metaProgress">
-                </div>
-
+                <div class="progress-fill" id="metaProgress"></div>
             </div>
 
-            <p>
-                2450 de 3000 pontos
-            </p>
+            <p id="metaMensalTexto">0 de 3000 pontos</p>
 
         </section>
 
@@ -161,24 +151,14 @@
 
         <section class="grid">
 
-            <!-- HISTÓRICO -->
-
             <div class="box">
-
                 <h2>Histórico</h2>
-
                 <ul id="historicoLista"></ul>
-
             </div>
 
-            <!-- RANKING -->
-
             <div class="box">
-
                 <h2>Top Recicladores</h2>
-
                 <div id="rankingLista"></div>
-
             </div>
 
         </section>
@@ -186,16 +166,37 @@
         <!-- RECOMPENSAS -->
 
         <section class="dashboard-section">
-
             <h2>Recompensas Disponíveis</h2>
-
-            <div id="rewardContainer"
-                class="rewards-grid">
-            </div>
-
+            <div id="rewardContainer" class="rewards-grid"></div>
         </section>
 
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+
+    <script>
+        // Dark mode persistente
+        if(localStorage.getItem("tema") === "dark"){
+            document.body.classList.add("dark");
+        }
+
+        async function checkUser() {
+            const { data: { session } } = await client.auth.getSession();
+            if (!session) {
+                window.location.href = "login.html";
+            }
+        }
+
+        checkUser();
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener("click", async () => {
+                await client.auth.signOut();
+                window.location.href = "login.html";
+            });
+    </script>
 
     <script src="assets/js/dashboard.js"></script>
 

@@ -3,223 +3,232 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reciclagens | SICRAI</title>
+    <title>Reciclagens | SICRAI</title>
 
-<link rel="stylesheet"
-href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
+    <script>
+        if (localStorage.getItem("tema") === "dark") {
+            document.body.classList.add("dark");
+        }
+    </script>
 
-<aside class="sidebar">
+    <!-- SIDEBAR -->
 
-    <div class="logo">
+    <aside class="sidebar">
 
-        <i class="fa-solid fa-recycle"></i>
-        <span>SICRAI</span>
-
-    </div>
-
-    <nav>
-
-        <a href="dashboard.html">
-            <i class="fa-solid fa-chart-line"></i>
-            Dashboard
-        </a>
-
-        <a href="reciclagens.html" class="active">
-            <i class="fa-solid fa-recycle"></i>
-            Reciclagens
-        </a>
-
-        <a href="ranking.html">
-            <i class="fa-solid fa-trophy"></i>
-            Ranking
-        </a>
-
-        <a href="recompensas-dashboard.html">
-            <i class="fa-solid fa-gift"></i>
-            Recompensas
-        </a>
-
-        <a href="configuracoes.html">
-            <i class="fa-solid fa-gear"></i>
-            Configurações
-        </a>
-
-    </nav>
-
-</aside>
-
-<!-- CONTEÚDO -->
-
-<main class="main">
-
-    <div class="topbar">
-
-        <div>
-
-            <h1>♻️ Histórico de Reciclagens</h1>
-
-            <p>
-                Acompanhe todas as suas contribuições.
-            </p>
-
-        </div>
-
-    </div>
-
-    <!-- CARDS -->
-
-    <section class="stats-grid">
-
-        <div class="stat-card">
+        <div class="logo">
 
             <i class="fa-solid fa-recycle"></i>
-
-            <h2>248</h2>
-
-            <p>Latinhas Recicladas</p>
+            <span>SICRAI</span>
 
         </div>
 
-        <div class="stat-card">
+        <nav>
 
-            <i class="fa-solid fa-star"></i>
+            <a href="dashboard.html" class="active">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
 
-            <h2>2480</h2>
+            <a href="reciclagens.html">
+                <i class="fa-solid fa-recycle"></i>
+                Reciclagens
+            </a>
 
-            <p>Pontos Gerados</p>
+            <a href="recompensas-dashboard.html">
+                <i class="fa-solid fa-gift"></i>
+                Recompensas
+            </a>
 
-        </div>
+            <a href="ranking.html">
+                <i class="fa-solid fa-trophy"></i>
+                Ranking
+            </a>
 
-        <div class="stat-card">
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                Configurações
+            </a>
 
-            <i class="fa-solid fa-calendar"></i>
+            <a href="#" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </a>
 
-            <h2>18</h2>
+        </nav>
 
-            <p>Coletas Realizadas</p>
+    </aside>
 
-        </div>
+    <!-- CONTEÚDO -->
 
-    </section>
+    <main class="main">
 
-    <!-- META -->
+        <div class="topbar">
 
-    <section class="progress-card">
+            <div>
 
-        <h2>Meta Mensal</h2>
+                <h1>♻️ Histórico de Reciclagens</h1>
 
-        <p>248 / 300 latinhas</p>
-
-        <div class="progress-bar">
-
-            <div class="progress-fill" style="width:83%;">
-
-                83%
+                <p>
+                    Acompanhe todas as suas contribuições.
+                </p>
 
             </div>
 
         </div>
 
-    </section>
+        <!-- CARDS -->
 
-    <!-- HISTÓRICO -->
+        <section class="stats-grid">
 
-    <section class="history-card">
+            <div class="stat-card">
 
-        <h2>Últimas Reciclagens</h2>
+                <i class="fa-solid fa-recycle"></i>
 
-        <table>
+                <h2>248</h2>
 
-            <thead>
+                <p>Latinhas Recicladas</p>
 
-                <tr>
+            </div>
 
-                    <th>Data</th>
-                    <th>Latinhas</th>
-                    <th>Pontos</th>
-                    <th>Status</th>
+            <div class="stat-card">
 
-                </tr>
+                <i class="fa-solid fa-star"></i>
 
-            </thead>
+                <h2>2480</h2>
 
-            <tbody>
+                <p>Pontos Gerados</p>
 
-                <tr>
+            </div>
 
-                    <td>08/06/2026</td>
-                    <td>15</td>
-                    <td>150</td>
-                    <td>
-                        <span class="status success">
-                            Confirmado
-                        </span>
-                    </td>
+            <div class="stat-card">
 
-                </tr>
+                <i class="fa-solid fa-calendar"></i>
 
-                <tr>
+                <h2>18</h2>
 
-                    <td>05/06/2026</td>
-                    <td>10</td>
-                    <td>100</td>
-                    <td>
-                        <span class="status success">
-                            Confirmado
-                        </span>
-                    </td>
+                <p>Coletas Realizadas</p>
 
-                </tr>
+            </div>
 
-                <tr>
+        </section>
 
-                    <td>03/06/2026</td>
-                    <td>22</td>
-                    <td>220</td>
-                    <td>
-                        <span class="status success">
-                            Confirmado
-                        </span>
-                    </td>
+        <!-- META -->
 
-                </tr>
+        <section class="progress-card">
 
-                <tr>
+            <h2>Meta Mensal</h2>
 
-                    <td>01/06/2026</td>
-                    <td>8</td>
-                    <td>80</td>
-                    <td>
-                        <span class="status success">
-                            Confirmado
-                        </span>
-                    </td>
+            <p>248 / 300 latinhas</p>
 
-                </tr>
+            <div class="progress-bar">
 
-            </tbody>
+                <div class="progress-fill" style="width:83%;">
 
-        </table>
+                    83%
 
-    </section>
+                </div>
 
-</main>
+            </div>
+
+        </section>
+
+        <!-- HISTÓRICO -->
+
+        <section class="history-card">
+
+            <h2>Últimas Reciclagens</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Data</th>
+                        <th>Latinhas</th>
+                        <th>Pontos</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>08/06/2026</td>
+                        <td>15</td>
+                        <td>150</td>
+                        <td>
+                            <span class="status success">
+                                Confirmado
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>05/06/2026</td>
+                        <td>10</td>
+                        <td>100</td>
+                        <td>
+                            <span class="status success">
+                                Confirmado
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>03/06/2026</td>
+                        <td>22</td>
+                        <td>220</td>
+                        <td>
+                            <span class="status success">
+                                Confirmado
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>01/06/2026</td>
+                        <td>8</td>
+                        <td>80</td>
+                        <td>
+                            <span class="status success">
+                                Confirmado
+                            </span>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
 
 </body>
+
 </html>

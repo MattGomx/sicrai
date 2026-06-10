@@ -2,165 +2,181 @@
 <html lang="pt-BR">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ranking | SICRAI</title>
+    <title>Ranking | SICRAI</title>
 
-<link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-<aside class="sidebar">
+    <script>
+        if (localStorage.getItem("tema") === "dark") {
+            document.body.classList.add("dark");
+        }
+    </script>
 
-    <div class="logo">
-        <i class="fa-solid fa-recycle"></i>
-        <span>SICRAI</span>
-    </div>
+    <aside class="sidebar">
 
-    <nav>
-
-        <a href="dashboard.html">
-            <i class="fa-solid fa-chart-line"></i>
-            Dashboard
-        </a>
-
-        <a href="ranking.html" class="active">
-            <i class="fa-solid fa-trophy"></i>
-            Ranking
-        </a>
-
-        <a href="recompensas-dashboard.html">
-            <i class="fa-solid fa-gift"></i>
-            Recompensas
-        </a>
-
-        <a href="configuracoes.html">
-            <i class="fa-solid fa-gear"></i>
-            Configurações
-        </a>
-
-    </nav>
-
-</aside>
-
-<main class="main">
-
-    <div class="topbar">
-
-        <div>
-
-            <h1>🏆 Ranking Geral</h1>
-
-            <p>
-                Usuários com maior impacto ambiental.
-            </p>
-
+        <div class="logo">
+            <i class="fa-solid fa-recycle"></i>
+            <span>SICRAI</span>
         </div>
 
-    </div>
+        <nav>
 
-    <!-- PODIUM -->
+            <a href="dashboard.html" class="active">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
 
-    <section class="podium">
+            <a href="reciclagens.html">
+                <i class="fa-solid fa-recycle"></i>
+                Reciclagens
+            </a>
 
-        <div class="podium-card second">
+            <a href="recompensas-dashboard.html">
+                <i class="fa-solid fa-gift"></i>
+                Recompensas
+            </a>
 
-            <div class="medal silver">
-                🥈
+            <a href="ranking.html">
+                <i class="fa-solid fa-trophy"></i>
+                Ranking
+            </a>
+
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                Configurações
+            </a>
+
+            <a href="#" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sair
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>🏆 Ranking Geral</h1>
+
+                <p>
+                    Usuários com maior impacto ambiental.
+                </p>
+
             </div>
 
-            <h3>Maria</h3>
-
-            <p>4.100 pontos</p>
-
         </div>
 
-        <div class="podium-card first">
+        <!-- PODIUM -->
 
-            <div class="medal gold">
-                🥇
+        <section class="podium">
+
+            <div class="podium-card second">
+
+                <div class="medal silver">
+                    🥈
+                </div>
+
+                <h3>Maria</h3>
+
+                <p>4.100 pontos</p>
+
             </div>
 
-            <h3>João</h3>
+            <div class="podium-card first">
 
-            <p>4.500 pontos</p>
+                <div class="medal gold">
+                    🥇
+                </div>
 
-        </div>
+                <h3>João</h3>
 
-        <div class="podium-card third">
+                <p>4.500 pontos</p>
 
-            <div class="medal bronze">
-                🥉
             </div>
 
-            <h3>Carlos</h3>
+            <div class="podium-card third">
 
-            <p>3.900 pontos</p>
+                <div class="medal bronze">
+                    🥉
+                </div>
 
-        </div>
+                <h3>Carlos</h3>
 
-    </section>
+                <p>3.900 pontos</p>
 
-    <!-- TABELA -->
+            </div>
 
-    <section class="ranking-table-container">
+        </section>
 
-        <div class="ranking-header">
+        <!-- TABELA -->
 
-            <span>Posição</span>
-            <span>Usuário</span>
-            <span>Pontos</span>
+        <section class="ranking-table-container">
 
-        </div>
+            <div class="ranking-header">
 
-        <div class="ranking-row">
+                <span>Posição</span>
+                <span>Usuário</span>
+                <span>Pontos</span>
 
-            <span>#1</span>
-            <span>João</span>
-            <strong>4500</strong>
+            </div>
 
-        </div>
+            <div class="ranking-row">
 
-        <div class="ranking-row">
+                <span>#1</span>
+                <span>João</span>
+                <strong>4500</strong>
 
-            <span>#2</span>
-            <span>Maria</span>
-            <strong>4100</strong>
+            </div>
 
-        </div>
+            <div class="ranking-row">
 
-        <div class="ranking-row">
+                <span>#2</span>
+                <span>Maria</span>
+                <strong>4100</strong>
 
-            <span>#3</span>
-            <span>Carlos</span>
-            <strong>3900</strong>
+            </div>
 
-        </div>
+            <div class="ranking-row">
 
-        <div class="ranking-row">
+                <span>#3</span>
+                <span>Carlos</span>
+                <strong>3900</strong>
 
-            <span>#4</span>
-            <span>Ana</span>
-            <strong>3500</strong>
+            </div>
 
-        </div>
+            <div class="ranking-row">
 
-        <div class="ranking-row current-user">
+                <span>#4</span>
+                <span>Ana</span>
+                <strong>3500</strong>
 
-            <span>#12</span>
-            <span>Você</span>
-            <strong>2450</strong>
+            </div>
 
-        </div>
+            <div class="ranking-row current-user">
 
-    </section>
+                <span>#12</span>
+                <span>Você</span>
+                <strong>2450</strong>
 
-</main>
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
+
 </html>

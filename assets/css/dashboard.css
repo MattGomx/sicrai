@@ -1161,3 +1161,118 @@ body.dark .topbar p{
     color:#249341;
 
 }
+
+/* =========================
+   DARK MODE - CORREÇÕES
+========================= */
+
+body.dark .config-card{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark .config-card h2{
+    color:#48a840;
+}
+
+body.dark .input-group label{
+    color:white;
+}
+
+body.dark .input-group input{
+    background:#2a2a2a;
+    border-color:#444;
+    color:white;
+}
+
+body.dark .setting-item{
+    background:#2a2a2a;
+    color:white;
+}
+
+body.dark .setting-item p{
+    color:#bdbdbd;
+}
+
+body.dark .save-btn{
+    background:linear-gradient(135deg,#249341,#48a840);
+}
+
+body.dark .reward-card{
+    border-color:#333;
+}
+
+body.dark .progress-container{
+    background:#333;
+}
+
+body.dark .ranking-row{
+    border-bottom-color:#333;
+}
+
+body.dark .ranking-row:hover{
+    background:#2a2a2a;
+}
+
+body.dark .current-user{
+    background:#1a3a22;
+}
+
+body.dark .podium-card{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark .history-card,
+body.dark .progress-card{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark .history-card th,
+body.dark .history-card td{
+    border-bottom-color:#333;
+    color:white;
+}
+
+body.dark .store-card{
+    background:#1e1e1e;
+    color:white;
+}
+
+body.dark .store-card p{
+    color:#bdbdbd;
+}
+
+/* =========================
+   BOTÃO FLUTUANTE
+========================= */
+
+#btnAdicionarLatinha{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:linear-gradient(135deg,#249341,#48a840);
+    color:white;
+    border:none;
+    padding:14px 22px;
+    border-radius:50px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(36,147,65,.4);
+    z-index:999;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+#btnAdicionarLatinha:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(36,147,65,.5);
+}
+
+#btnAdicionarLatinha:active{
+    transform:scale(.97);
+}

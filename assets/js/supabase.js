@@ -8,6 +8,3 @@ const client = window.supabase.createClient(
 );
 
 window.client = client;
-
-console.log("Cliente criado:", client);
-console.log("Auth:", client.auth);
