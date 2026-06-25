@@ -8,8 +8,11 @@
     <title>Ranking | SICRAI</title>
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -27,36 +30,40 @@
             <span>SICRAI</span>
         </div>
 
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar menu">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+
         <nav>
 
-            <a href="dashboard.html" class="active">
+            <a href="dashboard.html">
                 <i class="fa-solid fa-chart-line"></i>
-                Dashboard
+                <span class="link-text">Dashboard</span>
             </a>
 
             <a href="reciclagens.html">
                 <i class="fa-solid fa-recycle"></i>
-                Reciclagens
+                <span class="link-text">Reciclagens</span>
             </a>
 
             <a href="recompensas-dashboard.html">
                 <i class="fa-solid fa-gift"></i>
-                Recompensas
+                <span class="link-text">Recompensas</span>
             </a>
 
-            <a href="ranking.html">
+            <a href="ranking.html" class="active">
                 <i class="fa-solid fa-trophy"></i>
-                Ranking
+                <span class="link-text">Ranking</span>
             </a>
 
             <a href="configuracoes.html">
                 <i class="fa-solid fa-gear"></i>
-                Configurações
+                <span class="link-text">Configurações</span>
             </a>
 
             <a href="#" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                Sair
+                <span class="link-text">Sair</span>
             </a>
 
         </nav>
@@ -176,6 +183,113 @@
         </section>
 
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+
+    <script>
+        async function carregarRanking() {
+            const { data: { session } } = await client.auth.getSession();
+            if (!session) {
+                window.location.href = "login.html";
+                return;
+            }
+            const userId = session.user.id;
+
+            const { data: top, error } = await client
+                .from("perfis")
+                .select("id, nome, pontos")
+                .order("pontos", { ascending: false })
+                .limit(10);
+
+            if (error || !top) {
+                console.error(error);
+                return;
+            }
+
+            const { data: meuPerfil } = await client
+                .from("perfis")
+                .select("nome, pontos")
+                .eq("id", userId)
+                .single();
+
+            let minhaPosicao = null;
+            if (meuPerfil) {
+                const { count } = await client
+                    .from("perfis")
+                    .select("id", { count: "exact" })
+                    .gt("pontos", meuPerfil.pontos);
+                minhaPosicao = (count || 0) + 1;
+            }
+
+            renderizarPodio(top);
+            renderizarTabela(top, userId, meuPerfil, minhaPosicao);
+        }
+
+        function renderizarPodio(top) {
+            const podio = document.querySelector(".podium");
+            if (!podio || top.length === 0) return;
+
+            const ordem = [top[1], top[0], top[2]];
+            const classes = ["second", "first", "third"];
+            const icones = ["🥈", "🥇", "🥉"];
+            const medalha = ["silver", "gold", "bronze"];
+
+            podio.innerHTML = ordem.map((u, i) => {
+                if (!u) return "";
+                return `
+            <div class="podium-card ${classes[i]}">
+                <div class="medal ${medalha[i]}">${icones[i]}</div>
+                <h3>${u.nome || "Reciclador"}</h3>
+                <p>${(u.pontos || 0).toLocaleString("pt-BR")} pontos</p>
+            </div>
+        `;
+            }).join("");
+        }
+
+        function renderizarTabela(top, userId, meuPerfil, minhaPosicao) {
+            const container = document.querySelector(".ranking-table-container");
+            if (!container) return;
+
+            const cabecalho = `
+        <div class="ranking-header">
+            <span>Posição</span>
+            <span>Usuário</span>
+            <span>Pontos</span>
+        </div>
+    `;
+
+            const linhas = top.map((u, i) => `
+        <div class="ranking-row ${u.id === userId ? "current-user" : ""}">
+            <span>#${i + 1}</span>
+            <span>${u.id === userId ? "Você" : (u.nome || "Reciclador")}</span>
+            <strong>${(u.pontos || 0).toLocaleString("pt-BR")}</strong>
+        </div>
+    `);
+
+            const estaNoTop = top.some(u => u.id === userId);
+
+            if (!estaNoTop && meuPerfil) {
+                linhas.push(`
+            <div class="ranking-row current-user">
+                <span>#${minhaPosicao ?? "-"}</span>
+                <span>Você</span>
+                <strong>${(meuPerfil.pontos || 0).toLocaleString("pt-BR")}</strong>
+            </div>
+        `);
+            }
+
+            container.innerHTML = cabecalho + linhas.join("");
+        }
+
+        carregarRanking();
+
+        document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+            await client.auth.signOut();
+            window.location.href = "login.html";
+        });
+    </script>
+    <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
 

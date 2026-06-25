@@ -9,6 +9,7 @@
     <title>Reciclagens | SICRAI</title>
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -36,36 +37,40 @@
 
         </div>
 
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar menu">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+
         <nav>
 
-            <a href="dashboard.html" class="active">
+            <a href="dashboard.html">
                 <i class="fa-solid fa-chart-line"></i>
-                Dashboard
+                <span class="link-text">Dashboard</span>
             </a>
 
-            <a href="reciclagens.html">
+            <a href="reciclagens.html" class="active">
                 <i class="fa-solid fa-recycle"></i>
-                Reciclagens
+                <span class="link-text">Reciclagens</span>
             </a>
 
             <a href="recompensas-dashboard.html">
                 <i class="fa-solid fa-gift"></i>
-                Recompensas
+                <span class="link-text">Recompensas</span>
             </a>
 
             <a href="ranking.html">
                 <i class="fa-solid fa-trophy"></i>
-                Ranking
+                <span class="link-text">Ranking</span>
             </a>
 
             <a href="configuracoes.html">
                 <i class="fa-solid fa-gear"></i>
-                Configurações
+                <span class="link-text">Configurações</span>
             </a>
 
             <a href="#" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                Sair
+                <span class="link-text">Sair</span>
             </a>
 
         </nav>
@@ -95,33 +100,15 @@
         <section class="stats-grid">
 
             <div class="stat-card">
-
                 <i class="fa-solid fa-recycle"></i>
-
-                <h2>248</h2>
-
+                <h2 id="totalLatinhas">0</h2>
                 <p>Latinhas Recicladas</p>
-
             </div>
 
             <div class="stat-card">
-
                 <i class="fa-solid fa-star"></i>
-
-                <h2>2480</h2>
-
+                <h2 id="totalPontos">0</h2>
                 <p>Pontos Gerados</p>
-
-            </div>
-
-            <div class="stat-card">
-
-                <i class="fa-solid fa-calendar"></i>
-
-                <h2>18</h2>
-
-                <p>Coletas Realizadas</p>
-
             </div>
 
         </section>
@@ -132,13 +119,13 @@
 
             <h2>Meta Mensal</h2>
 
-            <p>248 / 300 latinhas</p>
+            <p id="metaTexto">0 / 300 latinhas</p>
 
             <div class="progress-bar">
 
-                <div class="progress-fill" style="width:83%;">
+                <div class="progress-fill" id="metaFill" style="width:0%;">
 
-                    83%
+                    0%
 
                 </div>
 
@@ -146,89 +133,84 @@
 
         </section>
 
-        <!-- HISTÓRICO -->
 
-        <section class="history-card">
-
-            <h2>Últimas Reciclagens</h2>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Data</th>
-                        <th>Latinhas</th>
-                        <th>Pontos</th>
-                        <th>Status</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <tr>
-
-                        <td>08/06/2026</td>
-                        <td>15</td>
-                        <td>150</td>
-                        <td>
-                            <span class="status success">
-                                Confirmado
-                            </span>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>05/06/2026</td>
-                        <td>10</td>
-                        <td>100</td>
-                        <td>
-                            <span class="status success">
-                                Confirmado
-                            </span>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>03/06/2026</td>
-                        <td>22</td>
-                        <td>220</td>
-                        <td>
-                            <span class="status success">
-                                Confirmado
-                            </span>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>01/06/2026</td>
-                        <td>8</td>
-                        <td>80</td>
-                        <td>
-                            <span class="status success">
-                                Confirmado
-                            </span>
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </section>
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+
+    <script>
+        const META_MENSAL_LATINHAS = 300;
+
+        async function carregarReciclagens() {
+            const { data: { session } } = await client.auth.getSession();
+            if (!session) {
+                window.location.href = "login.html";
+                return;
+            }
+            const userId = session.user.id;
+
+            const { data: perfil } = await client
+                .from("perfis")
+                .select("pontos, latinhas")
+                .eq("id", userId)
+                .single();
+
+            const totalLatinhas = perfil?.latinhas ?? 0;
+            const totalPontos = perfil?.pontos ?? 0;
+
+            document.getElementById("totalLatinhas").textContent = totalLatinhas;
+            document.getElementById("totalPontos").textContent = totalPontos;
+
+            // Meta mensal baseada no total de latinhas do perfil
+            const percentual = Math.min(Math.round((totalLatinhas / META_MENSAL_LATINHAS) * 100), 100);
+            document.getElementById("metaTexto").textContent = `${totalLatinhas} / ${META_MENSAL_LATINHAS} latinhas`;
+            const fill = document.getElementById("metaFill");
+            fill.style.width = percentual + "%";
+            fill.textContent = percentual + "%";
+
+            // Histórico (sem data)
+            const { data: historico, error } = await client
+                .from("reciclagens")
+                .select("latinhas, pontos, status")
+                .eq("user_id", userId)
+                .order("id", { ascending: false });
+
+            const corpo = document.getElementById("historicoBody");
+
+            if (error || !historico) {
+                corpo.innerHTML = `<tr><td colspan="3">Não foi possível carregar seu histórico.</td></tr>`;
+                return;
+            }
+
+            document.getElementById("totalColetas").textContent = historico.length;
+
+            if (historico.length === 0) {
+                corpo.innerHTML = `<tr><td colspan="3">Você ainda não reciclou nada por aqui.</td></tr>`;
+                return;
+            }
+
+            corpo.innerHTML = historico.slice(0, 10).map(item => {
+                const ok = item.status === "confirmado";
+                return `
+                <tr>
+                    <td>${item.latinhas}</td>
+                    <td>${item.pontos}</td>
+                    <td><span class="status ${ok ? "success" : "pending"}">${ok ? "Confirmado" : "Pendente"}</span></td>
+                </tr>
+            `;
+            }).join("");
+        }
+
+        carregarReciclagens();
+
+        document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+            await client.auth.signOut();
+            window.location.href = "login.html";
+        });
+    </script>
+    <script src="assets/js/sidebar-toggle.js"></script>
 </body>
 
 </html>

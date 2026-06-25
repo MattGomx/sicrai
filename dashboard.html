@@ -9,6 +9,7 @@
     <title>SICRAI Dashboard</title>
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -36,36 +37,40 @@
             <span>SICRAI</span>
         </div>
 
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar menu">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+
         <nav>
 
             <a href="dashboard.html" class="active">
                 <i class="fa-solid fa-chart-line"></i>
-                Dashboard
+                <span class="link-text">Dashboard</span>
             </a>
 
             <a href="reciclagens.html">
                 <i class="fa-solid fa-recycle"></i>
-                Reciclagens
+                <span class="link-text">Reciclagens</span>
             </a>
 
             <a href="recompensas-dashboard.html">
                 <i class="fa-solid fa-gift"></i>
-                Recompensas
+                <span class="link-text">Recompensas</span>
             </a>
 
             <a href="ranking.html">
                 <i class="fa-solid fa-trophy"></i>
-                Ranking
+                <span class="link-text">Ranking</span>
             </a>
 
             <a href="configuracoes.html">
                 <i class="fa-solid fa-gear"></i>
-                Configurações
+                <span class="link-text">Configurações</span>
             </a>
 
             <a href="#" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                Sair
+                <span class="link-text">Sair</span>
             </a>
 
         </nav>
@@ -199,6 +204,7 @@
     </script>
 
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
 

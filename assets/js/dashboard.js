@@ -4,12 +4,12 @@
 
 async function init() {
     const { data: { session } } = await client.auth.getSession();
-    
+
     if (!session) {
         window.location.href = "login.html";
         return;
     }
-    
+
     carregarDados();
 }
 
@@ -17,17 +17,17 @@ async function init() {
 init();
 
 // DARK MODE - aplica antes de tudo pra evitar flash
-(function(){
-    if(localStorage.getItem("tema") === "dark"){
+(function () {
+    if (localStorage.getItem("tema") === "dark") {
         document.body.classList.add("dark");
     }
 })();
 
 // SAUDAÇÃO
-function obterSaudacao(){
+function obterSaudacao() {
     const hora = new Date().getHours();
-    if(hora < 12) return "Bom dia";
-    if(hora < 18) return "Boa tarde";
+    if (hora < 12) return "Bom dia";
+    if (hora < 18) return "Boa tarde";
     return "Boa noite";
 }
 
@@ -35,14 +35,14 @@ function obterSaudacao(){
    CONTADORES ANIMADOS
 ===================================== */
 
-function contador(id, destino){
+function contador(id, destino) {
     const elemento = document.getElementById(id);
-    if(!elemento) return;
+    if (!elemento) return;
     let atual = 0;
     const incremento = Math.ceil(destino / 100) || 1;
     const timer = setInterval(() => {
         atual += incremento;
-        if(atual >= destino){
+        if (atual >= destino) {
             atual = destino;
             clearInterval(timer);
         }
@@ -54,7 +54,7 @@ function contador(id, destino){
    METAS
 ===================================== */
 
-function atualizarMetas(pontos){
+function atualizarMetas(pontos) {
 
     // META SEMANAL (meta menor: 500 pontos)
     const metaSemanal = 500;
@@ -63,13 +63,13 @@ function atualizarMetas(pontos){
     const baraSemanal = document.getElementById("metaSemanalprogress");
     const textoSemanal = document.getElementById("metaSemanalTexto");
 
-    if(baraSemanal){
+    if (baraSemanal) {
         setTimeout(() => {
             baraSemanal.style.width = porcentagemSemanal + "%";
         }, 300);
     }
 
-    if(textoSemanal){
+    if (textoSemanal) {
         const atual = Math.min(pontos, metaSemanal);
         textoSemanal.textContent = `${atual.toLocaleString("pt-BR")} de ${metaSemanal.toLocaleString("pt-BR")} pontos`;
     }
@@ -81,13 +81,13 @@ function atualizarMetas(pontos){
     const baraMensal = document.getElementById("metaProgress");
     const textoMensal = document.getElementById("metaMensalTexto");
 
-    if(baraMensal){
+    if (baraMensal) {
         setTimeout(() => {
             baraMensal.style.width = porcentagemMensal + "%";
         }, 300);
     }
 
-    if(textoMensal){
+    if (textoMensal) {
         textoMensal.textContent = `${pontos.toLocaleString("pt-BR")} de ${metaMensal.toLocaleString("pt-BR")} pontos`;
     }
 
@@ -107,7 +107,7 @@ const historico = [
 
 const listaHistorico = document.getElementById("historicoLista");
 
-if(listaHistorico){
+if (listaHistorico) {
     historico.forEach(item => {
         const li = document.createElement("li");
         li.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${item}`;
@@ -119,9 +119,9 @@ if(listaHistorico){
    RANKING
 ===================================== */
 
-async function carregarRanking(){
+async function carregarRanking() {
     const rankingLista = document.getElementById("rankingLista");
-    if(!rankingLista) return;
+    if (!rankingLista) return;
 
     const { data, error } = await client
         .from("perfis")
@@ -129,7 +129,7 @@ async function carregarRanking(){
         .order("pontos", { ascending: false })
         .limit(5);
 
-    if(error || !data) return;
+    if (error || !data) return;
 
     rankingLista.innerHTML = "";
 
@@ -150,16 +150,16 @@ async function carregarRanking(){
 ===================================== */
 
 const recompensas = [
-    { nome: "Vale Lanche",          pontos: 500  },
-    { nome: "Caneca Personalizada", pontos: 800  },
-    { nome: "Camiseta SICRAI",      pontos: 1200 },
-    { nome: "Garrafa Térmica",      pontos: 1500 },
-    { nome: "Kit Sustentável",      pontos: 2000 }
+    { nome: "Vale Lanche", pontos: 500 },
+    { nome: "Caneca Personalizada", pontos: 800 },
+    { nome: "Camiseta SICRAI", pontos: 1200 },
+    { nome: "Garrafa Térmica", pontos: 1500 },
+    { nome: "Kit Sustentável", pontos: 2000 }
 ];
 
 const containerRewards = document.getElementById("rewardContainer");
 
-if(containerRewards){
+if (containerRewards) {
     recompensas.forEach(reward => {
         const card = document.createElement("div");
         card.classList.add("reward-card");
@@ -173,10 +173,10 @@ if(containerRewards){
 }
 
 document.addEventListener("click", async (e) => {
-    if(!e.target.classList.contains("resgatar")) return;
+    if (!e.target.classList.contains("resgatar")) return;
 
     const { data: { session } } = await client.auth.getSession();
-    if(!session) return;
+    if (!session) return;
 
     const { data: perfil } = await client
         .from("perfis")
@@ -186,7 +186,7 @@ document.addEventListener("click", async (e) => {
 
     const pontosNecessarios = parseInt(e.target.dataset.pontos);
 
-    if(!perfil || perfil.pontos < pontosNecessarios){
+    if (!perfil || perfil.pontos < pontosNecessarios) {
         alert("Pontos insuficientes para resgatar esta recompensa.");
         return;
     }
@@ -196,7 +196,7 @@ document.addEventListener("click", async (e) => {
         .update({ pontos: perfil.pontos - pontosNecessarios })
         .eq("id", session.user.id);
 
-    if(error){
+    if (error) {
         alert("Erro ao resgatar recompensa.");
         return;
     }
@@ -221,7 +221,7 @@ btnFlutuante.addEventListener("click", async () => {
     btnFlutuante.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Salvando...`;
 
     const { data: { session } } = await client.auth.getSession();
-    if(!session){
+    if (!session) {
         btnFlutuante.disabled = false;
         btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
         return;
@@ -233,7 +233,7 @@ btnFlutuante.addEventListener("click", async () => {
         .eq("id", session.user.id)
         .single();
 
-    if(erroGet || !perfil){
+    if (erroGet || !perfil) {
         alert("Erro ao buscar seus dados. Tente novamente.");
         btnFlutuante.disabled = false;
         btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
@@ -241,14 +241,23 @@ btnFlutuante.addEventListener("click", async () => {
     }
 
     const novasLatinhas = (perfil.latinhas || 0) + 1;
-    const novosPontos   = (perfil.pontos   || 0) + 5; // 5 pontos por latinha
+    const novosPontos = (perfil.pontos || 0) + 5; // 5 pontos por latinha
 
     const { error } = await client
         .from("perfis")
         .update({ latinhas: novasLatinhas, pontos: novosPontos })
         .eq("id", session.user.id);
 
-    if(error){
+    // NOVO: grava o evento no histórico
+    if (!error) {
+        await client.from("reciclagens").insert({
+            user_id: session.user.id,
+            latinhas: 1,
+            pontos: 5
+        });
+    }
+
+    if (error) {
         alert("Erro ao adicionar latinha. Tente novamente.");
         btnFlutuante.disabled = false;
         btnFlutuante.innerHTML = `<i class="fa-solid fa-plus"></i> +1 Latinha`;
@@ -269,11 +278,11 @@ btnFlutuante.addEventListener("click", async () => {
    CARREGAR DADOS DO USUÁRIO
 ===================================== */
 
-async function carregarDados(){
+async function carregarDados() {
 
     const { data: { session } } = await client.auth.getSession();
 
-    if(!session){
+    if (!session) {
         window.location.href = "login.html";
         return;
     }
@@ -281,7 +290,7 @@ async function carregarDados(){
     const user = session.user;
 
     const saudacaoDashboard = document.getElementById("dashboardGreeting");
-    if(saudacaoDashboard){
+    if (saudacaoDashboard) {
         const nome = user.user_metadata?.nome || "Reciclador";
         saudacaoDashboard.innerHTML = `${obterSaudacao()}, ${nome}! 🌱`;
     }
@@ -292,9 +301,9 @@ async function carregarDados(){
         .eq("id", user.id)
         .single();
 
-    if(error || !perfil) return;
+    if (error || !perfil) return;
 
-    const pontos   = perfil.pontos   || 0;
+    const pontos = perfil.pontos || 0;
     const latinhas = perfil.latinhas || 0;
 
     const { count } = await client
@@ -304,9 +313,9 @@ async function carregarDados(){
 
     const posicaoRanking = (count || 0) + 1;
 
-    contador("pontosCard",      pontos);
-    contador("latinhasCard",    latinhas);
-    contador("rankingCard",     posicaoRanking);
+    contador("pontosCard", pontos);
+    contador("latinhasCard", latinhas);
+    contador("rankingCard", posicaoRanking);
     contador("recompensasCard", 0);
 
     atualizarMetas(pontos);
@@ -321,7 +330,7 @@ async function carregarDados(){
 
 const toggleDark = document.getElementById("toggleDark");
 
-if(toggleDark){
+if (toggleDark) {
     toggleDark.addEventListener("click", () => {
         document.body.classList.toggle("dark");
         localStorage.setItem("tema",
