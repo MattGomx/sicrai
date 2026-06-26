@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Redefinir Senha | SICRAI</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                <i class="fa-solid fa-lock"></i>
+                <h2>SICRAI</h2>
+            </div>
+
+            <!-- ESTADO: carregando -->
+            <div id="estadoCarregando" style="text-align:center;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:#249341;margin-bottom:16px;"></i>
+                <p>Verificando seu link...</p>
+            </div>
+
+            <!-- ESTADO: link inválido / expirado -->
+            <div id="estadoInvalido" style="display:none; text-align:center;">
+                <i class="fa-solid fa-circle-xmark" style="font-size:3rem;color:#e53935;margin-bottom:16px;"></i>
+                <h1 style="margin-bottom:10px;">Link inválido</h1>
+                <p style="color:#666; margin-bottom:28px;">
+                    Este link expirou ou já foi utilizado.<br>
+                    Solicite um novo link de redefinição.
+                </p>
+                <a href="configuracoes.html" class="btn-primary auth-btn"
+                   style="display:block; text-align:center; border:none; cursor:pointer; padding:14px; border-radius:12px;">
+                    Solicitar novo link
+                </a>
+            </div>
+
+            <!-- ESTADO: formulário -->
+            <div id="estadoFormulario" style="display:none;">
+
+                <h1 style="text-align:center; margin-bottom:10px;">Nova Senha</h1>
+                <p style="text-align:center; color:#666; margin-bottom:28px;">
+                    Escolha uma senha segura para sua conta.
+                </p>
+
+                <div class="input-group">
+                    <label>Nova Senha</label>
+                    <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres">
+                </div>
+
+                <div class="input-group">
+                    <label>Confirmar Nova Senha</label>
+                    <input type="password" id="confirmarSenha" placeholder="Repita a nova senha">
+                </div>
+
+                <!-- Indicador de força -->
+                <div id="forcaWrapper" style="margin-bottom:20px; display:none;">
+                    <div style="height:6px; border-radius:30px; background:#eee; overflow:hidden;">
+                        <div id="forcaBarra" style="height:100%; width:0; border-radius:30px; transition:.3s;"></div>
+                    </div>
+                    <p id="forcaTexto" style="font-size:.82rem; margin-top:6px; color:#888;"></p>
+                </div>
+
+                <button class="btn-primary auth-btn" id="btnSalvar"
+                        style="border:none; cursor:pointer;"
+                        onclick="salvarNovaSenha()">
+                    Salvar nova senha
+                </button>
+
+            </div>
+
+            <!-- ESTADO: sucesso -->
+            <div id="estadoSucesso" style="display:none; text-align:center;">
+                <i class="fa-solid fa-circle-check" style="font-size:3rem;color:#249341;margin-bottom:16px;"></i>
+                <h1 style="margin-bottom:10px;">Senha alterada!</h1>
+                <p style="color:#666; margin-bottom:28px;">
+                    Sua senha foi redefinida com sucesso.<br>
+                    Você já pode entrar na sua conta.
+                </p>
+                <a href="login.html" class="btn-primary auth-btn"
+                   style="display:block; text-align:center; border:none; cursor:pointer; padding:14px; border-radius:12px;">
+                    Ir para o Login
+                </a>
+            </div>
+
+            <div class="back-home" style="margin-top:24px;">
+                <a href="index.html">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Voltar ao início
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+
+    <script>
+
+        /* ── MOSTRAR ESTADO ── */
+
+        function mostrar(id) {
+            ["estadoCarregando", "estadoInvalido", "estadoFormulario", "estadoSucesso"]
+                .forEach(s => {
+                    document.getElementById(s).style.display = s === id ? "block" : "none";
+                });
+        }
+
+        /* ── VERIFICAR TOKEN NA URL ── */
+
+        // O Supabase coloca o token no hash (#) da URL quando o usuário clica no link.
+        // O SDK processa isso automaticamente via onAuthStateChange.
+
+        client.auth.onAuthStateChange(async (event, session) => {
+
+            if (event === "PASSWORD_RECOVERY") {
+                // Token válido — mostra o formulário
+                mostrar("estadoFormulario");
+                return;
+            }
+
+            if (event === "SIGNED_IN" && session) {
+                // Já estava logado sem ser pelo link — redireciona
+                window.location.href = "dashboard.html";
+                return;
+            }
+
+        });
+
+        // Se após 3s ainda estiver "carregando", o link é inválido/expirado
+        setTimeout(() => {
+            if (document.getElementById("estadoCarregando").style.display !== "none") {
+                mostrar("estadoInvalido");
+            }
+        }, 3000);
+
+        /* ── INDICADOR DE FORÇA DE SENHA ── */
+
+        document.getElementById("novaSenha").addEventListener("input", function () {
+            const val = this.value;
+            const wrapper = document.getElementById("forcaWrapper");
+            const barra   = document.getElementById("forcaBarra");
+            const texto   = document.getElementById("forcaTexto");
+
+            if (val.length === 0) {
+                wrapper.style.display = "none";
+                return;
+            }
+
+            wrapper.style.display = "block";
+
+            let forca = 0;
+            if (val.length >= 6)  forca++;
+            if (val.length >= 10) forca++;
+            if (/[A-Z]/.test(val)) forca++;
+            if (/[0-9]/.test(val)) forca++;
+            if (/[^A-Za-z0-9]/.test(val)) forca++;
+
+            const niveis = [
+                { cor: "#e53935", label: "Muito fraca",  largura: "20%" },
+                { cor: "#ff7043", label: "Fraca",        largura: "40%" },
+                { cor: "#ffa726", label: "Razoável",     largura: "60%" },
+                { cor: "#66bb6a", label: "Boa",          largura: "80%" },
+                { cor: "#249341", label: "Excelente",    largura: "100%" },
+            ];
+
+            const nivel = niveis[Math.min(forca, 4)];
+            barra.style.width      = nivel.largura;
+            barra.style.background = nivel.cor;
+            texto.textContent      = "Força: " + nivel.label;
+            texto.style.color      = nivel.cor;
+        });
+
+        /* ── SALVAR NOVA SENHA ── */
+
+        async function salvarNovaSenha() {
+            const nova      = document.getElementById("novaSenha").value;
+            const confirmar = document.getElementById("confirmarSenha").value;
+            const btn       = document.getElementById("btnSalvar");
+
+            if (nova.length < 6) {
+                alert("A senha deve ter pelo menos 6 caracteres.");
+                return;
+            }
+
+            if (nova !== confirmar) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Salvando...";
+
+            const { error } = await client.auth.updateUser({ password: nova });
+
+            if (error) {
+                alert("Erro ao salvar a senha: " + error.message);
+                btn.disabled = false;
+                btn.textContent = "Salvar nova senha";
+                return;
+            }
+
+            mostrar("estadoSucesso");
+        }
+
+    </script>
+
+</body>
+
+</html>

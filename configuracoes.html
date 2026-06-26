@@ -76,6 +76,137 @@
             color: #aaa;
         }
 
+        /* ── ABAS DE SENHA ── */
+        .senha-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0;
+        }
+
+        .senha-tab {
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            padding: 10px 18px;
+            font-family: "Poppins", sans-serif;
+            font-size: .92rem;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color .2s, border-color .2s;
+        }
+
+        .senha-tab:hover {
+            color: #249341;
+        }
+
+        .senha-tab.active {
+            color: #249341;
+            border-bottom-color: #249341;
+        }
+
+        .senha-painel {
+            animation: fadePanel .25s ease;
+        }
+
+        @keyframes fadePanel {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .senha-desc {
+            color: #666;
+            font-size: .93rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn-link-email {
+            background: linear-gradient(135deg, #249341, #48a840);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 24px;
+            font-family: "Poppins", sans-serif;
+            font-size: .95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform .2s, box-shadow .2s, opacity .2s;
+            box-shadow: 0 4px 14px rgba(36,147,65,.3);
+        }
+
+        .btn-link-email:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(36,147,65,.35);
+        }
+
+        .btn-link-email:active { transform: scale(.97); }
+
+        .btn-link-email:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .senha-feedback {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: .9rem;
+            font-weight: 600;
+        }
+
+        .senha-feedback.ok {
+            background: #e8f7ec;
+            color: #249341;
+        }
+
+        .senha-feedback.erro {
+            background: #fdecea;
+            color: #e53935;
+        }
+
+        body.dark .senha-tabs {
+            border-bottom-color: #333;
+        }
+
+        body.dark .senha-tab {
+            color: #aaa;
+        }
+
+        body.dark .senha-tab:hover,
+        body.dark .senha-tab.active {
+            color: #48a840;
+        }
+
+        body.dark .senha-tab.active {
+            border-bottom-color: #48a840;
+        }
+
+        body.dark .senha-desc {
+            color: #aaa;
+        }
+
+        body.dark .senha-feedback.ok {
+            background: #1a3a22;
+            color: #48a840;
+        }
+
+        body.dark .senha-feedback.erro {
+            background: #3a1a1a;
+            color: #ef9a9a;
+        }
+
     </style>
 
 </head>
@@ -179,21 +310,48 @@
 
             <h2>
                 <i class="fa-solid fa-lock"></i>
-                Segurança
+                Segurança — Alterar Senha
             </h2>
 
-            <div class="form-grid">
+            <!-- ABAS -->
+            <div class="senha-tabs">
+                <button class="senha-tab active" id="tabSenha" onclick="trocarAba('senha')">
+                    <i class="fa-solid fa-key"></i> Usar senha atual
+                </button>
+                <button class="senha-tab" id="tabEmail" onclick="trocarAba('email')">
+                    <i class="fa-solid fa-envelope"></i> Receber link por e-mail
+                </button>
+            </div>
 
-                <div class="input-group">
-                    <label>Nova Senha</label>
-                    <input type="password" id="novaSenha" placeholder="Digite sua nova senha">
+            <!-- PAINEL: senha atual -->
+            <div id="painelSenha" class="senha-painel">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Senha Atual</label>
+                        <input type="password" id="senhaAtual" placeholder="Digite sua senha atual">
+                    </div>
+                    <div class="input-group">
+                        <label>Nova Senha</label>
+                        <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="input-group">
+                        <label>Confirmar Nova Senha</label>
+                        <input type="password" id="confirmarSenha" placeholder="Repita a nova senha">
+                    </div>
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <label>Confirmar Senha</label>
-                    <input type="password" id="confirmarSenha" placeholder="Confirme sua senha">
-                </div>
-
+            <!-- PAINEL: link por e-mail -->
+            <div id="painelEmail" class="senha-painel" style="display:none;">
+                <p class="senha-desc">
+                    Enviaremos um link de redefinição para o e-mail cadastrado na sua conta.<br>
+                    Clique no link recebido para criar uma nova senha com segurança.
+                </p>
+                <button class="btn-link-email" id="btnEnviarLink">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Enviar link de redefinição
+                </button>
+                <p class="senha-feedback" id="feedbackEmail" style="display:none;"></p>
             </div>
 
         </section>
@@ -281,7 +439,21 @@
 
     <script>
 
-        /* CARREGAR USUÁRIO */
+        /* ── ABAS ── */
+
+        function trocarAba(aba) {
+            document.getElementById("painelSenha").style.display = aba === "senha" ? "block" : "none";
+            document.getElementById("painelEmail").style.display = aba === "email" ? "block" : "none";
+            document.getElementById("tabSenha").classList.toggle("active", aba === "senha");
+            document.getElementById("tabEmail").classList.toggle("active", aba === "email");
+
+            // Limpa o feedback ao trocar de aba
+            const fb = document.getElementById("feedbackEmail");
+            fb.style.display = "none";
+            fb.textContent = "";
+        }
+
+        /* ── CARREGAR USUÁRIO ── */
 
         async function carregarUsuario() {
             const { data: { session } } = await client.auth.getSession();
@@ -298,47 +470,106 @@
 
         carregarUsuario();
 
-        /* SALVAR CONFIGURAÇÕES */
+        /* ── SALVAR CONFIGURAÇÕES (nome + troca por senha atual) ── */
 
         async function salvarConfiguracoes() {
             const nome           = document.getElementById("nomeInput").value;
-            const novaSenha      = document.getElementById("novaSenha").value;
-            const confirmarSenha = document.getElementById("confirmarSenha").value;
+            const novaSenha      = document.getElementById("novaSenha")?.value || "";
+            const confirmarSenha = document.getElementById("confirmarSenha")?.value || "";
+            const senhaAtual     = document.getElementById("senhaAtual")?.value || "";
 
             const updates = { data: { nome } };
 
-            if (novaSenha !== "") {
-                if (novaSenha.length < 6) {
-                    alert("A senha deve ter pelo menos 6 caracteres.");
+            // Só tenta alterar senha se o painel de "senha atual" estiver ativo
+            const painelSenhaVisivel =
+                document.getElementById("painelSenha").style.display !== "none";
+
+            if (painelSenhaVisivel && novaSenha !== "") {
+
+                if (senhaAtual === "") {
+                    alert("Informe sua senha atual para continuar.");
                     return;
                 }
+
+                if (novaSenha.length < 6) {
+                    alert("A nova senha deve ter pelo menos 6 caracteres.");
+                    return;
+                }
+
                 if (novaSenha !== confirmarSenha) {
                     alert("As senhas não coincidem.");
                     return;
                 }
+
+                // Reautentica com a senha atual para confirmar identidade
+                const emailAtual = document.getElementById("emailInput").value;
+                const { error: erroLogin } = await client.auth.signInWithPassword({
+                    email: emailAtual,
+                    password: senhaAtual
+                });
+
+                if (erroLogin) {
+                    alert("Senha atual incorreta. Verifique e tente novamente.");
+                    return;
+                }
+
                 updates.password = novaSenha;
             }
 
             const { error } = await client.auth.updateUser(updates);
+
             if (error) {
                 alert(error.message);
                 return;
             }
+
+            // Limpa campos de senha após salvar
+            if (document.getElementById("senhaAtual"))     document.getElementById("senhaAtual").value = "";
+            if (document.getElementById("novaSenha"))       document.getElementById("novaSenha").value = "";
+            if (document.getElementById("confirmarSenha")) document.getElementById("confirmarSenha").value = "";
+
             alert("Configurações salvas com sucesso!");
         }
 
-        /* LOGOUT */
+        /* ── ENVIAR LINK DE REDEFINIÇÃO POR E-MAIL ── */
+
+        document.getElementById("btnEnviarLink").addEventListener("click", async () => {
+
+            const btn      = document.getElementById("btnEnviarLink");
+            const feedback = document.getElementById("feedbackEmail");
+            const email    = document.getElementById("emailInput").value;
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enviando...`;
+
+            const { error } = await client.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + "/redefinirSenha.html"
+            });
+
+            if (error) {
+                feedback.textContent = "Erro ao enviar o link: " + error.message;
+                feedback.className = "senha-feedback erro";
+            } else {
+                feedback.textContent = "✅ Link enviado para " + email + ". Verifique sua caixa de entrada.";
+                feedback.className = "senha-feedback ok";
+            }
+
+            feedback.style.display = "block";
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Enviar link de redefinição`;
+        });
+
+        /* ── LOGOUT ── */
 
         document.getElementById("logoutBtn").addEventListener("click", async () => {
             await client.auth.signOut();
             window.location.href = "login.html";
         });
 
-        /* DARK MODE — corrigido */
+        /* ── DARK MODE ── */
 
         const darkToggle = document.getElementById("darkModeToggle");
 
-        // Sincroniza o checkbox com o tema já aplicado
         darkToggle.checked = localStorage.getItem("tema") === "dark";
 
         darkToggle.addEventListener("change", () => {
@@ -351,7 +582,7 @@
             }
         });
 
-        /* REMOVER LATINHA — -1 latinha, -5 pontos no Supabase */
+        /* ── REMOVER LATINHA ── */
 
         document.getElementById("btnRemoverLatinha").addEventListener("click", async () => {
 
