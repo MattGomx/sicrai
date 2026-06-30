@@ -2,24 +2,227 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Configurações | SICRAI</title>
+
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
 
+        /* ── CABEÇALHO DE PERFIL ── */
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: white;
+            border-radius: 25px;
+            padding: 2rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #249341, #48a840);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+        }
+
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: #249341;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .75rem;
+            transition: background .2s, transform .1s;
+        }
+
+        .avatar-edit-btn:hover {
+            background: #1e7f38;
+            transform: scale(1.08);
+        }
+
+        .avatar-edit-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        body.dark .avatar-edit-btn {
+            border-color: #1e1e1e;
+        }
+
+        .profile-header-info h2 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .profile-header-info p {
+            color: #888;
+            font-size: .9rem;
+        }
+
+        .profile-header-info .member-since {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: .8rem;
+            color: #249341;
+            background: #e8f7ec;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        body.dark .profile-header {
+            background: #1e1e1e;
+        }
+
+        body.dark .profile-header-info p {
+            color: #aaa;
+        }
+
+        /* ── ABAS ── */
+
+        .settings-tabs {
+            display: flex;
+            gap: .5rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 2px solid #e8ece9;
+            overflow-x: auto;
+        }
+
+        .settings-tab {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: "Poppins", sans-serif;
+            font-size: .92rem;
+            font-weight: 600;
+            color: #888;
+            padding: .9rem 1.3rem;
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: color .2s, border-color .2s;
+        }
+
+        .settings-tab:hover {
+            color: #249341;
+        }
+
+        .settings-tab.active {
+            color: #249341;
+            border-bottom-color: #249341;
+        }
+
+        body.dark .settings-tabs {
+            border-bottom-color: #333;
+        }
+
+        .settings-panel {
+            animation: fadeInPanel .25s ease;
+        }
+
+        @keyframes fadeInPanel {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── BADGES DE STATUS ── */
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .78rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 50px;
+        }
+
+        .status-badge.verificado {
+            background: #e8f7ec;
+            color: #249341;
+        }
+
+        .status-badge.pendente {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .field-hint {
+            font-size: .82rem;
+            color: #888;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .field-hint i {
+            color: #249341;
+            margin-right: 4px;
+        }
+
+        .save-btn.small {
+            width: auto;
+            padding: .8rem 1.6rem;
+        }
+
+        .save-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.2rem;
+        }
+
         /* ── ZONA DE PERIGO ── */
+
         .danger-zone {
             border: 2px solid #e53935;
             border-radius: 12px;
             padding: 1.5rem 1.8rem;
             margin-top: .5rem;
-            background: rgba(229,57,53,.05);
+            background: rgba(229, 57, 53, 0.05);
         }
+
         .danger-zone .danger-header {
             display: flex;
             align-items: center;
@@ -29,12 +232,14 @@
             font-weight: 700;
             margin-bottom: .4rem;
         }
+
         .danger-zone .danger-desc {
             font-size: .88rem;
             color: #888;
             margin-bottom: 1.2rem;
             line-height: 1.5;
         }
+
         .btn-danger {
             background: #e53935;
             color: #fff;
@@ -50,326 +255,85 @@
             gap: .5rem;
             transition: background .2s, transform .1s, opacity .2s;
         }
+
         .btn-danger:hover   { background: #c62828; }
         .btn-danger:active  { transform: scale(.97); }
-        .btn-danger:disabled { opacity: .55; cursor: not-allowed; transform: none; }
-        body.dark .danger-zone { background: rgba(229,57,53,.1); }
-        body.dark .danger-zone .danger-desc { color: #aaa; }
+        .btn-danger:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-        /* ── ABAS ── */
-        .senha-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 24px;
-            border-bottom: 2px solid #eee;
+        body.dark .danger-zone {
+            background: rgba(229, 57, 53, 0.1);
         }
-        .senha-tab {
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            padding: 10px 18px;
-            font-family: "Poppins", sans-serif;
-            font-size: .92rem;
-            font-weight: 600;
-            color: #888;
-            cursor: pointer;
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: color .2s, border-color .2s;
-        }
-        .senha-tab:hover  { color: #249341; }
-        .senha-tab.active { color: #249341; border-bottom-color: #249341; }
-        .senha-painel { animation: fadePanel .22s ease; }
-        @keyframes fadePanel {
-            from { opacity: 0; transform: translateY(5px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .senha-desc {
-            color: #666;
-            font-size: .93rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        .btn-enviar-codigo {
-            background: linear-gradient(135deg, #249341, #48a840);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 13px 24px;
-            font-family: "Poppins", sans-serif;
-            font-size: .95rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform .2s, box-shadow .2s, opacity .2s;
-            box-shadow: 0 4px 14px rgba(36,147,65,.3);
-        }
-        .btn-enviar-codigo:hover    { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(36,147,65,.35); }
-        .btn-enviar-codigo:active   { transform: scale(.97); }
-        .btn-enviar-codigo:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-        body.dark .senha-tabs         { border-bottom-color: #333; }
-        body.dark .senha-tab          { color: #aaa; }
-        body.dark .senha-tab:hover,
-        body.dark .senha-tab.active   { color: #48a840; }
-        body.dark .senha-tab.active   { border-bottom-color: #48a840; }
-        body.dark .senha-desc         { color: #aaa; }
 
-        /* ── MODAL OTP ── */
-        .otp-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.55);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity .25s, visibility .25s;
-            padding: 20px;
+        body.dark .danger-zone .danger-desc {
+            color: #aaa;
         }
-        .otp-overlay.aberto { opacity: 1; visibility: visible; }
 
-        .otp-card {
-            background: #fff;
-            border-radius: 28px;
-            padding: 44px 40px 38px;
-            width: 100%;
-            max-width: 430px;
-            box-shadow: 0 28px 64px rgba(0,0,0,.2);
-            position: relative;
-            transform: translateY(32px) scale(.96);
-            transition: transform .32s cubic-bezier(.34,1.56,.64,1);
+        body.dark .field-hint {
+            color: #aaa;
         }
-        .otp-overlay.aberto .otp-card { transform: translateY(0) scale(1); }
 
-        .otp-fechar {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            background: #f2f2f2;
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            transition: background .2s, color .2s;
-        }
-        .otp-fechar:hover { background: #e0e0e0; color: #222; }
+        /* ── CÓDIGO DE VERIFICAÇÃO (troca de senha) ── */
 
-        .otp-icone {
-            width: 68px;
-            height: 68px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #249341, #48a840);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.7rem;
-            color: white;
-            margin: 0 auto 22px;
-            box-shadow: 0 8px 22px rgba(36,147,65,.32);
-        }
-        .otp-titulo {
+        .codigo-input {
             text-align: center;
             font-size: 1.4rem;
+            letter-spacing: 8px;
             font-weight: 700;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-        }
-        .otp-subtitulo {
-            text-align: center;
-            font-size: .88rem;
-            color: #777;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .otp-subtitulo strong { color: #249341; font-weight: 700; }
-
-        .otp-etapa { display: none; }
-        .otp-etapa.ativa { display: block; animation: fadePanel .2s ease; }
-
-        /* caixinhas OTP */
-        .otp-inputs {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .otp-inputs input {
-            width: 52px;
-            height: 62px;
-            border: 2.5px solid #e0e0e0;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: 700;
-            font-family: "Poppins", sans-serif;
-            color: #1a1a1a;
-            outline: none;
-            background: #fafafa;
-            transition: border-color .18s, box-shadow .18s, transform .14s, background .18s;
-            caret-color: #249341;
-        }
-        .otp-inputs input:focus {
-            border-color: #249341;
-            box-shadow: 0 0 0 4px rgba(36,147,65,.14);
-            transform: scale(1.07);
-            background: #fff;
-        }
-        .otp-inputs input.preenchido {
-            border-color: #249341;
-            background: #f0fbf3;
-        }
-        .otp-inputs input.erro-campo {
-            border-color: #e53935 !important;
-            background: #fff0f0 !important;
-            box-shadow: 0 0 0 3px rgba(229,57,53,.12) !important;
-            animation: shake .35s ease;
-        }
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            25%      { transform: translateX(-6px); }
-            75%      { transform: translateX(6px); }
         }
 
-        .otp-reenviar {
+        .reenviar {
             text-align: center;
-            font-size: .83rem;
-            color: #999;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            font-size: .85rem;
+            color: #888;
         }
-        .otp-reenviar button {
-            background: none;
-            border: none;
+
+        .reenviar a {
             color: #249341;
-            font-family: "Poppins", sans-serif;
-            font-size: .83rem;
             font-weight: 600;
             cursor: pointer;
-            padding: 0;
-            text-decoration: underline;
-            text-decoration-color: transparent;
-            transition: text-decoration-color .2s;
-        }
-        .otp-reenviar button:hover { text-decoration-color: #249341; }
-        .otp-reenviar button:disabled { color: #bbb; cursor: default; text-decoration: none; }
-        #timerReenvio { font-variant-numeric: tabular-nums; }
-
-        .otp-erro {
-            text-align: center;
-            font-size: .84rem;
-            font-weight: 600;
-            color: #e53935;
-            min-height: 22px;
-            margin-bottom: 16px;
         }
 
-        .btn-otp {
-            width: 100%;
-            border: none;
-            border-radius: 14px;
-            padding: 15px;
-            font-family: "Poppins", sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: white;
-            background: linear-gradient(135deg, #249341, #48a840);
-            cursor: pointer;
-            transition: transform .2s, box-shadow .2s, opacity .2s;
-            box-shadow: 0 6px 18px rgba(36,147,65,.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
+        .reenviar a.disabled {
+            color: #aaa;
+            pointer-events: none;
         }
-        .btn-otp:hover    { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(36,147,65,.38); }
-        .btn-otp:active   { transform: scale(.97); }
-        .btn-otp:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        .otp-input-senha {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-family: "Poppins", sans-serif;
+        .seg-etapa-titulo {
             font-size: .95rem;
-            outline: none;
-            margin-bottom: 14px;
-            transition: border-color .2s, box-shadow .2s;
-            color: #1a1a1a;
-            background: #fafafa;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .otp-input-senha:focus {
-            border-color: #249341;
-            box-shadow: 0 0 0 3px rgba(36,147,65,.12);
-            background: #fff;
-        }
-        .otp-input-senha::placeholder { color: #bbb; }
 
-        .forca-wrap { margin: -6px 0 16px; }
-        .forca-barra-bg {
-            height: 6px;
-            border-radius: 30px;
-            background: #eee;
-            overflow: hidden;
-            margin-bottom: 5px;
-        }
-        .forca-barra-fill {
-            height: 100%;
-            border-radius: 30px;
-            width: 0;
-            transition: width .3s, background .3s;
-        }
-        .forca-label { font-size: .8rem; font-weight: 600; }
-
-        .otp-sucesso-icone {
-            width: 76px;
-            height: 76px;
+        .seg-etapa-titulo .numero {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #249341, #48a840);
+            background: #249341;
+            color: white;
+            font-size: .75rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.1rem;
-            color: white;
-            margin: 0 auto 22px;
-            animation: popIn .45s cubic-bezier(.34,1.56,.64,1);
-        }
-        @keyframes popIn {
-            from { transform: scale(0); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
         }
 
-        body.dark .otp-card         { background: #1e1e1e; }
-        body.dark .otp-titulo       { color: #fff; }
-        body.dark .otp-subtitulo    { color: #aaa; }
-        body.dark .otp-fechar       { background: #2a2a2a; color: #ccc; }
-        body.dark .otp-fechar:hover { background: #333; color: #fff; }
-        body.dark .otp-inputs input { background: #2a2a2a; border-color: #444; color: #fff; }
-        body.dark .otp-inputs input:focus { border-color: #48a840; box-shadow: 0 0 0 4px rgba(72,168,64,.2); background: #333; }
-        body.dark .otp-inputs input.preenchido { border-color: #48a840; background: #1a2e1e; }
-        body.dark .otp-input-senha { background: #2a2a2a; border-color: #444; color: #fff; }
-        body.dark .otp-input-senha:focus { border-color: #48a840; box-shadow: 0 0 0 3px rgba(72,168,64,.2); background: #333; }
-        body.dark .forca-barra-bg { background: #333; }
-        body.dark .otp-reenviar { color: #777; }
+        .seg-voltar {
+            text-align: center;
+            margin-top: 12px;
+            font-size: .82rem;
+        }
 
-        @media (max-width: 480px) {
-            .otp-card { padding: 36px 22px 30px; border-radius: 22px; }
-            .otp-inputs input { width: 42px; height: 52px; font-size: 1.4rem; border-radius: 11px; }
-            .otp-inputs { gap: 7px; }
+        .seg-voltar a {
+            color: #888;
+            cursor: pointer;
+            font-weight: 600;
         }
 
     </style>
@@ -385,25 +349,56 @@
     </script>
 
     <!-- SIDEBAR -->
+
     <aside class="sidebar">
+
         <div class="logo">
             <i class="fa-solid fa-recycle"></i>
             <span>SICRAI</span>
         </div>
+
         <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar menu">
             <i class="fa-solid fa-angles-left"></i>
         </button>
+
         <nav>
-            <a href="dashboard.html"><i class="fa-solid fa-chart-line"></i><span class="link-text">Dashboard</span></a>
-            <a href="reciclagens.html"><i class="fa-solid fa-recycle"></i><span class="link-text">Reciclagens</span></a>
-            <a href="recompensas-dashboard.html"><i class="fa-solid fa-gift"></i><span class="link-text">Recompensas</span></a>
-            <a href="ranking.html"><i class="fa-solid fa-trophy"></i><span class="link-text">Ranking</span></a>
-            <a href="configuracoes.html" class="active"><i class="fa-solid fa-gear"></i><span class="link-text">Configurações</span></a>
-            <a href="#" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span class="link-text">Sair</span></a>
+
+            <a href="dashboard.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="link-text">Dashboard</span>
+            </a>
+
+            <a href="reciclagens.html">
+                <i class="fa-solid fa-recycle"></i>
+                <span class="link-text">Reciclagens</span>
+            </a>
+
+            <a href="recompensas-dashboard.html">
+                <i class="fa-solid fa-gift"></i>
+                <span class="link-text">Recompensas</span>
+            </a>
+
+            <a href="ranking.html">
+                <i class="fa-solid fa-trophy"></i>
+                <span class="link-text">Ranking</span>
+            </a>
+
+            <a href="configuracoes.html" class="active">
+                <i class="fa-solid fa-gear"></i>
+                <span class="link-text">Configurações</span>
+            </a>
+
+            <a href="#" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span class="link-text">Sair</span>
+            </a>
+
         </nav>
+
     </aside>
 
     <!-- CONTEÚDO -->
+
     <main class="main">
 
         <div class="topbar">
@@ -413,593 +408,837 @@
             </div>
         </div>
 
-        <!-- PERFIL -->
-        <section class="config-card">
-            <h2><i class="fa-solid fa-user"></i> Perfil</h2>
-            <div class="form-grid">
-                <div class="input-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="nomeInput" placeholder="Seu nome">
-                </div>
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="emailInput" placeholder="Seu email" disabled>
-                </div>
+        <!-- CABEÇALHO DE PERFIL -->
+
+        <div class="profile-header">
+
+            <div class="avatar-wrapper">
+
+                <div class="profile-avatar" id="avatarIniciais">?</div>
+
+                <button class="avatar-edit-btn" id="btnTrocarFoto" title="Trocar foto de perfil">
+                    <i class="fa-solid fa-camera"></i>
+                </button>
+
+                <input type="file" id="fotoInput" accept="image/png, image/jpeg, image/webp" hidden>
+
             </div>
+
+            <div class="profile-header-info">
+                <h2 id="nomeHeader">Carregando...</h2>
+                <p id="emailHeader">—</p>
+                <span class="member-since">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span id="membroDesde">Membro desde —</span>
+                </span>
+            </div>
+
+        </div>
+
+        <!-- ABAS -->
+
+        <div class="settings-tabs">
+
+            <button class="settings-tab active" data-tab="perfil">
+                <i class="fa-solid fa-user"></i> Perfil
+            </button>
+
+            <button class="settings-tab" data-tab="email">
+                <i class="fa-solid fa-envelope"></i> Email
+            </button>
+
+            <button class="settings-tab" data-tab="seguranca">
+                <i class="fa-solid fa-lock"></i> Segurança
+            </button>
+
+            <button class="settings-tab" data-tab="preferencias">
+                <i class="fa-solid fa-sliders"></i> Preferências
+            </button>
+
+            <button class="settings-tab" data-tab="conta">
+                <i class="fa-solid fa-circle-exclamation"></i> Conta
+            </button>
+
+        </div>
+
+        <!-- PAINEL: PERFIL -->
+
+        <section class="settings-panel" id="panel-perfil">
+
+            <div class="config-card">
+
+                <h2>
+                    <i class="fa-solid fa-user"></i>
+                    Informações Pessoais
+                </h2>
+
+                <div class="form-grid">
+
+                    <div class="input-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="nomeInput" placeholder="Seu nome">
+                    </div>
+
+                </div>
+
+                <div class="save-row">
+                    <button class="save-btn small" onclick="salvarPerfil()">
+                        Salvar Perfil
+                    </button>
+                </div>
+
+            </div>
+
         </section>
 
-        <!-- SEGURANÇA -->
-        <section class="config-card">
-            <h2><i class="fa-solid fa-lock"></i> Segurança — Alterar Senha</h2>
+        <!-- PAINEL: EMAIL -->
 
-            <div class="senha-tabs">
-                <button class="senha-tab active" id="tabSenha" onclick="trocarAba('senha')">
-                    <i class="fa-solid fa-key"></i> Usar senha atual
-                </button>
-                <button class="senha-tab" id="tabEmail" onclick="trocarAba('email')">
-                    <i class="fa-solid fa-mobile-screen"></i> Código por e-mail
-                </button>
-            </div>
+        <section class="settings-panel" id="panel-email" style="display:none;">
 
-            <!-- Aba: senha atual -->
-            <div id="painelSenha" class="senha-painel">
+            <div class="config-card">
+
+                <h2>
+                    <i class="fa-solid fa-envelope"></i>
+                    Alterar Email
+                </h2>
+
                 <div class="form-grid">
+
+                    <div class="input-group">
+                        <label>Email Atual</label>
+                        <input type="email" id="emailAtualInput" disabled>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Novo Email</label>
+                        <input type="email" id="novoEmailInput" placeholder="Digite o novo email">
+                    </div>
+
                     <div class="input-group">
                         <label>Senha Atual</label>
-                        <input type="password" id="senhaAtual" placeholder="Digite sua senha atual">
+                        <input type="password" id="senhaAtualEmail" placeholder="Confirme sua senha para continuar">
                     </div>
-                    <div class="input-group">
-                        <label>Nova Senha</label>
-                        <input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres">
-                    </div>
-                    <div class="input-group">
-                        <label>Confirmar Nova Senha</label>
-                        <input type="password" id="confirmarSenha" placeholder="Repita a nova senha">
-                    </div>
-                </div>
-            </div>
 
-            <!-- Aba: código por e-mail -->
-            <div id="painelEmail" class="senha-painel" style="display:none;">
-                <p class="senha-desc">
-                    Vamos enviar um código de 6 dígitos para o seu e-mail.<br>
-                    Digite o código na janela que aparece e defina sua nova senha.
+                </div>
+
+                <p class="field-hint">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Por segurança, pedimos sua senha atual. Após salvar, enviaremos um link de
+                    confirmação para o novo email — a alteração só vale depois de você confirmar.
                 </p>
-                <button class="btn-enviar-codigo" id="btnEnviarCodigo">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    Enviar código
-                </button>
+
+                <div class="save-row">
+                    <button class="save-btn small" id="btnAlterarEmail" onclick="alterarEmail()">
+                        Atualizar Email
+                    </button>
+                </div>
+
             </div>
+
         </section>
 
-        <!-- PREFERÊNCIAS -->
-        <section class="config-card">
-            <h2><i class="fa-solid fa-sliders"></i> Preferências</h2>
-            <div class="settings-list">
-                <div class="setting-item">
-                    <div>
-                        <strong>Receber Notificações</strong>
-                        <p>Receba avisos sobre recompensas e metas.</p>
+        <!-- PAINEL: SEGURANÇA -->
+
+        <section class="settings-panel" id="panel-seguranca" style="display:none;">
+
+            <div class="config-card">
+
+                <h2>
+                    <i class="fa-solid fa-lock"></i>
+                    Alterar Senha
+                </h2>
+
+                <!-- ETAPA 1: ENVIAR CÓDIGO -->
+
+                <div id="segEtapa1">
+
+                    <p class="field-hint" style="margin-bottom:1.2rem;">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Por segurança, vamos enviar um código de verificação para
+                        <strong id="segEmailDestino">seu email</strong> antes de liberar a troca de senha.
+                    </p>
+
+                    <div class="save-row" style="justify-content:flex-start;">
+                        <button class="save-btn small" id="btnEnviarCodigoSeg" onclick="enviarCodigoSenha()">
+                            Enviar Código
+                        </button>
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
+
                 </div>
-                <div class="setting-item">
-                    <div>
-                        <strong>Tema Escuro</strong>
-                        <p>Alterar aparência do sistema.</p>
+
+                <!-- ETAPA 2: CONFIRMAR CÓDIGO -->
+
+                <div id="segEtapa2" style="display:none;">
+
+                    <div class="seg-etapa-titulo">
+                        <span class="numero">2</span>
+                        Digite o código recebido
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" id="darkModeToggle">
-                        <span class="slider"></span>
-                    </label>
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+                            <label>Código de 6 dígitos</label>
+                            <input
+                                type="text"
+                                id="codigoSeg"
+                                class="codigo-input"
+                                maxlength="6"
+                                placeholder="000000"
+                                inputmode="numeric">
+                        </div>
+
+                    </div>
+
+                    <div class="save-row" style="justify-content:flex-start;">
+                        <button class="save-btn small" id="btnConfirmarCodigoSeg" onclick="confirmarCodigoSenha()">
+                            Confirmar Código
+                        </button>
+                    </div>
+
+                    <div class="reenviar">
+                        Não recebeu?
+                        <a id="linkReenviarSeg" onclick="enviarCodigoSenha()">Reenviar código</a>
+                    </div>
+
                 </div>
+
+                <!-- ETAPA 3: NOVA SENHA -->
+
+                <div id="segEtapa3" style="display:none;">
+
+                    <div class="seg-etapa-titulo">
+                        <span class="numero">3</span>
+                        Crie sua nova senha
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="input-group">
+                            <label>Nova Senha</label>
+                            <input type="password" id="novaSenha" placeholder="Digite sua nova senha">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Confirmar Senha</label>
+                            <input type="password" id="confirmarSenha" placeholder="Confirme sua senha">
+                        </div>
+
+                    </div>
+
+                    <p class="field-hint">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Use pelo menos 6 caracteres. Recomendamos misturar letras, números e símbolos.
+                    </p>
+
+                    <div class="save-row">
+                        <button class="save-btn small" id="btnAlterarSenha" onclick="alterarSenha()">
+                            Salvar Nova Senha
+                        </button>
+                    </div>
+
+                </div>
+
             </div>
+
         </section>
 
-        <!-- SALVAR -->
-        <section>
-            <button class="save-btn" onclick="salvarConfiguracoes()">Salvar Alterações</button>
+        <!-- PAINEL: PREFERÊNCIAS -->
+
+        <section class="settings-panel" id="panel-preferencias" style="display:none;">
+
+            <div class="config-card">
+
+                <h2>
+                    <i class="fa-solid fa-sliders"></i>
+                    Preferências
+                </h2>
+
+                <div class="settings-list">
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Receber Notificações</strong>
+                            <p>Receba avisos sobre recompensas e metas.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="notificacoesToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Tema Escuro</strong>
+                            <p>Alterar aparência do sistema.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+
         </section>
 
-        <!-- ZONA DE ATENÇÃO -->
-        <section class="config-card">
-            <h2>
-                <i class="fa-solid fa-triangle-exclamation" style="color:#e53935"></i>
-                Zona de Atenção
-            </h2>
-            <div class="danger-zone">
-                <div class="danger-header">
-                    <i class="fa-solid fa-circle-minus"></i> Remover Latinha
+        <!-- PAINEL: CONTA (ZONA DE ATENÇÃO) -->
+
+        <section class="settings-panel" id="panel-conta" style="display:none;">
+
+            <div class="config-card">
+
+                <h2>
+                    <i class="fa-solid fa-triangle-exclamation" style="color:#e53935"></i>
+                    Zona de Atenção
+                </h2>
+
+                <div class="danger-zone">
+
+                    <div class="danger-header">
+                        <i class="fa-solid fa-circle-minus"></i>
+                        Remover Latinha
+                    </div>
+
+                    <p class="danger-desc">
+                        Remove <strong>1 latinha</strong> do seu histórico e desconta <strong>5 pontos</strong>
+                        da sua conta. Use apenas para corrigir registros errados.
+                        <br>Esta ação <strong>não pode ser desfeita</strong>.
+                    </p>
+
+                    <button class="btn-danger" id="btnRemoverLatinha">
+                        <i class="fa-solid fa-trash"></i>
+                        Remover 1 Latinha
+                    </button>
+
                 </div>
-                <p class="danger-desc">
-                    Remove <strong>1 latinha</strong> do seu histórico e desconta <strong>5 pontos</strong>
-                    da sua conta. Use apenas para corrigir registros errados.
-                    <br>Esta ação <strong>não pode ser desfeita</strong>.
-                </p>
-                <button class="btn-danger" id="btnRemoverLatinha">
-                    <i class="fa-solid fa-trash"></i> Remover 1 Latinha
-                </button>
+
+                <div class="danger-zone" style="margin-top:1.5rem;">
+
+                    <div class="danger-header">
+                        <i class="fa-solid fa-user-xmark"></i>
+                        Excluir Conta
+                    </div>
+
+                    <p class="danger-desc">
+                        Sua conta de login, pontos, latinhas e todo o histórico serão apagados
+                        permanentemente do sistema.
+                        <br>Esta ação <strong>não pode ser desfeita</strong>.
+                    </p>
+
+                    <div class="input-group" style="max-width:320px; margin-bottom:1rem;">
+                        <label>Confirme sua senha</label>
+                        <input type="password" id="senhaExcluirConta" placeholder="Sua senha atual">
+                    </div>
+
+                    <button class="btn-danger" id="btnExcluirConta">
+                        <i class="fa-solid fa-user-xmark"></i>
+                        Excluir Minha Conta
+                    </button>
+
+                </div>
+
             </div>
+
         </section>
 
     </main>
 
-    <!-- ══════════════════════════════
-         MODAL OTP
-    ══════════════════════════════ -->
-    <div class="otp-overlay" id="otpOverlay" role="dialog" aria-modal="true">
-        <div class="otp-card">
-
-            <button class="otp-fechar" onclick="fecharModal()" aria-label="Fechar">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <!-- ETAPA 1 — Digitar código -->
-            <div class="otp-etapa ativa" id="etapa1">
-                <div class="otp-icone">
-                    <i class="fa-solid fa-envelope-open-text"></i>
-                </div>
-                <p class="otp-titulo">Verifique seu e-mail</p>
-                <p class="otp-subtitulo">
-                    Enviamos um código de 6 dígitos para<br>
-                    <strong id="emailDestino">seu e-mail</strong>.<br>
-                    O código expira em 10 minutos.
-                </p>
-
-                <div class="otp-inputs" id="otpInputs">
-                    <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Dígito 1">
-                    <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
-                    <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
-                    <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
-                    <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
-                    <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
-                </div>
-
-                <p class="otp-reenviar">
-                    Não recebeu?
-                    <button id="btnReenviar" onclick="reenviarCodigo()">Reenviar código</button>
-                    <span id="timerReenvio"></span>
-                </p>
-
-                <p class="otp-erro" id="erroOtp" aria-live="polite"></p>
-
-                <button class="btn-otp" id="btnVerificar" onclick="verificarCodigo()">
-                    <i class="fa-solid fa-arrow-right"></i> Confirmar código
-                </button>
-            </div>
-
-            <!-- ETAPA 2 — Nova senha -->
-            <div class="otp-etapa" id="etapa2">
-                <div class="otp-icone">
-                    <i class="fa-solid fa-lock-open"></i>
-                </div>
-                <p class="otp-titulo">Defina sua nova senha</p>
-                <p class="otp-subtitulo">
-                    Código verificado com sucesso!<br>Escolha uma senha segura para sua conta.
-                </p>
-
-                <input class="otp-input-senha" type="password" id="otpNovaSenha"
-                    placeholder="Nova senha (mínimo 6 caracteres)" autocomplete="new-password">
-
-                <div class="forca-wrap" id="forcaWrap" style="display:none;">
-                    <div class="forca-barra-bg">
-                        <div class="forca-barra-fill" id="forcaFill"></div>
-                    </div>
-                    <span class="forca-label" id="forcaLabel"></span>
-                </div>
-
-                <input class="otp-input-senha" type="password" id="otpConfirmarSenha"
-                    placeholder="Confirmar nova senha" autocomplete="new-password">
-
-                <p class="otp-erro" id="erroSenha" aria-live="polite"></p>
-
-                <button class="btn-otp" id="btnSalvarSenha" onclick="salvarNovaSenha()">
-                    <i class="fa-solid fa-check"></i> Salvar nova senha
-                </button>
-            </div>
-
-            <!-- ETAPA 3 — Sucesso -->
-            <div class="otp-etapa" id="etapa3">
-                <div class="otp-sucesso-icone">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <p class="otp-titulo">Senha alterada!</p>
-                <p class="otp-subtitulo">
-                    Sua senha foi redefinida com sucesso.<br>
-                    Você continua logado normalmente.
-                </p>
-                <button class="btn-otp" onclick="fecharModal()">
-                    <i class="fa-solid fa-house"></i> Voltar às configurações
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- EmailJS -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
 
     <script>
 
-        /* ══════════════════════════════
-           EMAILJS CONFIG
-        ══════════════════════════════ */
-        const EMAILJS_PUBLIC_KEY  = "rmvDzu6650QD9cQdu";
-        const EMAILJS_SERVICE_ID  = "service_p4vyyxf";
-        const EMAILJS_TEMPLATE_ID = "template_7k87nc7";
+        let usuarioAtual = null;
 
-        emailjs.init(EMAILJS_PUBLIC_KEY);
+        /* ── ABAS ── */
 
-        /* ══════════════════════════════
-           CÓDIGO OTP — gerado no site
-        ══════════════════════════════ */
-        let codigoGerado   = null;
-        let codigoExpira   = null;  // timestamp de expiração
-        const OTP_MINUTOS  = 10;
+        document.querySelectorAll(".settings-tab").forEach(tab => {
+            tab.addEventListener("click", () => {
 
-        function gerarCodigo() {
-            codigoGerado = String(Math.floor(100000 + Math.random() * 900000));
-            codigoExpira = Date.now() + OTP_MINUTOS * 60 * 1000;
-            return codigoGerado;
-        }
+                document.querySelectorAll(".settings-tab").forEach(t => t.classList.remove("active"));
+                document.querySelectorAll(".settings-panel").forEach(p => p.style.display = "none");
 
-        function codigoValido(digitado) {
-            if (!codigoGerado)               return false;
-            if (Date.now() > codigoExpira)   return false;
-            return digitado === codigoGerado;
-        }
+                tab.classList.add("active");
+                document.getElementById(`panel-${tab.dataset.tab}`).style.display = "block";
+            });
+        });
 
-        /* ══════════════════════════════
-           ABAS
-        ══════════════════════════════ */
-        function trocarAba(aba) {
-            document.getElementById("painelSenha").style.display = aba === "senha" ? "block" : "none";
-            document.getElementById("painelEmail").style.display = aba === "email"  ? "block" : "none";
-            document.getElementById("tabSenha").classList.toggle("active", aba === "senha");
-            document.getElementById("tabEmail").classList.toggle("active", aba === "email");
-        }
+        /* ── CARREGAR USUÁRIO ── */
 
-        /* ══════════════════════════════
-           CARREGAR USUÁRIO
-        ══════════════════════════════ */
         async function carregarUsuario() {
             const { data: { session } } = await client.auth.getSession();
-            if (!session) { window.location.href = "login.html"; return; }
-            const user = session.user;
-            document.getElementById("emailInput").value       = user.email;
-            document.getElementById("emailDestino").textContent = user.email;
-            if (user.user_metadata?.nome) {
-                document.getElementById("nomeInput").value = user.user_metadata.nome;
+            if (!session) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            usuarioAtual = session.user;
+
+            const nome = usuarioAtual.user_metadata?.nome || "";
+            const avatarUrl = usuarioAtual.user_metadata?.avatar_url || "";
+
+            document.getElementById("nomeInput").value = nome;
+            document.getElementById("emailAtualInput").value = usuarioAtual.email;
+
+            document.getElementById("nomeHeader").textContent = nome || "Reciclador";
+            document.getElementById("emailHeader").textContent = usuarioAtual.email;
+            document.getElementById("segEmailDestino").textContent = usuarioAtual.email;
+
+            renderizarAvatar(nome, avatarUrl);
+
+            if (usuarioAtual.created_at) {
+                const data = new Date(usuarioAtual.created_at);
+                const formatado = data.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+                document.getElementById("membroDesde").textContent = `Membro desde ${formatado}`;
+            }
+
+            // Preferência de notificações salva localmente
+            const notifSalvo = localStorage.getItem("notificacoes");
+            document.getElementById("notificacoesToggle").checked = notifSalvo !== "false";
+        }
+
+        function renderizarAvatar(nome, avatarUrl) {
+            const container = document.getElementById("avatarIniciais");
+
+            if (avatarUrl) {
+                container.innerHTML = `<img src="${avatarUrl}" alt="Foto de perfil">`;
+            } else {
+                const inicial = (nome.trim().charAt(0) || usuarioAtual.email.charAt(0) || "?").toUpperCase();
+                container.textContent = inicial;
             }
         }
+
         carregarUsuario();
 
-        /* ══════════════════════════════
-           SALVAR (nome + senha atual)
-        ══════════════════════════════ */
-        async function salvarConfiguracoes() {
-            const nome           = document.getElementById("nomeInput").value;
-            const novaSenha      = document.getElementById("novaSenha").value;
-            const confirmarSenha = document.getElementById("confirmarSenha").value;
-            const senhaAtual     = document.getElementById("senhaAtual").value;
-            const updates = { data: { nome } };
-            const painelAtivo = document.getElementById("painelSenha").style.display !== "none";
+        /* ── TROCAR FOTO DE PERFIL ── */
 
-            if (painelAtivo && novaSenha !== "") {
-                if (!senhaAtual)                  { alert("Informe sua senha atual."); return; }
-                if (novaSenha.length < 6)         { alert("A nova senha deve ter pelo menos 6 caracteres."); return; }
-                if (novaSenha !== confirmarSenha) { alert("As senhas não coincidem."); return; }
-                const email = document.getElementById("emailInput").value;
-                const { error: erroLogin } = await client.auth.signInWithPassword({ email, password: senhaAtual });
-                if (erroLogin) { alert("Senha atual incorreta."); return; }
-                updates.password = novaSenha;
+        document.getElementById("btnTrocarFoto").addEventListener("click", () => {
+            document.getElementById("fotoInput").click();
+        });
+
+        document.getElementById("fotoInput").addEventListener("change", async (e) => {
+
+            const arquivo = e.target.files[0];
+            if (!arquivo) return;
+
+            if (!arquivo.type.startsWith("image/")) {
+                alert("Selecione um arquivo de imagem (PNG, JPG ou WEBP).");
+                return;
             }
 
-            const { error } = await client.auth.updateUser(updates);
-            if (error) { alert(error.message); return; }
-            document.getElementById("senhaAtual").value     = "";
-            document.getElementById("novaSenha").value      = "";
-            document.getElementById("confirmarSenha").value = "";
-            alert("Configurações salvas com sucesso!");
-        }
+            if (arquivo.size > 2 * 1024 * 1024) {
+                alert("A imagem deve ter no máximo 2MB.");
+                return;
+            }
 
-        /* ══════════════════════════════
-           ENVIAR CÓDIGO VIA EMAILJS
-        ══════════════════════════════ */
-        async function enviarCodigo() {
-            const btn   = document.getElementById("btnEnviarCodigo");
-            const email = document.getElementById("emailInput").value;
-            const codigo = gerarCodigo();
+            const btnFoto = document.getElementById("btnTrocarFoto");
+            const iconeOriginal = btnFoto.innerHTML;
+            btnFoto.disabled = true;
+            btnFoto.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
+            const extensao = arquivo.name.split(".").pop();
+            const caminho = `${usuarioAtual.id}/avatar.${extensao}`;
+
+            const { error: erroUpload } = await client.storage
+                .from("avatars")
+                .upload(caminho, arquivo, { upsert: true, cacheControl: "3600" });
+
+            if (erroUpload) {
+                btnFoto.disabled = false;
+                btnFoto.innerHTML = iconeOriginal;
+                alert("Erro ao enviar a imagem: " + erroUpload.message);
+                return;
+            }
+
+            const { data: urlData } = client.storage.from("avatars").getPublicUrl(caminho);
+            const urlComCache = `${urlData.publicUrl}?t=${Date.now()}`;
+
+            const { error: erroUpdate } = await client.auth.updateUser({
+                data: { avatar_url: urlComCache }
+            });
+
+            btnFoto.disabled = false;
+            btnFoto.innerHTML = iconeOriginal;
+
+            if (erroUpdate) {
+                alert("Imagem enviada, mas houve um erro ao salvar no perfil: " + erroUpdate.message);
+                return;
+            }
+
+            renderizarAvatar(document.getElementById("nomeInput").value, urlComCache);
+            e.target.value = "";
+        });
+
+        /* ── SALVAR PERFIL (nome) ── */
+
+        async function salvarPerfil() {
+            const nome = document.getElementById("nomeInput").value.trim();
+
+            if (nome === "") {
+                alert("Digite seu nome completo.");
+                return;
+            }
+
+            const btn = document.querySelector('#panel-perfil .save-btn');
+            const original = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enviando...`;
+            btn.innerHTML = "Salvando...";
 
-            try {
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    to_email:        email,
-                    codigo:          codigo,
-                    expiration_time: OTP_MINUTOS + " minutos"
-                });
-
-                abrirModal();
-                iniciarTimerReenvio();
-
-            } catch (err) {
-                console.error("EmailJS erro:", err);
-                alert("Erro ao enviar o código. Verifique sua conexão e tente novamente.");
-            }
+            const { error } = await client.auth.updateUser({ data: { nome } });
 
             btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Enviar código`;
+            btn.innerHTML = original;
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            document.getElementById("nomeHeader").textContent = nome;
+            renderizarAvatar(nome, usuarioAtual.user_metadata?.avatar_url || "");
+
+            alert("Perfil atualizado com sucesso!");
         }
 
-        document.getElementById("btnEnviarCodigo").addEventListener("click", enviarCodigo);
+        /* ── ALTERAR EMAIL ── */
 
-        /* ══════════════════════════════
-           MODAL
-        ══════════════════════════════ */
-        function abrirModal() {
-            document.getElementById("otpOverlay").classList.add("aberto");
-            document.body.style.overflow = "hidden";
-            irParaEtapa(1);
-            limparInputsOtp();
-            setTimeout(() => document.querySelector("#otpInputs input")?.focus(), 60);
-        }
-        function fecharModal() {
-            document.getElementById("otpOverlay").classList.remove("aberto");
-            document.body.style.overflow = "";
-        }
-        document.getElementById("otpOverlay").addEventListener("click", function (e) {
-            if (e.target === this) fecharModal();
-        });
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && document.getElementById("otpOverlay").classList.contains("aberto"))
-                fecharModal();
-        });
+        async function alterarEmail() {
 
-        function irParaEtapa(n) {
-            document.querySelectorAll(".otp-etapa").forEach((el, i) => {
-                el.classList.toggle("ativa", i + 1 === n);
+            const novoEmail   = document.getElementById("novoEmailInput").value.trim();
+            const senhaAtual  = document.getElementById("senhaAtualEmail").value;
+            const emailRegex  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(novoEmail)) {
+                alert("Digite um email válido.");
+                return;
+            }
+
+            if (novoEmail.toLowerCase() === usuarioAtual.email.toLowerCase()) {
+                alert("O novo email precisa ser diferente do atual.");
+                return;
+            }
+
+            if (senhaAtual === "") {
+                alert("Digite sua senha atual para confirmar a alteração.");
+                return;
+            }
+
+            const btn = document.getElementById("btnAlterarEmail");
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = "Verificando...";
+
+            // Reautentica com a senha atual antes de liberar a troca
+            const { error: erroAuth } = await client.auth.signInWithPassword({
+                email: usuarioAtual.email,
+                password: senhaAtual
             });
-            const e1 = document.getElementById("erroOtp");
-            const e2 = document.getElementById("erroSenha");
-            if (e1) e1.textContent = "";
-            if (e2) e2.textContent = "";
+
+            if (erroAuth) {
+                btn.disabled = false;
+                btn.innerHTML = original;
+                alert("Senha atual incorreta.");
+                return;
+            }
+
+            btn.innerHTML = "Enviando confirmação...";
+
+            const { error } = await client.auth.updateUser({ email: novoEmail });
+
+            btn.disabled = false;
+            btn.innerHTML = original;
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            document.getElementById("senhaAtualEmail").value = "";
+            document.getElementById("novoEmailInput").value = "";
+
+            alert(`Enviamos um link de confirmação para ${novoEmail}. Seu email só muda depois que você confirmar.`);
         }
 
-        /* ══════════════════════════════
-           INPUTS OTP
-        ══════════════════════════════ */
-        function limparInputsOtp() {
-            document.querySelectorAll("#otpInputs input").forEach(inp => {
-                inp.value = "";
-                inp.classList.remove("preenchido", "erro-campo");
-            });
-        }
+        /* ── ALTERAR SENHA: ETAPA 1 -> 2 (ENVIAR CÓDIGO) ── */
 
-        document.querySelectorAll("#otpInputs input").forEach((inp, idx, inputs) => {
-            inp.addEventListener("input", () => {
-                inp.value = inp.value.replace(/\D/g, "").slice(-1);
-                if (inp.value) {
-                    inp.classList.add("preenchido");
-                    inp.classList.remove("erro-campo");
-                    if (idx < inputs.length - 1) inputs[idx + 1].focus();
+        async function enviarCodigoSenha() {
+
+            const btn = document.getElementById("btnEnviarCodigoSeg");
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = "Enviando...";
+
+            const { error } = await client.auth.resetPasswordForEmail(usuarioAtual.email);
+
+            btn.disabled = false;
+            btn.innerHTML = original;
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            document.getElementById("codigoSeg").value = "";
+            document.getElementById("segEtapa1").style.display = "none";
+            document.getElementById("segEtapa2").style.display = "block";
+            document.getElementById("segEtapa3").style.display = "none";
+
+            // Bloqueia reenvio por 30s pra evitar spam de email
+            const link = document.getElementById("linkReenviarSeg");
+            link.classList.add("disabled");
+            let segundos = 30;
+            link.textContent = `Reenviar código (${segundos}s)`;
+            const intervalo = setInterval(() => {
+                segundos--;
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    link.classList.remove("disabled");
+                    link.textContent = "Reenviar código";
                 } else {
-                    inp.classList.remove("preenchido");
+                    link.textContent = `Reenviar código (${segundos}s)`;
                 }
-            });
-            inp.addEventListener("keydown", (e) => {
-                if (e.key === "Backspace" && !inp.value && idx > 0) {
-                    inputs[idx - 1].focus();
-                    inputs[idx - 1].value = "";
-                    inputs[idx - 1].classList.remove("preenchido");
-                }
-                if (e.key === "Enter") verificarCodigo();
-            });
-            inp.addEventListener("paste", (e) => {
-                e.preventDefault();
-                const texto = (e.clipboardData || window.clipboardData)
-                    .getData("text").replace(/\D/g, "").slice(0, 6);
-                [...texto].forEach((d, i) => {
-                    if (inputs[i]) { inputs[i].value = d; inputs[i].classList.add("preenchido"); }
-                });
-                const proximo = inputs[Math.min(texto.length, inputs.length - 1)];
-                if (proximo) proximo.focus();
-            });
-        });
-
-        function obterCodigo() {
-            return [...document.querySelectorAll("#otpInputs input")].map(i => i.value).join("");
-        }
-
-        /* ══════════════════════════════
-           VERIFICAR CÓDIGO
-        ══════════════════════════════ */
-        function verificarCodigo() {
-            const digitado = obterCodigo();
-            const erroEl   = document.getElementById("erroOtp");
-            const btn      = document.getElementById("btnVerificar");
-
-            if (digitado.length < 6) {
-                erroEl.textContent = "Digite os 6 dígitos do código.";
-                document.querySelectorAll("#otpInputs input").forEach(i => {
-                    if (!i.value) i.classList.add("erro-campo");
-                });
-                return;
-            }
-
-            // verifica expiração
-            if (Date.now() > codigoExpira) {
-                erroEl.textContent = "Código expirado. Clique em reenviar para gerar um novo.";
-                document.querySelectorAll("#otpInputs input").forEach(i => i.classList.add("erro-campo"));
-                return;
-            }
-
-            // verifica se bate
-            if (!codigoValido(digitado)) {
-                erroEl.textContent = "Código incorreto. Tente novamente.";
-                document.querySelectorAll("#otpInputs input").forEach(i => {
-                    i.classList.add("erro-campo");
-                    i.classList.remove("preenchido");
-                });
-                setTimeout(() => {
-                    limparInputsOtp();
-                    document.querySelector("#otpInputs input")?.focus();
-                }, 600);
-                return;
-            }
-
-            // código correto — avança para nova senha
-            codigoGerado = null; // invalida para não reutilizar
-            irParaEtapa(2);
-            setTimeout(() => document.getElementById("otpNovaSenha")?.focus(), 60);
-        }
-
-        /* ══════════════════════════════
-           FORÇA DE SENHA
-        ══════════════════════════════ */
-        document.getElementById("otpNovaSenha").addEventListener("input", function () {
-            const val   = this.value;
-            const wrap  = document.getElementById("forcaWrap");
-            const fill  = document.getElementById("forcaFill");
-            const label = document.getElementById("forcaLabel");
-            if (!val) { wrap.style.display = "none"; return; }
-            wrap.style.display = "block";
-            let f = 0;
-            if (val.length >= 6)          f++;
-            if (val.length >= 10)         f++;
-            if (/[A-Z]/.test(val))        f++;
-            if (/[0-9]/.test(val))        f++;
-            if (/[^A-Za-z0-9]/.test(val)) f++;
-            const niveis = [
-                { cor: "#e53935", txt: "Muito fraca",  w: "20%"  },
-                { cor: "#ff7043", txt: "Fraca",        w: "40%"  },
-                { cor: "#ffa726", txt: "Razoável",     w: "60%"  },
-                { cor: "#66bb6a", txt: "Boa",          w: "80%"  },
-                { cor: "#249341", txt: "Excelente",    w: "100%" },
-            ];
-            const n = niveis[Math.min(f, 4)];
-            fill.style.width      = n.w;
-            fill.style.background = n.cor;
-            label.textContent     = "Força: " + n.txt;
-            label.style.color     = n.cor;
-        });
-
-        /* ══════════════════════════════
-           SALVAR NOVA SENHA
-        ══════════════════════════════ */
-        async function salvarNovaSenha() {
-            const nova      = document.getElementById("otpNovaSenha").value;
-            const confirmar = document.getElementById("otpConfirmarSenha").value;
-            const erroEl    = document.getElementById("erroSenha");
-            const btn       = document.getElementById("btnSalvarSenha");
-
-            erroEl.textContent = "";
-            if (nova.length < 6)      { erroEl.textContent = "A senha deve ter pelo menos 6 caracteres."; return; }
-            if (nova !== confirmar)   { erroEl.textContent = "As senhas não coincidem."; return; }
-
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Salvando...`;
-
-            const { error } = await client.auth.updateUser({ password: nova });
-
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> Salvar nova senha`;
-
-            if (error) { erroEl.textContent = "Erro ao salvar: " + error.message; return; }
-
-            irParaEtapa(3);
-        }
-
-        /* ══════════════════════════════
-           TIMER DE REENVIO
-        ══════════════════════════════ */
-        let timerInterval = null;
-
-        function iniciarTimerReenvio() {
-            const btnR  = document.getElementById("btnReenviar");
-            const timer = document.getElementById("timerReenvio");
-            let seg = 60;
-            btnR.disabled = true;
-            clearInterval(timerInterval);
-            timer.textContent = ` (${seg}s)`;
-            timerInterval = setInterval(() => {
-                seg--;
-                timer.textContent = seg > 0 ? ` (${seg}s)` : "";
-                if (seg <= 0) { clearInterval(timerInterval); btnR.disabled = false; }
             }, 1000);
         }
 
-        async function reenviarCodigo() {
-            const email  = document.getElementById("emailInput").value;
-            const codigo = gerarCodigo();
-            try {
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    to_email:        email,
-                    codigo:          codigo,
-                    expiration_time: OTP_MINUTOS + " minutos"
-                });
-                limparInputsOtp();
-                document.getElementById("erroOtp").textContent = "";
-                document.querySelector("#otpInputs input")?.focus();
-                iniciarTimerReenvio();
-            } catch (err) {
-                document.getElementById("erroOtp").textContent = "Erro ao reenviar. Tente novamente.";
+        /* ── ALTERAR SENHA: ETAPA 2 -> 3 (CONFIRMAR CÓDIGO) ── */
+
+        async function confirmarCodigoSenha() {
+
+            const codigo = document.getElementById("codigoSeg").value.trim();
+
+            if (codigo.length !== 6) {
+                alert("Digite o código de 6 dígitos enviado para seu email.");
+                return;
             }
+
+            const btn = document.getElementById("btnConfirmarCodigoSeg");
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = "Verificando...";
+
+            const { error } = await client.auth.verifyOtp({
+                email: usuarioAtual.email,
+                token: codigo,
+                type: "recovery"
+            });
+
+            btn.disabled = false;
+            btn.innerHTML = original;
+
+            if (error) {
+                alert("Código inválido ou expirado. Tente novamente.");
+                return;
+            }
+
+            document.getElementById("segEtapa2").style.display = "none";
+            document.getElementById("segEtapa3").style.display = "block";
         }
 
-        /* ══════════════════════════════
-           DARK MODE
-        ══════════════════════════════ */
-        const darkToggle = document.getElementById("darkModeToggle");
-        darkToggle.checked = localStorage.getItem("tema") === "dark";
-        darkToggle.addEventListener("change", () => {
-            document.body.classList.toggle("dark", darkToggle.checked);
-            localStorage.setItem("tema", darkToggle.checked ? "dark" : "light");
+        /* ── ALTERAR SENHA: ETAPA 3 (SALVAR NOVA SENHA) ── */
+
+        async function alterarSenha() {
+            const novaSenha      = document.getElementById("novaSenha").value;
+            const confirmarSenha = document.getElementById("confirmarSenha").value;
+
+            if (novaSenha.length < 6) {
+                alert("A senha deve ter pelo menos 6 caracteres.");
+                return;
+            }
+
+            if (novaSenha !== confirmarSenha) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+
+            const btn = document.getElementById("btnAlterarSenha");
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = "Salvando...";
+
+            const { error } = await client.auth.updateUser({ password: novaSenha });
+
+            btn.disabled = false;
+            btn.innerHTML = original;
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            document.getElementById("novaSenha").value = "";
+            document.getElementById("confirmarSenha").value = "";
+
+            alert("Senha atualizada com sucesso!");
+
+            // Volta pro início do fluxo, pronta pra próxima vez
+            document.getElementById("segEtapa3").style.display = "none";
+            document.getElementById("segEtapa1").style.display = "block";
+        }
+
+        /* ── PREFERÊNCIA: NOTIFICAÇÕES ── */
+
+        document.getElementById("notificacoesToggle").addEventListener("change", (e) => {
+            localStorage.setItem("notificacoes", e.target.checked);
         });
 
-        /* ══════════════════════════════
-           LOGOUT
-        ══════════════════════════════ */
+        /* ── LOGOUT ── */
+
         document.getElementById("logoutBtn").addEventListener("click", async () => {
             await client.auth.signOut();
             window.location.href = "login.html";
         });
 
-        /* ══════════════════════════════
-           REMOVER LATINHA
-        ══════════════════════════════ */
+        /* ── DARK MODE ── */
+
+        const darkToggle = document.getElementById("darkModeToggle");
+
+        darkToggle.checked = localStorage.getItem("tema") === "dark";
+
+        darkToggle.addEventListener("change", () => {
+            if (darkToggle.checked) {
+                document.body.classList.add("dark");
+                localStorage.setItem("tema", "dark");
+            } else {
+                document.body.classList.remove("dark");
+                localStorage.setItem("tema", "light");
+            }
+        });
+
+        /* ── REMOVER LATINHA — -1 latinha, -5 pontos no Supabase ── */
+
         document.getElementById("btnRemoverLatinha").addEventListener("click", async () => {
-            if (!confirm("⚠️ Tem certeza que deseja remover 1 latinha?\nVocê perderá 5 pontos e essa ação não pode ser desfeita.")) return;
+
+            const confirmar = confirm(
+                "⚠️ Atenção!\n\nTem certeza que deseja remover 1 latinha?\nVocê perderá 5 pontos e essa ação não pode ser desfeita."
+            );
+            if (!confirmar) return;
+
             const btn = document.getElementById("btnRemoverLatinha");
             btn.disabled = true;
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Removendo...`;
+
             const { data: { session } } = await client.auth.getSession();
-            if (!session) { btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`; return; }
-            const { data: perfil, error: erroGet } = await client
-                .from("perfis").select("pontos, latinhas").eq("id", session.user.id).single();
-            if (erroGet || !perfil) {
-                alert("Erro ao buscar seus dados.");
-                btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`; return;
+
+            if (!session) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
             }
+
+            const { data: perfil, error: erroGet } = await client
+                .from("perfis")
+                .select("pontos, latinhas")
+                .eq("id", session.user.id)
+                .single();
+
+            if (erroGet || !perfil) {
+                alert("Erro ao buscar seus dados. Tente novamente.");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
+            }
+
             if ((perfil.latinhas || 0) <= 0) {
                 alert("Você não tem latinhas para remover.");
-                btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`; return;
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
             }
-            const { error } = await client.from("perfis")
-                .update({ latinhas: perfil.latinhas - 1, pontos: Math.max((perfil.pontos || 0) - 5, 0) })
+
+            const novasLatinhas = perfil.latinhas - 1;
+            const novosPontos   = Math.max((perfil.pontos || 0) - 5, 0);
+
+            const { error } = await client
+                .from("perfis")
+                .update({ latinhas: novasLatinhas, pontos: novosPontos })
                 .eq("id", session.user.id);
+
             if (error) {
-                alert("Erro ao remover latinha.");
-                btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`; return;
+                alert("Erro ao remover latinha. Tente novamente.");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+                return;
             }
+
             btn.innerHTML = `<i class="fa-solid fa-check"></i> Latinha removida!`;
-            setTimeout(() => { btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`; }, 1800);
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
+            }, 1800);
+
+        });
+
+        /* ── EXCLUIR CONTA ── */
+
+        document.getElementById("btnExcluirConta").addEventListener("click", async () => {
+
+            const senha = document.getElementById("senhaExcluirConta").value;
+
+            if (senha === "") {
+                alert("Digite sua senha atual para confirmar.");
+                return;
+            }
+
+            const confirmar = confirm(
+                "⚠️ ATENÇÃO!\n\nIsso vai apagar permanentemente seus pontos, latinhas e histórico de reciclagens.\nVocê será desconectado e essa ação não pode ser desfeita.\n\nDeseja continuar?"
+            );
+            if (!confirmar) return;
+
+            const btn = document.getElementById("btnExcluirConta");
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Excluindo...`;
+
+            // Reautentica com a senha atual antes de liberar a exclusão
+            const { error: erroAuth } = await client.auth.signInWithPassword({
+                email: usuarioAtual.email,
+                password: senha
+            });
+
+            if (erroAuth) {
+                btn.disabled = false;
+                btn.innerHTML = original;
+                alert("Senha incorreta.");
+                return;
+            }
+
+            // Apaga a conta de verdade (login + dados) via Edge Function
+            const { data: { session } } = await client.auth.getSession();
+
+            const urlFuncao = SUPABASE_URL.replace(".supabase.co", ".functions.supabase.co") + "/delete-account";
+
+            let resposta;
+            try {
+                resposta = await fetch(urlFuncao, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${session.access_token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+            } catch (e) {
+                btn.disabled = false;
+                btn.innerHTML = original;
+                alert("Não foi possível conectar ao servidor. Tente novamente.");
+                return;
+            }
+
+            const resultado = await resposta.json();
+
+            if (!resposta.ok) {
+                btn.disabled = false;
+                btn.innerHTML = original;
+                alert("Erro ao excluir conta: " + (resultado.error || "tente novamente."));
+                return;
+            }
+
+            alert("Sua conta foi excluída permanentemente.");
+
+            await client.auth.signOut();
+            window.location.href = "index.html";
         });
 
     </script>
@@ -1007,4 +1246,5 @@
     <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
+
 </html>
