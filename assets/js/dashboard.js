@@ -65,9 +65,9 @@ async function carregarHistorico(userId) {
     // Busca reciclagens (pontos ganhos)
     const { data: reciclagens } = await client
         .from("reciclagens")
-        .select("latinhas, pontos, data")
+        .select("latinhas, pontos, created_at")
         .eq("user_id", userId)
-        .order("id", { ascending: false })
+        .order("created_at", { ascending: false })
         .limit(10);
 
     // Busca resgates
@@ -75,7 +75,7 @@ async function carregarHistorico(userId) {
         .from("resgates")
         .select("nome, pontos, created_at")
         .eq("user_id", userId)
-        .order("id", { ascending: false })
+        .order("created_at", { ascending: false })
         .limit(10);
 
     // Junta e ordena por data (mais recente primeiro)
@@ -86,15 +86,15 @@ async function carregarHistorico(userId) {
         texto: `Reciclou ${r.latinhas} latinha${r.latinhas > 1 ? "s" : ""} → +${r.pontos} pontos`,
         icone: "fa-recycle",
         cor: "#249341",
-        data: r.data
+        data: r.created_at
     }));
 
     (resgates || []).forEach(r => eventos.push({
         tipo: "resgate",
         texto: `Resgatou "${r.nome}" → -${r.pontos} pontos`,
         icone: "fa-gift",
-        cor: "#f57c00",
-        data: r.data
+        cor: "#e53935",
+        data: r.created_at
     }));
 
     eventos.sort((a, b) => new Date(b.data) - new Date(a.data));

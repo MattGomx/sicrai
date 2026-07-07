@@ -96,8 +96,8 @@
     <div class="store-card">
         <i class="fa-solid fa-burger"></i>
         <h3>Vale Lanche</h3>
-        <p>10 pontos</p>
-        <button data-pontos="10" data-nome="Vale Lanche">Resgatar</button>
+        <p>500 pontos</p>
+        <button data-pontos="500" data-nome="Vale Lanche">Resgatar</button>
     </div>
 
     <div class="store-card">
@@ -215,6 +215,13 @@
                 return;
             }
 
+            // Registra o resgate no histórico (aparece em vermelho no histórico depois)
+            await client.from("resgates").insert({
+                user_id: session.user.id,
+                nome: nome,
+                pontos: custo
+            });
+
             alert(`🎉 "${nome}" resgatado com sucesso!`);
             await carregarPontos();
 
@@ -231,8 +238,6 @@
 
 </script>
 <script src="assets/js/sidebar-toggle.js"></script>
-
-    <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
 

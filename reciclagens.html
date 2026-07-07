@@ -133,7 +133,29 @@
 
         </section>
 
+        <!-- HISTÓRICO COMPLETO -->
 
+        <section class="history-card">
+
+            <h2>Histórico de Atividades</h2>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Pontos</th>
+                    </tr>
+                </thead>
+
+                <tbody id="historicoBody">
+                    <tr><td colspan="3">Carregando...</td></tr>
+                </tbody>
+
+            </table>
+
+        </section>
 
     </main>
 
@@ -170,36 +192,76 @@
             fill.style.width = percentual + "%";
             fill.textContent = percentual + "%";
 
-            // Histórico (sem data)
-            const { data: historico, error } = await client
-                .from("reciclagens")
-                .select("latinhas, pontos, status")
-                .eq("user_id", userId)
-                .order("id", { ascending: false });
+            await carregarHistoricoCompleto(userId);
+        }
+
+        /* ── HISTÓRICO REAL: reciclagens (verde, +pontos) + resgates (vermelho, -pontos) ── */
+
+        async function carregarHistoricoCompleto(userId) {
 
             const corpo = document.getElementById("historicoBody");
 
-            if (error || !historico) {
+            const { data: reciclagensData, error: erroReciclagens } = await client
+                .from("reciclagens")
+                .select("latinhas, pontos, created_at")
+                .eq("user_id", userId)
+                .order("created_at", { ascending: false });
+
+            const { data: resgatesData, error: erroResgates } = await client
+                .from("resgates")
+                .select("nome, pontos, created_at")
+                .eq("user_id", userId)
+                .order("created_at", { ascending: false });
+
+            if (erroReciclagens && erroResgates) {
                 corpo.innerHTML = `<tr><td colspan="3">Não foi possível carregar seu histórico.</td></tr>`;
                 return;
             }
 
-            document.getElementById("totalColetas").textContent = historico.length;
+            const eventos = [];
 
-            if (historico.length === 0) {
-                corpo.innerHTML = `<tr><td colspan="3">Você ainda não reciclou nada por aqui.</td></tr>`;
+            (reciclagensData || []).forEach(item => {
+                eventos.push({
+                    descricao: `Reciclou ${item.latinhas} latinha${item.latinhas > 1 ? "s" : ""}`,
+                    pontos: item.pontos,
+                    data: item.created_at
+                });
+            });
+
+            (resgatesData || []).forEach(item => {
+                eventos.push({
+                    descricao: `Resgatou "${item.nome}"`,
+                    pontos: -item.pontos,
+                    data: item.created_at
+                });
+            });
+
+            if (eventos.length === 0) {
+                corpo.innerHTML = `<tr><td colspan="3">Você ainda não tem nenhum histórico.</td></tr>`;
                 return;
             }
 
-            corpo.innerHTML = historico.slice(0, 10).map(item => {
-                const ok = item.status === "confirmado";
+            eventos.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            corpo.innerHTML = eventos.slice(0, 30).map(ev => {
+
+                const dataFormatada = new Date(ev.data).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                });
+
+                const positivo = ev.pontos >= 0;
+                const cor = positivo ? "#249341" : "#e53935";
+                const sinal = positivo ? "+" : "";
+
                 return `
-                <tr>
-                    <td>${item.latinhas}</td>
-                    <td>${item.pontos}</td>
-                    <td><span class="status ${ok ? "success" : "pending"}">${ok ? "Confirmado" : "Pendente"}</span></td>
-                </tr>
-            `;
+                    <tr>
+                        <td>${dataFormatada}</td>
+                        <td>${ev.descricao}</td>
+                        <td style="color:${cor}; font-weight:700;">${sinal}${ev.pontos}</td>
+                    </tr>
+                `;
             }).join("");
         }
 
