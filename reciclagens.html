@@ -133,45 +133,23 @@
 
         </section>
 
-        <!-- HISTÓRICO COMPLETO -->
 
-        <section class="history-card">
-
-            <h2>Histórico de Atividades</h2>
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Descrição</th>
-                        <th>Pontos</th>
-                    </tr>
-                </thead>
-
-                <tbody id="historicoBody">
-                    <tr><td colspan="3">Carregando...</td></tr>
-                </tbody>
-
-            </table>
-
-        </section>
 
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/role-guard.js"></script>
 
     <script>
         const META_MENSAL_LATINHAS = 300;
 
         async function carregarReciclagens() {
-            const { data: { session } } = await client.auth.getSession();
-            if (!session) {
-                window.location.href = "login.html";
-                return;
-            }
-            const userId = session.user.id;
+            // Só usuário padrão e admin acessam esta tela.
+            const acesso = await protegerPagina(["usuario", "admin"]);
+            if (!acesso) return;
+
+            const userId = acesso.session.user.id;
 
             const { data: perfil } = await client
                 .from("perfis")
@@ -192,76 +170,39 @@
             fill.style.width = percentual + "%";
             fill.textContent = percentual + "%";
 
-            await carregarHistoricoCompleto(userId);
-        }
-
-        /* ── HISTÓRICO REAL: reciclagens (verde, +pontos) + resgates (vermelho, -pontos) ── */
-
-        async function carregarHistoricoCompleto(userId) {
+            // Histórico (sem data)
+            const { data: historico, error } = await client
+                .from("reciclagens")
+                .select("latinhas, pontos, status")
+                .eq("user_id", userId)
+                .order("id", { ascending: false });
 
             const corpo = document.getElementById("historicoBody");
 
-            const { data: reciclagensData, error: erroReciclagens } = await client
-                .from("reciclagens")
-                .select("latinhas, pontos, created_at")
-                .eq("user_id", userId)
-                .order("created_at", { ascending: false });
-
-            const { data: resgatesData, error: erroResgates } = await client
-                .from("resgates")
-                .select("nome, pontos, created_at")
-                .eq("user_id", userId)
-                .order("created_at", { ascending: false });
-
-            if (erroReciclagens && erroResgates) {
-                corpo.innerHTML = `<tr><td colspan="3">Não foi possível carregar seu histórico.</td></tr>`;
+            if (error || !historico) {
+                if (corpo) corpo.innerHTML = `<tr><td colspan="3">Não foi possível carregar seu histórico.</td></tr>`;
                 return;
             }
 
-            const eventos = [];
+            const totalColetas = document.getElementById("totalColetas");
+            if (totalColetas) totalColetas.textContent = historico.length;
 
-            (reciclagensData || []).forEach(item => {
-                eventos.push({
-                    descricao: `Reciclou ${item.latinhas} latinha${item.latinhas > 1 ? "s" : ""}`,
-                    pontos: item.pontos,
-                    data: item.created_at
-                });
-            });
+            if (!corpo) return;
 
-            (resgatesData || []).forEach(item => {
-                eventos.push({
-                    descricao: `Resgatou "${item.nome}"`,
-                    pontos: -item.pontos,
-                    data: item.created_at
-                });
-            });
-
-            if (eventos.length === 0) {
-                corpo.innerHTML = `<tr><td colspan="3">Você ainda não tem nenhum histórico.</td></tr>`;
+            if (historico.length === 0) {
+                corpo.innerHTML = `<tr><td colspan="3">Você ainda não reciclou nada por aqui.</td></tr>`;
                 return;
             }
 
-            eventos.sort((a, b) => new Date(b.data) - new Date(a.data));
-
-            corpo.innerHTML = eventos.slice(0, 30).map(ev => {
-
-                const dataFormatada = new Date(ev.data).toLocaleDateString("pt-BR", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric"
-                });
-
-                const positivo = ev.pontos >= 0;
-                const cor = positivo ? "#249341" : "#e53935";
-                const sinal = positivo ? "+" : "";
-
+            corpo.innerHTML = historico.slice(0, 10).map(item => {
+                const ok = item.status === "confirmado";
                 return `
-                    <tr>
-                        <td>${dataFormatada}</td>
-                        <td>${ev.descricao}</td>
-                        <td style="color:${cor}; font-weight:700;">${sinal}${ev.pontos}</td>
-                    </tr>
-                `;
+                <tr>
+                    <td>${item.latinhas}</td>
+                    <td>${item.pontos}</td>
+                    <td><span class="status ${ok ? "success" : "pending"}">${ok ? "Confirmado" : "Pendente"}</span></td>
+                </tr>
+            `;
             }).join("");
         }
 
@@ -272,6 +213,7 @@
             window.location.href = "login.html";
         });
     </script>
+    <script src="assets/js/sidebar-role.js"></script>
     <script src="assets/js/sidebar-toggle.js"></script>
 </body>
 

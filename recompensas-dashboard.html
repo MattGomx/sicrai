@@ -96,8 +96,8 @@
     <div class="store-card">
         <i class="fa-solid fa-burger"></i>
         <h3>Vale Lanche</h3>
-        <p>500 pontos</p>
-        <button data-pontos="500" data-nome="Vale Lanche">Resgatar</button>
+        <p>10 pontos</p>
+        <button data-pontos="10" data-nome="Vale Lanche">Resgatar</button>
     </div>
 
     <div class="store-card">
@@ -141,22 +141,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase.js"></script>
+<script src="assets/js/role-guard.js"></script>
 
 <script>
 
     let pontosAtuais = 0;
 
     async function carregarPontos() {
-        const { data: { session } } = await client.auth.getSession();
-        if (!session) {
-            window.location.href = "login.html";
-            return;
-        }
+        // Só usuário padrão e admin acessam a loja de recompensas.
+        const acesso = await protegerPagina(["usuario", "admin"]);
+        if (!acesso) return;
 
         const { data: perfil } = await client
             .from("perfis")
             .select("pontos")
-            .eq("id", session.user.id)
+            .eq("id", acesso.session.user.id)
             .single();
 
         pontosAtuais = perfil?.pontos ?? 0;
@@ -215,13 +214,6 @@
                 return;
             }
 
-            // Registra o resgate no histórico (aparece em vermelho no histórico depois)
-            await client.from("resgates").insert({
-                user_id: session.user.id,
-                nome: nome,
-                pontos: custo
-            });
-
             alert(`🎉 "${nome}" resgatado com sucesso!`);
             await carregarPontos();
 
@@ -237,6 +229,7 @@
     });
 
 </script>
+<script src="assets/js/sidebar-role.js"></script>
 <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>

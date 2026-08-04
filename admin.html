@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administração | SICRAI</title>
+
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        .admin-table-wrap{
+            background:white;
+            border-radius:22px;
+            padding:10px;
+            box-shadow:0 10px 30px rgba(0,0,0,.08);
+            overflow-x:auto;
+            margin-bottom:35px;
+        }
+
+        table.admin-table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:640px;
+        }
+
+        table.admin-table th{
+            text-align:left;
+            padding:16px;
+            color:#888;
+            font-size:.85rem;
+            text-transform:uppercase;
+            letter-spacing:.03em;
+        }
+
+        table.admin-table td{
+            padding:14px 16px;
+            border-top:1px solid #f0f0f0;
+        }
+
+        table.admin-table input[type="number"],
+        table.admin-table select{
+            padding:8px 10px;
+            border-radius:8px;
+            border:1px solid #ddd;
+            font-family:"Poppins",sans-serif;
+            width:100%;
+        }
+
+        .role-tag{
+            padding:5px 12px;
+            border-radius:50px;
+            font-size:.75rem;
+            font-weight:700;
+        }
+
+        .role-tag.admin{ background:#fdeaea; color:#e53935; }
+        .role-tag.catador{ background:#eaf1fd; color:#2b6de5; }
+        .role-tag.usuario{ background:#e8f7ec; color:#249341; }
+
+        .acoes{ display:flex; gap:8px; }
+
+        .btn-sm{
+            border:none;
+            padding:8px 14px;
+            border-radius:8px;
+            font-size:.82rem;
+            font-weight:600;
+            cursor:pointer;
+        }
+
+        .btn-salvar{ background:#249341; color:white; }
+        .btn-excluir{ background:#e53935; color:white; }
+
+        .add-maquina-form{
+            display:grid;
+            grid-template-columns:2fr 2fr 1fr auto;
+            gap:12px;
+            margin-bottom:25px;
+        }
+
+        .add-maquina-form input{
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #ddd;
+            font-family:"Poppins",sans-serif;
+        }
+
+        .aviso-caixa{
+            background:#fff8e1;
+            border:1px solid #ffe082;
+            color:#8a6d00;
+            padding:14px 18px;
+            border-radius:14px;
+            font-size:.88rem;
+            margin-bottom:25px;
+        }
+
+        body.dark .admin-table-wrap{ background:#1e1e1e; }
+        body.dark table.admin-table td{ border-top-color:#333; color:white; }
+        body.dark table.admin-table input,
+        body.dark table.admin-table select,
+        body.dark .add-maquina-form input{
+            background:#2a2a2a; border-color:#444; color:white;
+        }
+
+        @media(max-width:700px){
+            .add-maquina-form{ grid-template-columns:1fr; }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <script>
+        if (localStorage.getItem("tema") === "dark") {
+            document.body.classList.add("dark");
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <i class="fa-solid fa-recycle"></i>
+            <span>SICRAI</span>
+        </div>
+
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar menu">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+
+        <nav>
+
+            <a href="dashboard.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="link-text">Dashboard</span>
+            </a>
+
+            <a href="reciclagens.html">
+                <i class="fa-solid fa-recycle"></i>
+                <span class="link-text">Reciclagens</span>
+            </a>
+
+            <a href="recompensas-dashboard.html">
+                <i class="fa-solid fa-gift"></i>
+                <span class="link-text">Recompensas</span>
+            </a>
+
+            <a href="ranking.html">
+                <i class="fa-solid fa-trophy"></i>
+                <span class="link-text">Ranking</span>
+            </a>
+
+            <a href="maquinas.html">
+                <i class="fa-solid fa-industry"></i>
+                <span class="link-text">Máquinas</span>
+            </a>
+
+            <a href="admin.html" class="active">
+                <i class="fa-solid fa-user-shield"></i>
+                <span class="link-text">Administração</span>
+            </a>
+
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="link-text">Configurações</span>
+            </a>
+
+            <a href="#" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span class="link-text">Sair</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>🛡️ Administração</h1>
+                <p>Gerencie usuários e máquinas de coleta.</p>
+            </div>
+        </div>
+
+        <!-- USUÁRIOS -->
+
+        <section class="dashboard-section">
+
+            <h2>Usuários</h2>
+
+            <div class="aviso-caixa">
+                <i class="fa-solid fa-circle-info"></i>
+                Excluir aqui remove o <strong>perfil</strong> (pontos, latinhas e nível de acesso).
+                Para excluir o login por completo é necessário usar a API administrativa do
+                Supabase (com a service role key), fora do código do site.
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Pontos</th>
+                            <th>Latinhas</th>
+                            <th>Nível de Acesso</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuariosBody">
+                        <tr><td colspan="5">Carregando usuários...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- MÁQUINAS -->
+
+        <section class="dashboard-section">
+
+            <h2>Máquinas de Coleta</h2>
+
+            <form class="add-maquina-form" id="formNovaMaquina">
+                <input type="text" id="novoNome" placeholder="Nome (ex: Coletor 05)" required>
+                <input type="text" id="novaLocalizacao" placeholder="Localização">
+                <input type="number" id="novoNivel" placeholder="Nível %" min="0" max="100" value="0">
+                <button type="submit" class="btn-sm btn-salvar">
+                    <i class="fa-solid fa-plus"></i> Adicionar
+                </button>
+            </form>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Localização</th>
+                            <th>Status</th>
+                            <th>Nível</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="maquinasBody">
+                        <tr><td colspan="5">Carregando máquinas...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/role-guard.js"></script>
+
+    <script>
+
+        async function iniciar() {
+            const acesso = await protegerPagina(["admin"]);
+            if (!acesso) return;
+
+            document.getElementById("logoutBtn").addEventListener("click", async () => {
+                await client.auth.signOut();
+                window.location.href = "login.html";
+            });
+
+            await carregarUsuarios();
+            await carregarMaquinas();
+        }
+
+        /* ============ USUÁRIOS ============ */
+
+        async function carregarUsuarios() {
+            const { data, error } = await client
+                .from("perfis")
+                .select("id, nome, pontos, latinhas, role")
+                .order("pontos", { ascending: false });
+
+            const corpo = document.getElementById("usuariosBody");
+
+            if (error || !data) {
+                corpo.innerHTML = `<tr><td colspan="5">Não foi possível carregar os usuários.</td></tr>`;
+                return;
+            }
+
+            corpo.innerHTML = data.map(u => `
+                <tr data-id="${u.id}">
+                    <td>${u.nome || "Sem nome"}</td>
+                    <td><input type="number" class="in-pontos" value="${u.pontos || 0}" min="0"></td>
+                    <td><input type="number" class="in-latinhas" value="${u.latinhas || 0}" min="0"></td>
+                    <td>
+                        <select class="in-role">
+                            <option value="usuario" ${u.role === "usuario" ? "selected" : ""}>Usuário Padrão</option>
+                            <option value="catador" ${u.role === "catador" ? "selected" : ""}>Catador</option>
+                            <option value="admin" ${u.role === "admin" ? "selected" : ""}>Administrador</option>
+                        </select>
+                    </td>
+                    <td class="acoes">
+                        <button class="btn-sm btn-salvar btn-salvar-linha">Salvar</button>
+                        <button class="btn-sm btn-excluir btn-excluir-linha">Excluir</button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        document.getElementById("usuariosBody").addEventListener("click", async (e) => {
+
+            const linha = e.target.closest("tr[data-id]");
+            if (!linha) return;
+            const id = linha.dataset.id;
+
+            if (e.target.classList.contains("btn-salvar-linha")) {
+
+                const pontos = parseInt(linha.querySelector(".in-pontos").value) || 0;
+                const latinhas = parseInt(linha.querySelector(".in-latinhas").value) || 0;
+                const role = linha.querySelector(".in-role").value;
+
+                const { error } = await client
+                    .from("perfis")
+                    .update({ pontos, latinhas, role })
+                    .eq("id", id);
+
+                if (error) {
+                    alert("Erro ao salvar: " + error.message);
+                    return;
+                }
+
+                alert("Usuário atualizado com sucesso!");
+            }
+
+            if (e.target.classList.contains("btn-excluir-linha")) {
+
+                const confirmar = confirm("Tem certeza que deseja excluir este perfil? Essa ação não pode ser desfeita.");
+                if (!confirmar) return;
+
+                const { error } = await client
+                    .from("perfis")
+                    .delete()
+                    .eq("id", id);
+
+                if (error) {
+                    alert("Erro ao excluir: " + error.message);
+                    return;
+                }
+
+                await carregarUsuarios();
+            }
+
+        });
+
+        /* ============ MÁQUINAS ============ */
+
+        async function carregarMaquinas() {
+            const { data, error } = await client
+                .from("maquinas")
+                .select("id, nome, localizacao, status, nivel")
+                .order("nome", { ascending: true });
+
+            const corpo = document.getElementById("maquinasBody");
+
+            if (error || !data) {
+                corpo.innerHTML = `<tr><td colspan="5">Não foi possível carregar as máquinas.</td></tr>`;
+                return;
+            }
+
+            corpo.innerHTML = data.map(m => `
+                <tr data-id="${m.id}">
+                    <td>${m.nome}</td>
+                    <td>${m.localizacao || "-"}</td>
+                    <td>
+                        <select class="in-status">
+                            <option value="vazia" ${m.status === "vazia" ? "selected" : ""}>Vazia</option>
+                            <option value="cheia" ${m.status === "cheia" ? "selected" : ""}>Cheia</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="in-nivel" value="${m.nivel}" min="0" max="100"></td>
+                    <td class="acoes">
+                        <button class="btn-sm btn-salvar btn-salvar-maquina">Salvar</button>
+                        <button class="btn-sm btn-excluir btn-excluir-maquina">Excluir</button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        document.getElementById("formNovaMaquina").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById("novoNome").value.trim();
+            const localizacao = document.getElementById("novaLocalizacao").value.trim();
+            const nivel = parseInt(document.getElementById("novoNivel").value) || 0;
+
+            if (!nome) return;
+
+            const { error } = await client
+                .from("maquinas")
+                .insert({ nome, localizacao, nivel, status: nivel >= 80 ? "cheia" : "vazia" });
+
+            if (error) {
+                alert("Erro ao adicionar máquina: " + error.message);
+                return;
+            }
+
+            e.target.reset();
+            await carregarMaquinas();
+        });
+
+        document.getElementById("maquinasBody").addEventListener("click", async (e) => {
+
+            const linha = e.target.closest("tr[data-id]");
+            if (!linha) return;
+            const id = linha.dataset.id;
+
+            if (e.target.classList.contains("btn-salvar-maquina")) {
+
+                const status = linha.querySelector(".in-status").value;
+                const nivel = parseInt(linha.querySelector(".in-nivel").value) || 0;
+
+                const { error } = await client
+                    .from("maquinas")
+                    .update({ status, nivel, updated_at: new Date().toISOString() })
+                    .eq("id", id);
+
+                if (error) {
+                    alert("Erro ao salvar: " + error.message);
+                    return;
+                }
+
+                alert("Máquina atualizada!");
+            }
+
+            if (e.target.classList.contains("btn-excluir-maquina")) {
+
+                const confirmar = confirm("Excluir esta máquina?");
+                if (!confirmar) return;
+
+                const { error } = await client
+                    .from("maquinas")
+                    .delete()
+                    .eq("id", id);
+
+                if (error) {
+                    alert("Erro ao excluir: " + error.message);
+                    return;
+                }
+
+                await carregarMaquinas();
+            }
+
+        });
+
+        iniciar();
+
+    </script>
+
+    <script src="assets/js/sidebar-role.js"></script>
+    <script src="assets/js/sidebar-toggle.js"></script>
+
+</body>
+
+</html>

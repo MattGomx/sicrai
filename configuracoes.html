@@ -18,203 +18,7 @@
 
     <style>
 
-        /* ── CABEÇALHO DE PERFIL ── */
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            background: white;
-            border-radius: 25px;
-            padding: 2rem;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,.08);
-        }
-
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            min-width: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #249341, #48a840);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
-            overflow: hidden;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar-wrapper {
-            position: relative;
-        }
-
-        .avatar-edit-btn {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 3px solid white;
-            background: #249341;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: .75rem;
-            transition: background .2s, transform .1s;
-        }
-
-        .avatar-edit-btn:hover {
-            background: #1e7f38;
-            transform: scale(1.08);
-        }
-
-        .avatar-edit-btn:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
-
-        body.dark .avatar-edit-btn {
-            border-color: #1e1e1e;
-        }
-
-        .profile-header-info h2 {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-
-        .profile-header-info p {
-            color: #888;
-            font-size: .9rem;
-        }
-
-        .profile-header-info .member-since {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 8px;
-            font-size: .8rem;
-            color: #249341;
-            background: #e8f7ec;
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-weight: 600;
-        }
-
-        body.dark .profile-header {
-            background: #1e1e1e;
-        }
-
-        body.dark .profile-header-info p {
-            color: #aaa;
-        }
-
-        /* ── ABAS ── */
-
-        .settings-tabs {
-            display: flex;
-            gap: .5rem;
-            margin-bottom: 1.8rem;
-            border-bottom: 2px solid #e8ece9;
-            overflow-x: auto;
-        }
-
-        .settings-tab {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: "Poppins", sans-serif;
-            font-size: .92rem;
-            font-weight: 600;
-            color: #888;
-            padding: .9rem 1.3rem;
-            border-bottom: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            transition: color .2s, border-color .2s;
-        }
-
-        .settings-tab:hover {
-            color: #249341;
-        }
-
-        .settings-tab.active {
-            color: #249341;
-            border-bottom-color: #249341;
-        }
-
-        body.dark .settings-tabs {
-            border-bottom-color: #333;
-        }
-
-        .settings-panel {
-            animation: fadeInPanel .25s ease;
-        }
-
-        @keyframes fadeInPanel {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── BADGES DE STATUS ── */
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: .78rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 50px;
-        }
-
-        .status-badge.verificado {
-            background: #e8f7ec;
-            color: #249341;
-        }
-
-        .status-badge.pendente {
-            background: #fff3e0;
-            color: #ef6c00;
-        }
-
-        .field-hint {
-            font-size: .82rem;
-            color: #888;
-            margin-top: 6px;
-            line-height: 1.5;
-        }
-
-        .field-hint i {
-            color: #249341;
-            margin-right: 4px;
-        }
-
-        .save-btn.small {
-            width: auto;
-            padding: .8rem 1.6rem;
-        }
-
-        .save-row {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 1.2rem;
-        }
-
         /* ── ZONA DE PERIGO ── */
-
         .danger-zone {
             border: 2px solid #e53935;
             border-radius: 12px;
@@ -272,68 +76,15 @@
             color: #aaa;
         }
 
-        body.dark .field-hint {
-            color: #aaa;
-        }
-
-        /* ── CÓDIGO DE VERIFICAÇÃO (troca de senha) ── */
-
-        .codigo-input {
-            text-align: center;
-            font-size: 1.4rem;
-            letter-spacing: 8px;
-            font-weight: 700;
-        }
-
-        .reenviar {
-            text-align: center;
-            margin-top: 15px;
-            font-size: .85rem;
-            color: #888;
-        }
-
-        .reenviar a {
-            color: #249341;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .reenviar a.disabled {
-            color: #aaa;
-            pointer-events: none;
-        }
-
-        .seg-etapa-titulo {
-            font-size: .95rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .seg-etapa-titulo .numero {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #249341;
-            color: white;
-            font-size: .75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .seg-voltar {
-            text-align: center;
-            margin-top: 12px;
-            font-size: .82rem;
-        }
-
-        .seg-voltar a {
-            color: #888;
-            cursor: pointer;
-            font-weight: 600;
+        .role-badge{
+            display:inline-block;
+            margin-top:6px;
+            padding:6px 14px;
+            border-radius:50px;
+            font-size:.78rem;
+            font-weight:700;
+            background:#e8f7ec;
+            color:#249341;
         }
 
     </style>
@@ -408,337 +159,129 @@
             </div>
         </div>
 
-        <!-- CABEÇALHO DE PERFIL -->
+        <!-- PERFIL -->
 
-        <div class="profile-header">
+        <section class="config-card">
 
-            <div class="avatar-wrapper">
+            <h2>
+                <i class="fa-solid fa-user"></i>
+                Perfil
+            </h2>
 
-                <div class="profile-avatar" id="avatarIniciais">?</div>
+            <div class="form-grid">
 
-                <button class="avatar-edit-btn" id="btnTrocarFoto" title="Trocar foto de perfil">
-                    <i class="fa-solid fa-camera"></i>
-                </button>
-
-                <input type="file" id="fotoInput" accept="image/png, image/jpeg, image/webp" hidden>
-
-            </div>
-
-            <div class="profile-header-info">
-                <h2 id="nomeHeader">Carregando...</h2>
-                <p id="emailHeader">—</p>
-                <span class="member-since">
-                    <i class="fa-solid fa-calendar-check"></i>
-                    <span id="membroDesde">Membro desde —</span>
-                </span>
-            </div>
-
-        </div>
-
-        <!-- ABAS -->
-
-        <div class="settings-tabs">
-
-            <button class="settings-tab active" data-tab="perfil">
-                <i class="fa-solid fa-user"></i> Perfil
-            </button>
-
-            <button class="settings-tab" data-tab="email">
-                <i class="fa-solid fa-envelope"></i> Email
-            </button>
-
-            <button class="settings-tab" data-tab="seguranca">
-                <i class="fa-solid fa-lock"></i> Segurança
-            </button>
-
-            <button class="settings-tab" data-tab="preferencias">
-                <i class="fa-solid fa-sliders"></i> Preferências
-            </button>
-
-            <button class="settings-tab" data-tab="conta">
-                <i class="fa-solid fa-circle-exclamation"></i> Conta
-            </button>
-
-        </div>
-
-        <!-- PAINEL: PERFIL -->
-
-        <section class="settings-panel" id="panel-perfil">
-
-            <div class="config-card">
-
-                <h2>
-                    <i class="fa-solid fa-user"></i>
-                    Informações Pessoais
-                </h2>
-
-                <div class="form-grid">
-
-                    <div class="input-group">
-                        <label>Nome Completo</label>
-                        <input type="text" id="nomeInput" placeholder="Seu nome">
-                    </div>
-
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="nomeInput" placeholder="Seu nome">
                 </div>
 
-                <div class="save-row">
-                    <button class="save-btn small" onclick="salvarPerfil()">
-                        Salvar Perfil
-                    </button>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="emailInput" placeholder="Seu email" disabled>
+                </div>
+
+            </div>
+
+            <span class="role-badge" id="roleBadge">Usuário Padrão</span>
+
+        </section>
+
+        <!-- SEGURANÇA -->
+
+        <section class="config-card">
+
+            <h2>
+                <i class="fa-solid fa-lock"></i>
+                Segurança
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Nova Senha</label>
+                    <input type="password" id="novaSenha" placeholder="Digite sua nova senha">
+                </div>
+
+                <div class="input-group">
+                    <label>Confirmar Senha</label>
+                    <input type="password" id="confirmarSenha" placeholder="Confirme sua senha">
                 </div>
 
             </div>
 
         </section>
 
-        <!-- PAINEL: EMAIL -->
+        <!-- PREFERÊNCIAS -->
 
-        <section class="settings-panel" id="panel-email" style="display:none;">
+        <section class="config-card">
 
-            <div class="config-card">
+            <h2>
+                <i class="fa-solid fa-sliders"></i>
+                Preferências
+            </h2>
 
-                <h2>
-                    <i class="fa-solid fa-envelope"></i>
-                    Alterar Email
-                </h2>
+            <div class="settings-list">
 
-                <div class="form-grid">
-
-                    <div class="input-group">
-                        <label>Email Atual</label>
-                        <input type="email" id="emailAtualInput" disabled>
+                <div class="setting-item">
+                    <div>
+                        <strong>Receber Notificações</strong>
+                        <p>Receba avisos sobre recompensas e metas.</p>
                     </div>
-
-                    <div class="input-group">
-                        <label>Novo Email</label>
-                        <input type="email" id="novoEmailInput" placeholder="Digite o novo email">
-                    </div>
-
-                    <div class="input-group">
-                        <label>Senha Atual</label>
-                        <input type="password" id="senhaAtualEmail" placeholder="Confirme sua senha para continuar">
-                    </div>
-
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
                 </div>
 
-                <p class="field-hint">
-                    <i class="fa-solid fa-circle-info"></i>
-                    Por segurança, pedimos sua senha atual. Após salvar, enviaremos um link de
-                    confirmação para o novo email — a alteração só vale depois de você confirmar.
+                <div class="setting-item">
+                    <div>
+                        <strong>Tema Escuro</strong>
+                        <p>Alterar aparência do sistema.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- BOTÃO SALVAR -->
+
+        <section>
+            <button class="save-btn" onclick="salvarConfiguracoes()">
+                Salvar Alterações
+            </button>
+        </section>
+
+        <!-- ZONA DE ATENÇÃO -->
+
+        <section class="config-card">
+
+            <h2>
+                <i class="fa-solid fa-triangle-exclamation" style="color:#e53935"></i>
+                Zona de Atenção
+            </h2>
+
+            <div class="danger-zone">
+
+                <div class="danger-header">
+                    <i class="fa-solid fa-circle-minus"></i>
+                    Remover Latinha
+                </div>
+
+                <p class="danger-desc">
+                    Remove <strong>1 latinha</strong> do seu histórico e desconta <strong>5 pontos</strong>
+                    da sua conta. Use apenas para corrigir registros errados.
+                    <br>Esta ação <strong>não pode ser desfeita</strong>.
                 </p>
 
-                <div class="save-row">
-                    <button class="save-btn small" id="btnAlterarEmail" onclick="alterarEmail()">
-                        Atualizar Email
-                    </button>
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- PAINEL: SEGURANÇA -->
-
-        <section class="settings-panel" id="panel-seguranca" style="display:none;">
-
-            <div class="config-card">
-
-                <h2>
-                    <i class="fa-solid fa-lock"></i>
-                    Alterar Senha
-                </h2>
-
-                <!-- ETAPA 1: ENVIAR CÓDIGO -->
-
-                <div id="segEtapa1">
-
-                    <p class="field-hint" style="margin-bottom:1.2rem;">
-                        <i class="fa-solid fa-circle-info"></i>
-                        Por segurança, vamos enviar um código de verificação para
-                        <strong id="segEmailDestino">seu email</strong> antes de liberar a troca de senha.
-                    </p>
-
-                    <div class="save-row" style="justify-content:flex-start;">
-                        <button class="save-btn small" id="btnEnviarCodigoSeg" onclick="enviarCodigoSenha()">
-                            Enviar Código
-                        </button>
-                    </div>
-
-                </div>
-
-                <!-- ETAPA 2: CONFIRMAR CÓDIGO -->
-
-                <div id="segEtapa2" style="display:none;">
-
-                    <div class="seg-etapa-titulo">
-                        <span class="numero">2</span>
-                        Digite o código recebido
-                    </div>
-
-                    <div class="form-grid">
-
-                        <div class="input-group">
-                            <label>Código de 6 dígitos</label>
-                            <input
-                                type="text"
-                                id="codigoSeg"
-                                class="codigo-input"
-                                maxlength="6"
-                                placeholder="000000"
-                                inputmode="numeric">
-                        </div>
-
-                    </div>
-
-                    <div class="save-row" style="justify-content:flex-start;">
-                        <button class="save-btn small" id="btnConfirmarCodigoSeg" onclick="confirmarCodigoSenha()">
-                            Confirmar Código
-                        </button>
-                    </div>
-
-                    <div class="reenviar">
-                        Não recebeu?
-                        <a id="linkReenviarSeg" onclick="enviarCodigoSenha()">Reenviar código</a>
-                    </div>
-
-                </div>
-
-                <!-- ETAPA 3: NOVA SENHA -->
-
-                <div id="segEtapa3" style="display:none;">
-
-                    <div class="seg-etapa-titulo">
-                        <span class="numero">3</span>
-                        Crie sua nova senha
-                    </div>
-
-                    <div class="form-grid">
-
-                        <div class="input-group">
-                            <label>Nova Senha</label>
-                            <input type="password" id="novaSenha" placeholder="Digite sua nova senha">
-                        </div>
-
-                        <div class="input-group">
-                            <label>Confirmar Senha</label>
-                            <input type="password" id="confirmarSenha" placeholder="Confirme sua senha">
-                        </div>
-
-                    </div>
-
-                    <p class="field-hint">
-                        <i class="fa-solid fa-circle-info"></i>
-                        Use pelo menos 6 caracteres. Recomendamos misturar letras, números e símbolos.
-                    </p>
-
-                    <div class="save-row">
-                        <button class="save-btn small" id="btnAlterarSenha" onclick="alterarSenha()">
-                            Salvar Nova Senha
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- PAINEL: PREFERÊNCIAS -->
-
-        <section class="settings-panel" id="panel-preferencias" style="display:none;">
-
-            <div class="config-card">
-
-                <h2>
-                    <i class="fa-solid fa-sliders"></i>
-                    Preferências
-                </h2>
-
-                <div class="settings-list">
-
-                    <div class="setting-item">
-                        <div>
-                            <strong>Receber Notificações</strong>
-                            <p>Receba avisos sobre recompensas e metas.</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="notificacoesToggle" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <div>
-                            <strong>Tema Escuro</strong>
-                            <p>Alterar aparência do sistema.</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="darkModeToggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- PAINEL: CONTA (ZONA DE ATENÇÃO) -->
-
-        <section class="settings-panel" id="panel-conta" style="display:none;">
-
-            <div class="config-card">
-
-                <h2>
-                    <i class="fa-solid fa-triangle-exclamation" style="color:#e53935"></i>
-                    Zona de Atenção
-                </h2>
-
-                <div class="danger-zone">
-
-                    <div class="danger-header">
-                        <i class="fa-solid fa-circle-minus"></i>
-                        Remover Latinha
-                    </div>
-
-                    <p class="danger-desc">
-                        Remove <strong>1 latinha</strong> do seu histórico e desconta <strong>5 pontos</strong>
-                        da sua conta. Use apenas para corrigir registros errados.
-                        <br>Esta ação <strong>não pode ser desfeita</strong>.
-                    </p>
-
-                    <button class="btn-danger" id="btnRemoverLatinha">
-                        <i class="fa-solid fa-trash"></i>
-                        Remover 1 Latinha
-                    </button>
-
-                </div>
-
-                <div class="danger-zone" style="margin-top:1.5rem;">
-
-                    <div class="danger-header">
-                        <i class="fa-solid fa-user-xmark"></i>
-                        Excluir Conta
-                    </div>
-
-                    <p class="danger-desc">
-                        Sua conta de login, pontos, latinhas e todo o histórico serão apagados
-                        permanentemente do sistema.
-                        <br>Esta ação <strong>não pode ser desfeita</strong>.
-                    </p>
-
-                    <div class="input-group" style="max-width:320px; margin-bottom:1rem;">
-                        <label>Confirme sua senha</label>
-                        <input type="password" id="senhaExcluirConta" placeholder="Sua senha atual">
-                    </div>
-
-                    <button class="btn-danger" id="btnExcluirConta">
-                        <i class="fa-solid fa-user-xmark"></i>
-                        Excluir Minha Conta
-                    </button>
-
-                </div>
+                <button class="btn-danger" id="btnRemoverLatinha">
+                    <i class="fa-solid fa-trash"></i>
+                    Remover 1 Latinha
+                </button>
 
             </div>
 
@@ -748,353 +291,75 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/role-guard.js"></script>
 
     <script>
 
-        let usuarioAtual = null;
+        const NOMES_ROLE = {
+            admin: "Administrador",
+            catador: "Catador",
+            usuario: "Usuário Padrão"
+        };
 
-        /* ── ABAS ── */
-
-        document.querySelectorAll(".settings-tab").forEach(tab => {
-            tab.addEventListener("click", () => {
-
-                document.querySelectorAll(".settings-tab").forEach(t => t.classList.remove("active"));
-                document.querySelectorAll(".settings-panel").forEach(p => p.style.display = "none");
-
-                tab.classList.add("active");
-                document.getElementById(`panel-${tab.dataset.tab}`).style.display = "block";
-            });
-        });
-
-        /* ── CARREGAR USUÁRIO ── */
+        /* CARREGAR USUÁRIO */
 
         async function carregarUsuario() {
-            const { data: { session } } = await client.auth.getSession();
-            if (!session) {
-                window.location.href = "login.html";
-                return;
+            // Configurações é acessível a todos os níveis de acesso
+            const acesso = await protegerPagina(["usuario", "catador", "admin"]);
+            if (!acesso) return;
+
+            const user = acesso.session.user;
+            document.getElementById("emailInput").value = user.email;
+            if (user.user_metadata && user.user_metadata.nome) {
+                document.getElementById("nomeInput").value = user.user_metadata.nome;
             }
 
-            usuarioAtual = session.user;
-
-            const nome = usuarioAtual.user_metadata?.nome || "";
-            const avatarUrl = usuarioAtual.user_metadata?.avatar_url || "";
-
-            document.getElementById("nomeInput").value = nome;
-            document.getElementById("emailAtualInput").value = usuarioAtual.email;
-
-            document.getElementById("nomeHeader").textContent = nome || "Reciclador";
-            document.getElementById("emailHeader").textContent = usuarioAtual.email;
-            document.getElementById("segEmailDestino").textContent = usuarioAtual.email;
-
-            renderizarAvatar(nome, avatarUrl);
-
-            if (usuarioAtual.created_at) {
-                const data = new Date(usuarioAtual.created_at);
-                const formatado = data.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
-                document.getElementById("membroDesde").textContent = `Membro desde ${formatado}`;
-            }
-
-            // Preferência de notificações salva localmente
-            const notifSalvo = localStorage.getItem("notificacoes");
-            document.getElementById("notificacoesToggle").checked = notifSalvo !== "false";
-        }
-
-        function renderizarAvatar(nome, avatarUrl) {
-            const container = document.getElementById("avatarIniciais");
-
-            if (avatarUrl) {
-                container.innerHTML = `<img src="${avatarUrl}" alt="Foto de perfil">`;
-            } else {
-                const inicial = (nome.trim().charAt(0) || usuarioAtual.email.charAt(0) || "?").toUpperCase();
-                container.textContent = inicial;
-            }
+            document.getElementById("roleBadge").textContent = NOMES_ROLE[acesso.perfil.role] || "Usuário Padrão";
         }
 
         carregarUsuario();
 
-        /* ── TROCAR FOTO DE PERFIL ── */
+        /* SALVAR CONFIGURAÇÕES */
 
-        document.getElementById("btnTrocarFoto").addEventListener("click", () => {
-            document.getElementById("fotoInput").click();
-        });
-
-        document.getElementById("fotoInput").addEventListener("change", async (e) => {
-
-            const arquivo = e.target.files[0];
-            if (!arquivo) return;
-
-            if (!arquivo.type.startsWith("image/")) {
-                alert("Selecione um arquivo de imagem (PNG, JPG ou WEBP).");
-                return;
-            }
-
-            if (arquivo.size > 2 * 1024 * 1024) {
-                alert("A imagem deve ter no máximo 2MB.");
-                return;
-            }
-
-            const btnFoto = document.getElementById("btnTrocarFoto");
-            const iconeOriginal = btnFoto.innerHTML;
-            btnFoto.disabled = true;
-            btnFoto.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
-
-            const extensao = arquivo.name.split(".").pop();
-            const caminho = `${usuarioAtual.id}/avatar.${extensao}`;
-
-            const { error: erroUpload } = await client.storage
-                .from("avatars")
-                .upload(caminho, arquivo, { upsert: true, cacheControl: "3600" });
-
-            if (erroUpload) {
-                btnFoto.disabled = false;
-                btnFoto.innerHTML = iconeOriginal;
-                alert("Erro ao enviar a imagem: " + erroUpload.message);
-                return;
-            }
-
-            const { data: urlData } = client.storage.from("avatars").getPublicUrl(caminho);
-            const urlComCache = `${urlData.publicUrl}?t=${Date.now()}`;
-
-            const { error: erroUpdate } = await client.auth.updateUser({
-                data: { avatar_url: urlComCache }
-            });
-
-            btnFoto.disabled = false;
-            btnFoto.innerHTML = iconeOriginal;
-
-            if (erroUpdate) {
-                alert("Imagem enviada, mas houve um erro ao salvar no perfil: " + erroUpdate.message);
-                return;
-            }
-
-            renderizarAvatar(document.getElementById("nomeInput").value, urlComCache);
-            e.target.value = "";
-        });
-
-        /* ── SALVAR PERFIL (nome) ── */
-
-        async function salvarPerfil() {
-            const nome = document.getElementById("nomeInput").value.trim();
-
-            if (nome === "") {
-                alert("Digite seu nome completo.");
-                return;
-            }
-
-            const btn = document.querySelector('#panel-perfil .save-btn');
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = "Salvando...";
-
-            const { error } = await client.auth.updateUser({ data: { nome } });
-
-            btn.disabled = false;
-            btn.innerHTML = original;
-
-            if (error) {
-                alert(error.message);
-                return;
-            }
-
-            document.getElementById("nomeHeader").textContent = nome;
-            renderizarAvatar(nome, usuarioAtual.user_metadata?.avatar_url || "");
-
-            alert("Perfil atualizado com sucesso!");
-        }
-
-        /* ── ALTERAR EMAIL ── */
-
-        async function alterarEmail() {
-
-            const novoEmail   = document.getElementById("novoEmailInput").value.trim();
-            const senhaAtual  = document.getElementById("senhaAtualEmail").value;
-            const emailRegex  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (!emailRegex.test(novoEmail)) {
-                alert("Digite um email válido.");
-                return;
-            }
-
-            if (novoEmail.toLowerCase() === usuarioAtual.email.toLowerCase()) {
-                alert("O novo email precisa ser diferente do atual.");
-                return;
-            }
-
-            if (senhaAtual === "") {
-                alert("Digite sua senha atual para confirmar a alteração.");
-                return;
-            }
-
-            const btn = document.getElementById("btnAlterarEmail");
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = "Verificando...";
-
-            // Reautentica com a senha atual antes de liberar a troca
-            const { error: erroAuth } = await client.auth.signInWithPassword({
-                email: usuarioAtual.email,
-                password: senhaAtual
-            });
-
-            if (erroAuth) {
-                btn.disabled = false;
-                btn.innerHTML = original;
-                alert("Senha atual incorreta.");
-                return;
-            }
-
-            btn.innerHTML = "Enviando confirmação...";
-
-            const { error } = await client.auth.updateUser({ email: novoEmail });
-
-            btn.disabled = false;
-            btn.innerHTML = original;
-
-            if (error) {
-                alert(error.message);
-                return;
-            }
-
-            document.getElementById("senhaAtualEmail").value = "";
-            document.getElementById("novoEmailInput").value = "";
-
-            alert(`Enviamos um link de confirmação para ${novoEmail}. Seu email só muda depois que você confirmar.`);
-        }
-
-        /* ── ALTERAR SENHA: ETAPA 1 -> 2 (ENVIAR CÓDIGO) ── */
-
-        async function enviarCodigoSenha() {
-
-            const btn = document.getElementById("btnEnviarCodigoSeg");
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = "Enviando...";
-
-            const { error } = await client.auth.resetPasswordForEmail(usuarioAtual.email);
-
-            btn.disabled = false;
-            btn.innerHTML = original;
-
-            if (error) {
-                alert(error.message);
-                return;
-            }
-
-            document.getElementById("codigoSeg").value = "";
-            document.getElementById("segEtapa1").style.display = "none";
-            document.getElementById("segEtapa2").style.display = "block";
-            document.getElementById("segEtapa3").style.display = "none";
-
-            // Bloqueia reenvio por 30s pra evitar spam de email
-            const link = document.getElementById("linkReenviarSeg");
-            link.classList.add("disabled");
-            let segundos = 30;
-            link.textContent = `Reenviar código (${segundos}s)`;
-            const intervalo = setInterval(() => {
-                segundos--;
-                if (segundos <= 0) {
-                    clearInterval(intervalo);
-                    link.classList.remove("disabled");
-                    link.textContent = "Reenviar código";
-                } else {
-                    link.textContent = `Reenviar código (${segundos}s)`;
-                }
-            }, 1000);
-        }
-
-        /* ── ALTERAR SENHA: ETAPA 2 -> 3 (CONFIRMAR CÓDIGO) ── */
-
-        async function confirmarCodigoSenha() {
-
-            const codigo = document.getElementById("codigoSeg").value.trim();
-
-            if (codigo.length !== 6) {
-                alert("Digite o código de 6 dígitos enviado para seu email.");
-                return;
-            }
-
-            const btn = document.getElementById("btnConfirmarCodigoSeg");
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = "Verificando...";
-
-            const { error } = await client.auth.verifyOtp({
-                email: usuarioAtual.email,
-                token: codigo,
-                type: "recovery"
-            });
-
-            btn.disabled = false;
-            btn.innerHTML = original;
-
-            if (error) {
-                alert("Código inválido ou expirado. Tente novamente.");
-                return;
-            }
-
-            document.getElementById("segEtapa2").style.display = "none";
-            document.getElementById("segEtapa3").style.display = "block";
-        }
-
-        /* ── ALTERAR SENHA: ETAPA 3 (SALVAR NOVA SENHA) ── */
-
-        async function alterarSenha() {
+        async function salvarConfiguracoes() {
+            const nome           = document.getElementById("nomeInput").value;
             const novaSenha      = document.getElementById("novaSenha").value;
             const confirmarSenha = document.getElementById("confirmarSenha").value;
 
-            if (novaSenha.length < 6) {
-                alert("A senha deve ter pelo menos 6 caracteres.");
-                return;
+            const updates = { data: { nome } };
+
+            if (novaSenha !== "") {
+                if (novaSenha.length < 6) {
+                    alert("A senha deve ter pelo menos 6 caracteres.");
+                    return;
+                }
+                if (novaSenha !== confirmarSenha) {
+                    alert("As senhas não coincidem.");
+                    return;
+                }
+                updates.password = novaSenha;
             }
 
-            if (novaSenha !== confirmarSenha) {
-                alert("As senhas não coincidem.");
-                return;
-            }
-
-            const btn = document.getElementById("btnAlterarSenha");
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = "Salvando...";
-
-            const { error } = await client.auth.updateUser({ password: novaSenha });
-
-            btn.disabled = false;
-            btn.innerHTML = original;
-
+            const { error } = await client.auth.updateUser(updates);
             if (error) {
                 alert(error.message);
                 return;
             }
-
-            document.getElementById("novaSenha").value = "";
-            document.getElementById("confirmarSenha").value = "";
-
-            alert("Senha atualizada com sucesso!");
-
-            // Volta pro início do fluxo, pronta pra próxima vez
-            document.getElementById("segEtapa3").style.display = "none";
-            document.getElementById("segEtapa1").style.display = "block";
+            alert("Configurações salvas com sucesso!");
         }
 
-        /* ── PREFERÊNCIA: NOTIFICAÇÕES ── */
-
-        document.getElementById("notificacoesToggle").addEventListener("change", (e) => {
-            localStorage.setItem("notificacoes", e.target.checked);
-        });
-
-        /* ── LOGOUT ── */
+        /* LOGOUT */
 
         document.getElementById("logoutBtn").addEventListener("click", async () => {
             await client.auth.signOut();
             window.location.href = "login.html";
         });
 
-        /* ── DARK MODE ── */
+        /* DARK MODE — corrigido */
 
         const darkToggle = document.getElementById("darkModeToggle");
 
+        // Sincroniza o checkbox com o tema já aplicado
         darkToggle.checked = localStorage.getItem("tema") === "dark";
 
         darkToggle.addEventListener("change", () => {
@@ -1107,7 +372,7 @@
             }
         });
 
-        /* ── REMOVER LATINHA — -1 latinha, -5 pontos no Supabase ── */
+        /* REMOVER LATINHA — -1 latinha, -5 pontos no Supabase */
 
         document.getElementById("btnRemoverLatinha").addEventListener("click", async () => {
 
@@ -1171,78 +436,9 @@
 
         });
 
-        /* ── EXCLUIR CONTA ── */
-
-        document.getElementById("btnExcluirConta").addEventListener("click", async () => {
-
-            const senha = document.getElementById("senhaExcluirConta").value;
-
-            if (senha === "") {
-                alert("Digite sua senha atual para confirmar.");
-                return;
-            }
-
-            const confirmar = confirm(
-                "⚠️ ATENÇÃO!\n\nIsso vai apagar permanentemente seus pontos, latinhas e histórico de reciclagens.\nVocê será desconectado e essa ação não pode ser desfeita.\n\nDeseja continuar?"
-            );
-            if (!confirmar) return;
-
-            const btn = document.getElementById("btnExcluirConta");
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Excluindo...`;
-
-            // Reautentica com a senha atual antes de liberar a exclusão
-            const { error: erroAuth } = await client.auth.signInWithPassword({
-                email: usuarioAtual.email,
-                password: senha
-            });
-
-            if (erroAuth) {
-                btn.disabled = false;
-                btn.innerHTML = original;
-                alert("Senha incorreta.");
-                return;
-            }
-
-            // Apaga a conta de verdade (login + dados) via Edge Function
-            const { data: { session } } = await client.auth.getSession();
-
-            const urlFuncao = SUPABASE_URL.replace(".supabase.co", ".functions.supabase.co") + "/delete-account";
-
-            let resposta;
-            try {
-                resposta = await fetch(urlFuncao, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${session.access_token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-            } catch (e) {
-                btn.disabled = false;
-                btn.innerHTML = original;
-                alert("Não foi possível conectar ao servidor. Tente novamente.");
-                return;
-            }
-
-            const resultado = await resposta.json();
-
-            if (!resposta.ok) {
-                btn.disabled = false;
-                btn.innerHTML = original;
-                alert("Erro ao excluir conta: " + (resultado.error || "tente novamente."));
-                return;
-            }
-
-            alert("Sua conta foi excluída permanentemente.");
-
-            await client.auth.signOut();
-            window.location.href = "index.html";
-        });
-
     </script>
 
+    <script src="assets/js/sidebar-role.js"></script>
     <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>

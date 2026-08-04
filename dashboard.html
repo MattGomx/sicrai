@@ -168,12 +168,18 @@
 
         </section>
 
-        
+        <!-- RECOMPENSAS -->
+
+        <section class="dashboard-section">
+            <h2>Recompensas Disponíveis</h2>
+            <div id="rewardContainer" class="rewards-grid"></div>
+        </section>
 
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/role-guard.js"></script>
 
     <script>
         // Dark mode persistente
@@ -182,10 +188,10 @@
         }
 
         async function checkUser() {
-            const { data: { session } } = await client.auth.getSession();
-            if (!session) {
-                window.location.href = "login.html";
-            }
+            // Só usuário padrão e admin acessam o dashboard comum.
+            // Catador é redirecionado para a tela de máquinas.
+            const acesso = await protegerPagina(["usuario", "admin"]);
+            if (!acesso) return;
         }
 
         checkUser();
@@ -199,6 +205,7 @@
     </script>
 
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/sidebar-role.js"></script>
     <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
