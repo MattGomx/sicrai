@@ -1,31 +1,27 @@
 /*
   Monitoramento de nível de armazenamento com sensor ultrassônico (HC-SR04)
-  Envia leituras e alertas para o Supabase via REST API (PostgREST)
+  Versão ESP8266 (NodeMCU) — envia leituras e alertas para o Supabase via REST API
 
-  Hardware:
-    - ESP32
+  Hardware (NodeMCU):
     - HC-SR04
-        VCC  -> 5V
+        VCC  -> 5V (VIN)
         GND  -> GND
-        TRIG -> GPIO 5
-        ECHO -> GPIO 18 (usar divisor de tensão 5V -> 3.3V!)
+        TRIG -> D1 (GPIO5)
+        ECHO -> D2 (GPIO4)  -- usar divisor de tensão 5V -> 3.3V no hardware real!
 
-  Fluxo:
-    1. Mede a distância até a superfície do material armazenado
-    2. Converte em % de nível, com base na altura do reservatório
-    3. Envia a leitura para a tabela storage_readings
-    4. Se o nível estiver abaixo do limite, envia um registro para a
-       tabela alerts (que dispara o envio de e-mail no lado do Supabase)
+  Se o seu módulo ESP8266 não for NodeMCU (ex: Wemos D1 Mini, ESP-01),
+  troque D1/D2 pelos GPIOs correspondentes da sua placa.
 */
 
-#include <WiFi.h>
-#include <HTTPClient.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClientSecure.h>
 
 // ---------- CONFIGURAÇÕES ----------
 const char* WIFI_SSID     = "SEU_WIFI";
 const char* WIFI_PASSWORD = "SUA_SENHA";
 
-const char* SUPABASE_URL      = "https://SEU_PROJETO.supabase.co";
+const char* SUPABASE_HOST     = "SEU_PROJETO.supabase.co"; // sem "https://"
 const char* SUPABASE_ANON_KEY = "SUA_ANON_KEY";
 
 const char* DEVICE_ID = "tanque-01"; // identifica o sensor/reservatório
@@ -36,13 +32,15 @@ const float DIST_TANQUE_VAZIO  = 100.0; // distância sensor->superfície quando
 
 const float LIMITE_ALERTA_PERCENT = 20.0; // dispara alerta abaixo disso
 
-const int PINO_TRIG = 5;
-const int PINO_ECHO = 18;
+const int PINO_TRIG = D1; // GPIO5
+const int PINO_ECHO = D2; // GPIO4
 
 const unsigned long INTERVALO_LEITURA_MS = 60000; // 1 leitura por minuto
 unsigned long ultimaLeitura = 0;
 
 bool alertaJaEnviado = false; // evita reenviar alerta repetidamente
+
+WiFiClientSecure clienteSeguro;
 
 // ---------- SETUP ----------
 void setup() {
@@ -51,6 +49,10 @@ void setup() {
   pinMode(PINO_ECHO, INPUT);
 
   conectarWiFi();
+
+  // Simplificação: ignora a validação do certificado HTTPS.
+  // Para produção, prefira setTrustAnchors() com o certificado da Supabase.
+  clienteSeguro.setInsecure();
 }
 
 void loop() {
@@ -117,9 +119,9 @@ void enviarLeitura(float distanciaCm, float nivelPercent) {
   if (WiFi.status() != WL_CONNECTED) return;
 
   HTTPClient http;
-  String url = String(SUPABASE_URL) + "/rest/v1/storage_readings";
+  String url = String("https://") + SUPABASE_HOST + "/rest/v1/storage_readings";
 
-  http.begin(url);
+  http.begin(clienteSeguro, url);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_ANON_KEY);
   http.addHeader("Authorization", String("Bearer ") + SUPABASE_ANON_KEY);
@@ -137,9 +139,9 @@ void enviarAlerta(float nivelPercent) {
   if (WiFi.status() != WL_CONNECTED) return;
 
   HTTPClient http;
-  String url = String(SUPABASE_URL) + "/rest/v1/alerts";
+  String url = String("https://") + SUPABASE_HOST + "/rest/v1/alerts";
 
-  http.begin(url);
+  http.begin(clienteSeguro, url);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("apikey", SUPABASE_ANON_KEY);
   http.addHeader("Authorization", String("Bearer ") + SUPABASE_ANON_KEY);
