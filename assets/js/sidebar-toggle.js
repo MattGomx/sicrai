@@ -52,9 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const nav = document.querySelector(".sidebar nav");
     if (!nav) return;
 
-    const links = Array.from(nav.querySelectorAll("a"));
-    const activeIndex = links.findIndex(a => a.classList.contains("active"));
-    if (activeIndex === -1) return;
+    // Lê os links e o índice ativo NA HORA (para poder recalcular depois)
+    function obterLinksEIndice() {
+        const links = Array.from(nav.querySelectorAll("a"));
+        const activeIndex = links.findIndex(a => a.classList.contains("active"));
+        return { links, activeIndex };
+    }
+
+    let { links, activeIndex } = obterLinksEIndice();
 
     let indicator = nav.querySelector(".nav-indicator");
     if (!indicator) {
@@ -71,21 +76,39 @@ document.addEventListener("DOMContentLoaded", () => {
         indicator.style.transform = `translateY(${link.offsetTop}px)`;
     }
 
-    const indicePrevio = sessionStorage.getItem(STORAGE_KEY);
+    if (activeIndex !== -1) {
 
-    if (indicePrevio !== null && links[Number(indicePrevio)]) {
-        // posiciona sem animação onde estava antes
-        posicionar(Number(indicePrevio), false);
-        // força o navegador a "registrar" essa posição antes de animar
-        requestAnimationFrame(() => {
+        const indicePrevio = sessionStorage.getItem(STORAGE_KEY);
+
+        if (indicePrevio !== null && links[Number(indicePrevio)]) {
+            // posiciona sem animação onde estava antes
+            posicionar(Number(indicePrevio), false);
+            // força o navegador a "registrar" essa posição antes de animar
             requestAnimationFrame(() => {
-                posicionar(activeIndex, true);
+                requestAnimationFrame(() => {
+                    posicionar(activeIndex, true);
+                });
             });
-        });
-    } else {
-        posicionar(activeIndex, false);
+        } else {
+            posicionar(activeIndex, false);
+        }
+
+        sessionStorage.setItem(STORAGE_KEY, activeIndex);
     }
 
-    sessionStorage.setItem(STORAGE_KEY, activeIndex);
+    // NOVO: quando sidebar-role.js terminar de injetar/esconder links
+    // (processo assíncrono, que acontece DEPOIS deste script rodar),
+    // ele dispara este evento e recalculamos a posição do indicador
+    // com a lista de links já atualizada — evita o indicador "pular"
+    // para o item errado.
+    document.addEventListener("sidebarLinksAtualizados", () => {
+
+        ({ links, activeIndex } = obterLinksEIndice());
+
+        if (activeIndex !== -1) {
+            posicionar(activeIndex, false);
+            sessionStorage.setItem(STORAGE_KEY, activeIndex);
+        }
+    });
 
 });
