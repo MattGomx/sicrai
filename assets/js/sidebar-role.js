@@ -53,4 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         nav.insertBefore(link, logoutLink);
     }
 
+    // NOVO: avisa o sidebar-toggle.js que a lista de links do menu
+    // acabou de mudar (itens escondidos e/ou novos links inseridos),
+    // para que o indicador de item ativo recalcule sua posição.
+    document.dispatchEvent(new CustomEvent("sidebarLinksAtualizados"));
+
 });
