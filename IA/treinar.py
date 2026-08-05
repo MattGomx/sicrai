@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 16
 EPOCHS = 15
-DATASET_DIR = "dataset"
+DATASET_DIR = r"C:\Users\pdv\Downloads\dataset"
 
 # ----------------------------
 # 1. Preparar os dados com augmentation
@@ -100,7 +100,7 @@ model.compile(
 
 history_fine = model.fit(
     train_generator,
-    epochs=5,
+    epochs=15,
     validation_data=val_generator,
     callbacks=[early_stop],
 )
