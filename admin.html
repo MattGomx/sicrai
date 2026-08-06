@@ -17,106 +17,136 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-
-        .admin-table-wrap{
-            background:white;
-            border-radius:22px;
-            padding:10px;
-            box-shadow:0 10px 30px rgba(0,0,0,.08);
-            overflow-x:auto;
-            margin-bottom:35px;
+        .admin-table-wrap {
+            background: white;
+            border-radius: 22px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            overflow-x: auto;
+            margin-bottom: 35px;
         }
 
-        table.admin-table{
-            width:100%;
-            border-collapse:collapse;
-            min-width:640px;
+        table.admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 640px;
         }
 
-        table.admin-table th{
-            text-align:left;
-            padding:16px;
-            color:#888;
-            font-size:.85rem;
-            text-transform:uppercase;
-            letter-spacing:.03em;
+        table.admin-table th {
+            text-align: left;
+            padding: 16px;
+            color: #888;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
         }
 
-        table.admin-table td{
-            padding:14px 16px;
-            border-top:1px solid #f0f0f0;
+        table.admin-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #f0f0f0;
         }
 
         table.admin-table input[type="number"],
-        table.admin-table select{
-            padding:8px 10px;
-            border-radius:8px;
-            border:1px solid #ddd;
-            font-family:"Poppins",sans-serif;
-            width:100%;
+        table.admin-table select {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: "Poppins", sans-serif;
+            width: 100%;
         }
 
-        .role-tag{
-            padding:5px 12px;
-            border-radius:50px;
-            font-size:.75rem;
-            font-weight:700;
+        .role-tag {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: .75rem;
+            font-weight: 700;
         }
 
-        .role-tag.admin{ background:#fdeaea; color:#e53935; }
-        .role-tag.catador{ background:#eaf1fd; color:#2b6de5; }
-        .role-tag.usuario{ background:#e8f7ec; color:#249341; }
-
-        .acoes{ display:flex; gap:8px; }
-
-        .btn-sm{
-            border:none;
-            padding:8px 14px;
-            border-radius:8px;
-            font-size:.82rem;
-            font-weight:600;
-            cursor:pointer;
+        .role-tag.admin {
+            background: #fdeaea;
+            color: #e53935;
         }
 
-        .btn-salvar{ background:#249341; color:white; }
-        .btn-excluir{ background:#e53935; color:white; }
-
-        .add-maquina-form{
-            display:grid;
-            grid-template-columns:2fr 2fr 1fr auto;
-            gap:12px;
-            margin-bottom:25px;
+        .role-tag.catador {
+            background: #eaf1fd;
+            color: #2b6de5;
         }
 
-        .add-maquina-form input{
-            padding:12px;
-            border-radius:10px;
-            border:1px solid #ddd;
-            font-family:"Poppins",sans-serif;
+        .role-tag.usuario {
+            background: #e8f7ec;
+            color: #249341;
         }
 
-        .aviso-caixa{
-            background:#fff8e1;
-            border:1px solid #ffe082;
-            color:#8a6d00;
-            padding:14px 18px;
-            border-radius:14px;
-            font-size:.88rem;
-            margin-bottom:25px;
+        .acoes {
+            display: flex;
+            gap: 8px;
         }
 
-        body.dark .admin-table-wrap{ background:#1e1e1e; }
-        body.dark table.admin-table td{ border-top-color:#333; color:white; }
+        .btn-sm {
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-salvar {
+            background: #249341;
+            color: white;
+        }
+
+        .btn-excluir {
+            background: #e53935;
+            color: white;
+        }
+
+        .add-maquina-form {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .add-maquina-form input {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .aviso-caixa {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            color: #8a6d00;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: .88rem;
+            margin-bottom: 25px;
+        }
+
+        body.dark .admin-table-wrap {
+            background: #1e1e1e;
+        }
+
+        body.dark table.admin-table td {
+            border-top-color: #333;
+            color: white;
+        }
+
         body.dark table.admin-table input,
         body.dark table.admin-table select,
-        body.dark .add-maquina-form input{
-            background:#2a2a2a; border-color:#444; color:white;
+        body.dark .add-maquina-form input {
+            background: #2a2a2a;
+            border-color: #444;
+            color: white;
         }
 
-        @media(max-width:700px){
-            .add-maquina-form{ grid-template-columns:1fr; }
+        @media(max-width:700px) {
+            .add-maquina-form {
+                grid-template-columns: 1fr;
+            }
         }
-
     </style>
 
 </head>
@@ -164,6 +194,11 @@
                 <span class="link-text">Ranking</span>
             </a>
 
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="link-text">Configurações</span>
+            </a>
+
             <a href="maquinas.html">
                 <i class="fa-solid fa-industry"></i>
                 <span class="link-text">Máquinas</span>
@@ -172,11 +207,6 @@
             <a href="admin.html" class="active">
                 <i class="fa-solid fa-user-shield"></i>
                 <span class="link-text">Administração</span>
-            </a>
-
-            <a href="configuracoes.html">
-                <i class="fa-solid fa-gear"></i>
-                <span class="link-text">Configurações</span>
             </a>
 
             <a href="#" id="logoutBtn">
@@ -222,7 +252,9 @@
                         </tr>
                     </thead>
                     <tbody id="usuariosBody">
-                        <tr><td colspan="5">Carregando usuários...</td></tr>
+                        <tr>
+                            <td colspan="5">Carregando usuários...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -256,7 +288,9 @@
                         </tr>
                     </thead>
                     <tbody id="maquinasBody">
-                        <tr><td colspan="5">Carregando máquinas...</td></tr>
+                        <tr>
+                            <td colspan="5">Carregando máquinas...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

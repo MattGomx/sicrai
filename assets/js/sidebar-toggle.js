@@ -46,20 +46,27 @@
 
 })();
 
+/* ===========================================================
+   INDICADOR DE ITEM ATIVO
+
+   Guardamos o HREF do link ativo (não o índice numérico!),
+   porque a quantidade de links muda de página pra página
+   (Máquinas/Administração só existem depois que o
+   sidebar-role.js injeta eles dinamicamente). Usar índice
+   causava o indicador "pular" entre itens errados enquanto
+   a lista final de links ainda não estava pronta.
+
+   O indicador só fica visível DEPOIS que sabemos a lista
+   final de links da página (evento "sidebarLinksAtualizados",
+   disparado pelo sidebar-role.js). Se essa página não tiver
+   sidebar-role.js, há um fallback por tempo.
+   =========================================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    const STORAGE_KEY = "sidebarActiveIndex";
+    const STORAGE_KEY = "sidebarActiveHref";
     const nav = document.querySelector(".sidebar nav");
     if (!nav) return;
-
-    // Lê os links e o índice ativo NA HORA (para poder recalcular depois)
-    function obterLinksEIndice() {
-        const links = Array.from(nav.querySelectorAll("a"));
-        const activeIndex = links.findIndex(a => a.classList.contains("active"));
-        return { links, activeIndex };
-    }
-
-    let { links, activeIndex } = obterLinksEIndice();
 
     let indicator = nav.querySelector(".nav-indicator");
     if (!indicator) {
@@ -68,47 +75,66 @@ document.addEventListener("DOMContentLoaded", () => {
         nav.prepend(indicator);
     }
 
-    function posicionar(index, animado) {
-        const link = links[index];
+    // Escondido até sabermos a posição final correta
+    indicator.style.opacity = "0";
+
+    function obterLinksEIndiceAtivo() {
+        const links = Array.from(nav.querySelectorAll("a"));
+        const activeIndex = links.findIndex(a => a.classList.contains("active"));
+        return { links, activeIndex };
+    }
+
+    function posicionar(link, animado) {
         if (!link) return;
         indicator.style.transition = animado ? "" : "none";
         indicator.style.height = link.offsetHeight + "px";
         indicator.style.transform = `translateY(${link.offsetTop}px)`;
+        indicator.style.opacity = "1";
     }
 
-    if (activeIndex !== -1) {
+    function finalizarPosicionamento() {
 
-        const indicePrevio = sessionStorage.getItem(STORAGE_KEY);
+        const { links, activeIndex } = obterLinksEIndiceAtivo();
+        if (activeIndex === -1) return;
 
-        if (indicePrevio !== null && links[Number(indicePrevio)]) {
-            // posiciona sem animação onde estava antes
-            posicionar(Number(indicePrevio), false);
-            // força o navegador a "registrar" essa posição antes de animar
+        const linkAtivo  = links[activeIndex];
+        const hrefAtivo  = linkAtivo.getAttribute("href");
+
+        const hrefAnterior = sessionStorage.getItem(STORAGE_KEY);
+        const linkAnterior = hrefAnterior
+            ? links.find(a => a.getAttribute("href") === hrefAnterior)
+            : null;
+
+        if (linkAnterior && linkAnterior !== linkAtivo) {
+            // Já sabemos onde os dois links estão NA LISTA FINAL,
+            // então a animação de um pro outro é sempre correta.
+            posicionar(linkAnterior, false);
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    posicionar(activeIndex, true);
+                    posicionar(linkAtivo, true);
                 });
             });
         } else {
-            posicionar(activeIndex, false);
+            // Primeira visita nesta sessão, ou item repetido: sem animação
+            posicionar(linkAtivo, false);
         }
 
-        sessionStorage.setItem(STORAGE_KEY, activeIndex);
+        sessionStorage.setItem(STORAGE_KEY, hrefAtivo);
     }
 
-    // NOVO: quando sidebar-role.js terminar de injetar/esconder links
-    // (processo assíncrono, que acontece DEPOIS deste script rodar),
-    // ele dispara este evento e recalculamos a posição do indicador
-    // com a lista de links já atualizada — evita o indicador "pular"
-    // para o item errado.
+    let jaFinalizou = false;
+
+    // Espera o sidebar-role.js avisar que terminou de ajustar os links
     document.addEventListener("sidebarLinksAtualizados", () => {
-
-        ({ links, activeIndex } = obterLinksEIndice());
-
-        if (activeIndex !== -1) {
-            posicionar(activeIndex, false);
-            sessionStorage.setItem(STORAGE_KEY, activeIndex);
-        }
+        jaFinalizou = true;
+        finalizarPosicionamento();
     });
+
+    // Rede de segurança: se a página não tiver sidebar-role.js
+    // (ou o usuário não estiver logado), posiciona mesmo assim
+    // depois de um instante, pra não deixar o indicador sumido.
+    setTimeout(() => {
+        if (!jaFinalizou) finalizarPosicionamento();
+    }, 150);
 
 });

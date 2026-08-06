@@ -17,126 +17,149 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-
-        .filtros{
-            display:flex;
-            gap:12px;
-            margin-bottom:30px;
-            flex-wrap:wrap;
+        .filtros {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        .filtro-btn{
-            border:2px solid #e0e0e0;
-            background:white;
-            padding:10px 20px;
-            border-radius:50px;
-            font-weight:600;
-            font-family:"Poppins",sans-serif;
-            cursor:pointer;
-            transition:.2s;
-            color:#555;
+        .filtro-btn {
+            border: 2px solid #e0e0e0;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: "Poppins", sans-serif;
+            cursor: pointer;
+            transition: .2s;
+            color: #555;
         }
 
-        .filtro-btn:hover{
-            border-color:#249341;
+        .filtro-btn:hover {
+            border-color: #249341;
         }
 
-        .filtro-btn.active{
-            background:linear-gradient(135deg,#249341,#48a840);
-            border-color:transparent;
-            color:white;
+        .filtro-btn.active {
+            background: linear-gradient(135deg, #249341, #48a840);
+            border-color: transparent;
+            color: white;
         }
 
-        .maquinas-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-            gap:25px;
+        .maquinas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
         }
 
-        .maquina-card{
-            background:white;
-            border-radius:22px;
-            padding:26px;
-            box-shadow:0 10px 30px rgba(0,0,0,.08);
-            border-left:6px solid #ccc;
+        .maquina-card {
+            background: white;
+            border-radius: 22px;
+            padding: 26px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            border-left: 6px solid #ccc;
         }
 
-        .maquina-card.cheia{ border-left-color:#e53935; }
-        .maquina-card.vazia{ border-left-color:#249341; }
-
-        .maquina-topo{
-            display:flex;
-            justify-content:space-between;
-            align-items:flex-start;
-            margin-bottom:14px;
+        .maquina-card.cheia {
+            border-left-color: #e53935;
         }
 
-        .maquina-topo h3{ margin-bottom:4px; }
-
-        .maquina-topo p{
-            color:#888;
-            font-size:.85rem;
+        .maquina-card.vazia {
+            border-left-color: #249341;
         }
 
-        .badge{
-            padding:6px 14px;
-            border-radius:50px;
-            font-size:.78rem;
-            font-weight:700;
-            white-space:nowrap;
+        .maquina-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
         }
 
-        .badge.cheia{ background:#fdeaea; color:#e53935; }
-        .badge.vazia{ background:#e8f7ec; color:#249341; }
-
-        .nivel-bar{
-            width:100%;
-            height:10px;
-            border-radius:20px;
-            background:#eee;
-            overflow:hidden;
-            margin:14px 0 6px;
+        .maquina-topo h3 {
+            margin-bottom: 4px;
         }
 
-        .nivel-fill{
-            height:100%;
-            border-radius:20px;
-            transition:width .6s ease;
+        .maquina-topo p {
+            color: #888;
+            font-size: .85rem;
         }
 
-        .nivel-texto{
-            font-size:.82rem;
-            color:#888;
-            margin-bottom:16px;
+        .badge {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: .78rem;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
-        .maquina-card button{
-            width:100%;
-            border:none;
-            padding:12px;
-            border-radius:12px;
-            font-weight:600;
-            cursor:pointer;
-            color:white;
-            background:linear-gradient(135deg,#249341,#48a840);
+        .badge.cheia {
+            background: #fdeaea;
+            color: #e53935;
         }
 
-        .maquina-card button:disabled{
-            background:#ccc;
-            cursor:not-allowed;
+        .badge.vazia {
+            background: #e8f7ec;
+            color: #249341;
         }
 
-        .vazio-aviso{
-            grid-column:1/-1;
-            text-align:center;
-            color:#888;
-            padding:40px;
+        .nivel-bar {
+            width: 100%;
+            height: 10px;
+            border-radius: 20px;
+            background: #eee;
+            overflow: hidden;
+            margin: 14px 0 6px;
         }
 
-        body.dark .maquina-card{ background:#1e1e1e; color:white; }
-        body.dark .filtro-btn{ background:#1e1e1e; color:#ccc; border-color:#333; }
-        body.dark .maquina-topo p{ color:#aaa; }
+        .nivel-fill {
+            height: 100%;
+            border-radius: 20px;
+            transition: width .6s ease;
+        }
 
+        .nivel-texto {
+            font-size: .82rem;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .maquina-card button {
+            width: 100%;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #249341, #48a840);
+        }
+
+        .maquina-card button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .vazio-aviso {
+            grid-column: 1/-1;
+            text-align: center;
+            color: #888;
+            padding: 40px;
+        }
+
+        body.dark .maquina-card {
+            background: #1e1e1e;
+            color: white;
+        }
+
+        body.dark .filtro-btn {
+            background: #1e1e1e;
+            color: #ccc;
+            border-color: #333;
+        }
+
+        body.dark .maquina-topo p {
+            color: #aaa;
+        }
     </style>
 
 </head>
@@ -184,15 +207,17 @@
                 <span class="link-text">Ranking</span>
             </a>
 
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="link-text">Configurações</span>
+            </a>
+
             <a href="maquinas.html" class="active">
                 <i class="fa-solid fa-industry"></i>
                 <span class="link-text">Máquinas</span>
             </a>
 
-            <a href="configuracoes.html">
-                <i class="fa-solid fa-gear"></i>
-                <span class="link-text">Configurações</span>
-            </a>
+
 
             <a href="#" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
