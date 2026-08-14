@@ -128,5 +128,5 @@ print(f"\nResultado no conjunto de teste -> loss: {test_loss:.4f} | acurácia: {
 # ----------------------------
 # 6. Salvar o modelo treinado
 # ----------------------------
-model.save("classificador_latinha.keras")
-print("Modelo salvo como classificador_latinha.keras")
+model.save("classificador_latinha_01.keras")
+print("Modelo salvo como classificador_latinha01.keras")
