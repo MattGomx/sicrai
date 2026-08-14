@@ -1,5 +1,8 @@
 import sys
 import numpy as np
+import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
