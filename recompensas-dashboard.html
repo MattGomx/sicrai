@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
@@ -139,23 +140,27 @@
 
     </main>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase.js"></script>
-<script src="assets/js/role-guard.js"></script>
+<script src="assets/js/toast.js"></script>
 
 <script>
 
     let pontosAtuais = 0;
 
     async function carregarPontos() {
-        // Só usuário padrão e admin acessam a loja de recompensas.
-        const acesso = await protegerPagina(["usuario", "admin"]);
-        if (!acesso) return;
+        const { data: { session } } = await client.auth.getSession();
+        if (!session) {
+            window.location.href = "login.html";
+            return;
+        }
 
         const { data: perfil } = await client
             .from("perfis")
             .select("pontos")
-            .eq("id", acesso.session.user.id)
+            .eq("id", session.user.id)
             .single();
 
         pontosAtuais = perfil?.pontos ?? 0;
@@ -181,7 +186,10 @@
 
             if (pontosAtuais < custo) return;
 
-            const confirmar = confirm(`Resgatar "${nome}" por ${custo} pontos?`);
+            const confirmar = await confirmarAcao(
+                `Resgatar "${nome}" por ${custo} pontos?`,
+                { titulo: "Confirmar resgate", textoConfirmar: "Resgatar" }
+            );
             if (!confirmar) return;
 
             botao.disabled = true;
@@ -196,7 +204,7 @@
                 .single();
 
             if (erroGet || !perfil || perfil.pontos < custo) {
-                alert("Pontos insuficientes para resgatar esta recompensa.");
+                mostrarToast("Pontos insuficientes para resgatar esta recompensa.", "aviso");
                 await carregarPontos();
                 return;
             }
@@ -209,12 +217,12 @@
                 .eq("id", session.user.id);
 
             if (error) {
-                alert("Erro ao resgatar recompensa. Tente novamente.");
+                mostrarToast("Erro ao resgatar recompensa. Tente novamente.", "erro");
                 await carregarPontos();
                 return;
             }
 
-            alert(`🎉 "${nome}" resgatado com sucesso!`);
+            mostrarToast(`🎉 "${nome}" resgatado com sucesso!`, "sucesso");
             await carregarPontos();
 
         });
@@ -229,7 +237,6 @@
     });
 
 </script>
-<script src="assets/js/sidebar-role.js"></script>
 <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>

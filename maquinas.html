@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -187,11 +188,6 @@
 
         <nav>
 
-            <a href="mapa.html">
-                <i class="fa-solid fa-map-location-dot"></i>
-                <span class="link-text">Mapa</span>
-            </a>
-
             <a href="dashboard.html">
                 <i class="fa-solid fa-chart-line"></i>
                 <span class="link-text">Dashboard</span>
@@ -222,7 +218,10 @@
                 <span class="link-text">Máquinas</span>
             </a>
 
-
+            <a href="mapa.html">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="link-text">Mapa</span>
+            </a>
 
             <a href="#" id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -256,8 +255,11 @@
 
     </main>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/toast.js"></script>
     <script src="assets/js/role-guard.js"></script>
 
     <script>
@@ -356,7 +358,9 @@
                 .eq("id", id);
 
             if (error) {
-                alert("Erro ao atualizar a máquina. Tente novamente.");
+                mostrarToast("Erro ao atualizar a máquina. Tente novamente.", "erro");
+            } else {
+                mostrarToast("Máquina marcada como esvaziada!", "sucesso");
             }
 
             await carregarMaquinas();

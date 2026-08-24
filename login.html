@@ -9,6 +9,7 @@
     <title>Login | SICRAI</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -75,9 +76,11 @@
 
     </div>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
-    <script src="assets/js/role-guard.js"></script>
+    <script src="assets/js/toast.js"></script>
 
     <script>
         document
@@ -95,13 +98,11 @@
                 });
 
                 if (error) {
-                    alert(error.message);
+                    mostrarToast(error.message, "erro");
                     return;
                 }
 
-                // Redireciona conforme o nível de acesso do usuário
-                const perfil = await obterPerfilComRole(data.user.id);
-                window.location.href = paginaInicialPorRole(perfil.role);
+                window.location.href = "dashboard.html";
             });
     </script>
 
