@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mapa de Máquinas | SICRAI</title>
+
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+
+        /* ===== LAYOUT DO MAPA ===== */
+
+        .mapa-wrapper{
+            background:white;
+            border-radius:25px;
+            padding:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,.08);
+            margin-bottom:25px;
+        }
+
+        .busca-local{
+            display:flex;
+            gap:10px;
+            margin-bottom:16px;
+            flex-wrap:wrap;
+        }
+
+        .busca-local input{
+            flex:1;
+            min-width:220px;
+            padding:14px 18px;
+            border-radius:12px;
+            border:1px solid #ddd;
+            outline:none;
+            font-family:"Poppins",sans-serif;
+            font-size:.95rem;
+        }
+
+        .busca-local input:focus{
+            border-color:#249341;
+        }
+
+        .busca-local button{
+            border:none;
+            border-radius:12px;
+            padding:14px 22px;
+            font-weight:600;
+            font-family:"Poppins",sans-serif;
+            cursor:pointer;
+            color:white;
+            background:linear-gradient(135deg,#249341,#48a840);
+            white-space:nowrap;
+        }
+
+        .busca-local button:hover{
+            opacity:.92;
+        }
+
+        .dica-mapa{
+            font-size:.85rem;
+            color:#888;
+            margin-bottom:14px;
+        }
+
+        #mapaMaquinas{
+            width:100%;
+            height:520px;
+            border-radius:18px;
+            z-index:1;
+        }
+
+        .legenda{
+            display:flex;
+            gap:22px;
+            margin-top:16px;
+            flex-wrap:wrap;
+            font-size:.85rem;
+            color:#555;
+        }
+
+        .legenda span{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+        }
+
+        .bolinha{
+            width:14px;
+            height:14px;
+            border-radius:50%;
+            display:inline-block;
+        }
+
+        /* ===== POPUP DO MARCADOR ===== */
+
+        .popup-maquina{
+            font-family:"Poppins",sans-serif;
+            min-width:180px;
+        }
+
+        .popup-maquina h4{
+            margin-bottom:6px;
+            color:#146b35;
+        }
+
+        .popup-maquina .popup-local{
+            font-size:.8rem;
+            color:#888;
+            margin-bottom:10px;
+        }
+
+        .popup-nivel-bar{
+            width:100%;
+            height:10px;
+            background:#eee;
+            border-radius:20px;
+            overflow:hidden;
+            margin-bottom:6px;
+        }
+
+        .popup-nivel-fill{
+            height:100%;
+            border-radius:20px;
+        }
+
+        .popup-status{
+            display:inline-block;
+            margin-top:4px;
+            padding:4px 10px;
+            border-radius:50px;
+            font-size:.75rem;
+            font-weight:700;
+        }
+
+        .popup-status.cheia{
+            background:#fdeaea;
+            color:#e53935;
+        }
+
+        .popup-status.vazia{
+            background:#e8f7ec;
+            color:#249341;
+        }
+
+        /* ===== MODAL ADICIONAR MÁQUINA ===== */
+
+        .modal-overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.55);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:9999;
+            opacity:0;
+            visibility:hidden;
+            transition:.25s;
+        }
+
+        .modal-overlay.show{
+            opacity:1;
+            visibility:visible;
+        }
+
+        .modal-box{
+            background:white;
+            width:90%;
+            max-width:420px;
+            border-radius:25px;
+            padding:30px;
+        }
+
+        .modal-box h3{
+            margin-bottom:6px;
+            color:#146b35;
+        }
+
+        .modal-box p.endereco-preview{
+            font-size:.85rem;
+            color:#888;
+            margin-bottom:20px;
+        }
+
+        .modal-box .input-group{
+            margin-bottom:16px;
+            display:flex;
+            flex-direction:column;
+        }
+
+        .modal-box label{
+            font-weight:600;
+            margin-bottom:6px;
+            font-size:.9rem;
+        }
+
+        .modal-box input[type="text"],
+        .modal-box input[type="number"]{
+            padding:12px 14px;
+            border-radius:10px;
+            border:1px solid #ddd;
+            outline:none;
+            font-family:"Poppins",sans-serif;
+        }
+
+        .modal-box input:focus{
+            border-color:#249341;
+        }
+
+        .modal-botoes{
+            display:flex;
+            gap:10px;
+            margin-top:10px;
+        }
+
+        .modal-botoes button{
+            flex:1;
+            border:none;
+            padding:13px;
+            border-radius:12px;
+            cursor:pointer;
+            font-weight:600;
+            font-family:"Poppins",sans-serif;
+        }
+
+        .btn-confirmar{
+            background:linear-gradient(135deg,#249341,#48a840);
+            color:white;
+        }
+
+        .btn-cancelar{
+            background:#eee;
+            color:#555;
+        }
+
+        /* DARK MODE */
+
+        body.dark .mapa-wrapper{
+            background:#1e1e1e;
+        }
+
+        body.dark .busca-local input{
+            background:#2a2a2a;
+            border-color:#444;
+            color:white;
+        }
+
+        body.dark .dica-mapa,
+        body.dark .legenda{
+            color:#aaa;
+        }
+
+        body.dark .modal-box{
+            background:#1e1e1e;
+            color:white;
+        }
+
+        body.dark .modal-box input{
+            background:#2a2a2a;
+            border-color:#444;
+            color:white;
+        }
+
+        body.dark .btn-cancelar{
+            background:#333;
+            color:#ddd;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <script>
+        if (localStorage.getItem("tema") === "dark") {
+            document.body.classList.add("dark");
+        }
+    </script>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <i class="fa-solid fa-recycle"></i>
+            <span>SICRAI</span>
+        </div>
+
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar menu">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+
+        <nav>
+
+            <a href="mapa.html" class="active">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="link-text">Mapa</span>
+            </a>
+
+            <a href="dashboard.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="link-text">Dashboard</span>
+            </a>
+
+            <a href="reciclagens.html">
+                <i class="fa-solid fa-recycle"></i>
+                <span class="link-text">Reciclagens</span>
+            </a>
+
+            <a href="recompensas-dashboard.html">
+                <i class="fa-solid fa-gift"></i>
+                <span class="link-text">Recompensas</span>
+            </a>
+
+            <a href="ranking.html">
+                <i class="fa-solid fa-trophy"></i>
+                <span class="link-text">Ranking</span>
+            </a>
+
+            <a href="configuracoes.html">
+                <i class="fa-solid fa-gear"></i>
+                <span class="link-text">Configurações</span>
+            </a>
+
+            <a href="maquinas.html">
+                <i class="fa-solid fa-industry"></i>
+                <span class="link-text">Máquinas</span>
+            </a>
+
+            <a href="#" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span class="link-text">Sair</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>🗺️ Mapa de Máquinas</h1>
+                <p>Busque um endereço ou clique no mapa para posicionar uma nova máquina.</p>
+            </div>
+        </div>
+
+        <div class="mapa-wrapper">
+
+            <div class="busca-local">
+                <input type="text" id="campoBusca" placeholder="Digite um endereço, bairro ou cidade...">
+                <button id="btnBuscar"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                <button id="btnMinhaLocalizacao"><i class="fa-solid fa-location-crosshairs"></i> Minha localização</button>
+            </div>
+
+            <p class="dica-mapa">
+                <i class="fa-solid fa-circle-info"></i>
+                Dica: clique em qualquer ponto do mapa para adicionar uma máquina naquele local exato.
+            </p>
+
+            <div id="mapaMaquinas"></div>
+
+            <div class="legenda">
+                <span><span class="bolinha" style="background:#e53935"></span> Máquina cheia</span>
+                <span><span class="bolinha" style="background:#249341"></span> Máquina vazia</span>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- MODAL ADICIONAR MÁQUINA -->
+
+    <div class="modal-overlay" id="modalAdicionar">
+
+        <div class="modal-box">
+
+            <h3><i class="fa-solid fa-plus"></i> Nova Máquina</h3>
+            <p class="endereco-preview" id="enderecoPreview">Localização selecionada</p>
+
+            <div class="input-group">
+                <label>Nome da máquina</label>
+                <input type="text" id="inputNome" placeholder="Ex: Coletor Praça Central">
+            </div>
+
+            <div class="input-group">
+                <label>Nível de enchimento (%)</label>
+                <input type="number" id="inputNivel" min="0" max="100" value="0">
+            </div>
+
+            <div class="modal-botoes">
+                <button class="btn-cancelar" id="btnCancelarModal">Cancelar</button>
+                <button class="btn-confirmar" id="btnConfirmarModal">Adicionar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/role-guard.js"></script>
+
+    <!-- LEAFLET JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+
+        let map;
+        let marcadorTemporario = null;
+        let coordenadaSelecionada = null;
+        const marcadoresMaquinas = [];
+
+        const CENTRO_PADRAO = [-20.5134624, -43.7130801]; 
+
+        function criarIconeColorido(cor) {
+            return L.divIcon({
+                className: "",
+                html: `<div style="
+                    width:26px;height:26px;border-radius:50%;
+                    background:${cor};border:3px solid white;
+                    box-shadow:0 2px 8px rgba(0,0,0,.35);
+                "></div>`,
+                iconSize: [26, 26],
+                iconAnchor: [13, 13],
+                popupAnchor: [0, -13]
+            });
+        }
+
+        function inicializarMapa() {
+            map = L.map("mapaMaquinas").setView(CENTRO_PADRAO, 17);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: "&copy; OpenStreetMap contributors"
+            }).addTo(map);
+
+            // Clique no mapa = adicionar máquina naquele ponto
+            map.on("click", (e) => {
+                abrirModalNaCoordenada(e.latlng.lat, e.latlng.lng, "Local selecionado no mapa");
+            });
+        }
+
+        /* =====================================
+           BUSCAR ENDEREÇO (geocodificação gratuita via Nominatim)
+        ===================================== */
+
+        async function buscarEndereco() {
+            const termo = document.getElementById("campoBusca").value.trim();
+            if (!termo) return;
+
+            const btn = document.getElementById("btnBuscar");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Buscando...`;
+
+            try {
+                const resposta = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(termo)}&limit=1`
+                );
+                const resultados = await resposta.json();
+
+                if (!resultados || resultados.length === 0) {
+                    alert("Endereço não encontrado. Tente ser mais específico.");
+                    return;
+                }
+
+                const local = resultados[0];
+                const lat = parseFloat(local.lat);
+                const lon = parseFloat(local.lon);
+
+                map.setView([lat, lon], 16);
+                abrirModalNaCoordenada(lat, lon, local.display_name);
+
+            } catch (err) {
+                alert("Erro ao buscar endereço. Verifique sua conexão.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Buscar`;
+            }
+        }
+
+        document.getElementById("btnBuscar").addEventListener("click", buscarEndereco);
+        document.getElementById("campoBusca").addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                buscarEndereco();
+            }
+        });
+
+        document.getElementById("btnMinhaLocalizacao").addEventListener("click", () => {
+            if (!navigator.geolocation) {
+                alert("Seu navegador não suporta geolocalização.");
+                return;
+            }
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const { latitude, longitude } = pos.coords;
+                map.setView([latitude, longitude], 16);
+            }, () => {
+                alert("Não foi possível obter sua localização.");
+            });
+        });
+
+        /* =====================================
+           MODAL - ADICIONAR MÁQUINA
+        ===================================== */
+
+        function abrirModalNaCoordenada(lat, lng, descricao) {
+            coordenadaSelecionada = { lat, lng, descricao };
+
+            if (marcadorTemporario) {
+                map.removeLayer(marcadorTemporario);
+            }
+
+            marcadorTemporario = L.marker([lat, lng], {
+                icon: criarIconeColorido("#888")
+            }).addTo(map);
+
+            document.getElementById("enderecoPreview").textContent = descricao;
+            document.getElementById("inputNome").value = "";
+            document.getElementById("inputNivel").value = 0;
+            document.getElementById("modalAdicionar").classList.add("show");
+        }
+
+        function fecharModal() {
+            document.getElementById("modalAdicionar").classList.remove("show");
+            if (marcadorTemporario) {
+                map.removeLayer(marcadorTemporario);
+                marcadorTemporario = null;
+            }
+        }
+
+        document.getElementById("btnCancelarModal").addEventListener("click", fecharModal);
+
+        document.getElementById("modalAdicionar").addEventListener("click", (e) => {
+            if (e.target.id === "modalAdicionar") fecharModal();
+        });
+
+        document.getElementById("btnConfirmarModal").addEventListener("click", async () => {
+
+            const nome = document.getElementById("inputNome").value.trim();
+            const nivel = Math.max(0, Math.min(100, parseInt(document.getElementById("inputNivel").value) || 0));
+
+            if (!nome) {
+                alert("Digite um nome para a máquina.");
+                return;
+            }
+
+            if (!coordenadaSelecionada) return;
+
+            const status = nivel >= 80 ? "cheia" : "vazia";
+
+            const btn = document.getElementById("btnConfirmarModal");
+            btn.disabled = true;
+            btn.textContent = "Salvando...";
+
+            const { error } = await client.from("maquinas").insert({
+                nome,
+                localizacao: coordenadaSelecionada.descricao,
+                latitude: coordenadaSelecionada.lat,
+                longitude: coordenadaSelecionada.lng,
+                status,
+                nivel
+            });
+
+            btn.disabled = false;
+            btn.textContent = "Adicionar";
+
+            if (error) {
+                alert("Erro ao salvar máquina: " + error.message +
+                    "\n\nVerifique se as colunas 'latitude' e 'longitude' existem na tabela 'maquinas' do Supabase.");
+                return;
+            }
+
+            fecharModal();
+            await carregarMaquinasNoMapa();
+        });
+
+        /* =====================================
+           CARREGAR MÁQUINAS DO SUPABASE NO MAPA
+        ===================================== */
+
+        async function carregarMaquinasNoMapa() {
+
+            // Limpa marcadores antigos
+            marcadoresMaquinas.forEach(m => map.removeLayer(m));
+            marcadoresMaquinas.length = 0;
+
+            const { data, error } = await client
+                .from("maquinas")
+                .select("id, nome, localizacao, status, nivel, latitude, longitude");
+
+            if (error || !data) {
+                console.error(error);
+                return;
+            }
+
+            data.forEach(m => {
+                if (m.latitude == null || m.longitude == null) return;
+
+                const cheia = m.status === "cheia";
+                const cor = cheia ? "#e53935" : "#249341";
+
+                const marcador = L.marker([m.latitude, m.longitude], {
+                    icon: criarIconeColorido(cor)
+                }).addTo(map);
+
+                marcador.bindPopup(`
+                    <div class="popup-maquina">
+                        <h4>${m.nome}</h4>
+                        <div class="popup-local">
+                            <i class="fa-solid fa-location-dot"></i> ${m.localizacao || "Local não informado"}
+                        </div>
+                        <div class="popup-nivel-bar">
+                            <div class="popup-nivel-fill" style="width:${m.nivel}%; background:${cor};"></div>
+                        </div>
+                        <span>${m.nivel}% cheia</span><br>
+                        <span class="popup-status ${m.status}">${cheia ? "Cheia" : "Vazia"}</span>
+                    </div>
+                `);
+
+                marcadoresMaquinas.push(marcador);
+            });
+        }
+
+        /* =====================================
+           INICIALIZAÇÃO / PROTEÇÃO DE PÁGINA
+        ===================================== */
+
+        async function iniciar() {
+            const acesso = await protegerPagina(["catador", "admin"]);
+            if (!acesso) return;
+
+            document.getElementById("logoutBtn").addEventListener("click", async () => {
+                await client.auth.signOut();
+                window.location.href = "login.html";
+            });
+
+            inicializarMapa();
+            await carregarMaquinasNoMapa();
+        }
+
+        iniciar();
+
+    </script>
+
+    <script src="assets/js/sidebar-role.js"></script>
+    <script src="assets/js/sidebar-toggle.js"></script>
+
+</body>
+
+</html>

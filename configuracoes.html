@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-
         /* ── CABEÇALHO DE PERFIL ── */
 
         .profile-header {
@@ -28,7 +27,7 @@
             border-radius: 25px;
             padding: 2rem;
             margin-bottom: 1.8rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
         }
 
         .profile-avatar {
@@ -164,8 +163,15 @@
         }
 
         @keyframes fadeInPanel {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ── BADGES DE STATUS ── */
@@ -256,8 +262,14 @@
             transition: background .2s, transform .1s, opacity .2s;
         }
 
-        .btn-danger:hover   { background: #c62828; }
-        .btn-danger:active  { transform: scale(.97); }
+        .btn-danger:hover {
+            background: #c62828;
+        }
+
+        .btn-danger:active {
+            transform: scale(.97);
+        }
+
         .btn-danger:disabled {
             opacity: .55;
             cursor: not-allowed;
@@ -335,7 +347,6 @@
             cursor: pointer;
             font-weight: 600;
         }
-
     </style>
 
 </head>
@@ -362,6 +373,11 @@
         </button>
 
         <nav>
+
+            <a href="mapa.html">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="link-text">Mapa</span>
+            </a>
 
             <a href="dashboard.html">
                 <i class="fa-solid fa-chart-line"></i>
@@ -579,12 +595,7 @@
 
                         <div class="input-group">
                             <label>Código de 6 dígitos</label>
-                            <input
-                                type="text"
-                                id="codigoSeg"
-                                class="codigo-input"
-                                maxlength="6"
-                                placeholder="000000"
+                            <input type="text" id="codigoSeg" class="codigo-input" maxlength="6" placeholder="000000"
                                 inputmode="numeric">
                         </div>
 
@@ -749,7 +760,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
     <script src="assets/js/role-guard.js"></script>
-    
+
 
     <script>
 
@@ -909,9 +920,9 @@
 
         async function alterarEmail() {
 
-            const novoEmail   = document.getElementById("novoEmailInput").value.trim();
-            const senhaAtual  = document.getElementById("senhaAtualEmail").value;
-            const emailRegex  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const novoEmail = document.getElementById("novoEmailInput").value.trim();
+            const senhaAtual = document.getElementById("senhaAtualEmail").value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailRegex.test(novoEmail)) {
                 alert("Digite um email válido.");
@@ -1042,7 +1053,7 @@
         /* ── ALTERAR SENHA: ETAPA 3 (SALVAR NOVA SENHA) ── */
 
         async function alterarSenha() {
-            const novaSenha      = document.getElementById("novaSenha").value;
+            const novaSenha = document.getElementById("novaSenha").value;
             const confirmarSenha = document.getElementById("confirmarSenha").value;
 
             if (novaSenha.length < 6) {
@@ -1151,7 +1162,7 @@
             }
 
             const novasLatinhas = perfil.latinhas - 1;
-            const novosPontos   = Math.max((perfil.pontos || 0) - 5, 0);
+            const novosPontos = Math.max((perfil.pontos || 0) - 5, 0);
 
             const { error } = await client
                 .from("perfis")
@@ -1244,7 +1255,7 @@
         });
 
     </script>
- 
+
     <script src="assets/js/sidebar-role.js"></script>
     <script src="assets/js/sidebar-toggle.js"></script>
 

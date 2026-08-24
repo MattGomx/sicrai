@@ -14,12 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Dark mode sem flash -->
     <script>
-        if(localStorage.getItem("tema") === "dark"){
+        if (localStorage.getItem("tema") === "dark") {
             document.documentElement.classList.add("dark-early");
         }
     </script>
@@ -42,6 +41,11 @@
         </button>
 
         <nav>
+
+            <a href="mapa.html">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="link-text">Mapa</span>
+            </a>
 
             <a href="dashboard.html" class="active">
                 <i class="fa-solid fa-chart-line"></i>
@@ -183,7 +187,7 @@
 
     <script>
         // Dark mode persistente
-        if(localStorage.getItem("tema") === "dark"){
+        if (localStorage.getItem("tema") === "dark") {
             document.body.classList.add("dark");
         }
 
