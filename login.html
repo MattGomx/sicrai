@@ -81,6 +81,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
     <script src="assets/js/toast.js"></script>
+    <script src="assets/js/role-guard.js"></script>
 
     <script>
         document
@@ -102,7 +103,9 @@
                     return;
                 }
 
-                window.location.href = "dashboard.html";
+                // Redireciona conforme o nível de acesso do usuário
+                const perfil = await obterPerfilComRole(data.user.id);
+                window.location.href = paginaInicialPorRole(perfil.role);
             });
     </script>
 

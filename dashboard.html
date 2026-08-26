@@ -15,12 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Dark mode sem flash -->
     <script>
-        if(localStorage.getItem("tema") === "dark"){
+        if (localStorage.getItem("tema") === "dark") {
             document.documentElement.classList.add("dark-early");
         }
     </script>
@@ -43,6 +42,11 @@
         </button>
 
         <nav>
+
+            <a href="mapa.html">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="link-text">Mapa</span>
+            </a>
 
             <a href="dashboard.html" class="active">
                 <i class="fa-solid fa-chart-line"></i>
@@ -183,18 +187,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
     <script src="assets/js/toast.js"></script>
+    <script src="assets/js/role-guard.js"></script>
 
     <script>
         // Dark mode persistente
-        if(localStorage.getItem("tema") === "dark"){
+        if (localStorage.getItem("tema") === "dark") {
             document.body.classList.add("dark");
         }
 
         async function checkUser() {
-            const { data: { session } } = await client.auth.getSession();
-            if (!session) {
-                window.location.href = "login.html";
-            }
+            // Só usuário padrão e admin acessam o dashboard comum.
+            // Catador é redirecionado para a tela de máquinas.
+            const acesso = await protegerPagina(["usuario", "admin"]);
+            if (!acesso) return;
         }
 
         checkUser();
@@ -208,6 +213,7 @@
     </script>
 
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/sidebar-role.js"></script>
     <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>

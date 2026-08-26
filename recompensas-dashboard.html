@@ -41,6 +41,11 @@
 
         <nav>
 
+            <a href="mapa.html">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="link-text">Mapa</span>
+            </a>
+
             <a href="dashboard.html">
                 <i class="fa-solid fa-chart-line"></i>
                 <span class="link-text">Dashboard</span>
@@ -145,17 +150,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase.js"></script>
 <script src="assets/js/toast.js"></script>
+<script src="assets/js/role-guard.js"></script>
 
 <script>
 
     let pontosAtuais = 0;
 
     async function carregarPontos() {
+        // Só usuário padrão e admin acessam a loja de recompensas.
+        const acesso = await protegerPagina(["usuario", "admin"]);
+        if (!acesso) return;
+
         const { data: { session } } = await client.auth.getSession();
-        if (!session) {
-            window.location.href = "login.html";
-            return;
-        }
+        if (!session) return;
 
         const { data: perfil } = await client
             .from("perfis")
@@ -237,6 +244,7 @@
     });
 
 </script>
+<script src="assets/js/sidebar-role.js"></script>
 <script src="assets/js/sidebar-toggle.js"></script>
 
 </body>
