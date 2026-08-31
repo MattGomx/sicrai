@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -304,8 +305,11 @@
 
     </main>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/toast.js"></script>
     <script src="assets/js/role-guard.js"></script>
 
     <script>
@@ -376,16 +380,19 @@
                     .eq("id", id);
 
                 if (error) {
-                    alert("Erro ao salvar: " + error.message);
+                    mostrarToast("Erro ao salvar: " + error.message, "erro");
                     return;
                 }
 
-                alert("Usuário atualizado com sucesso!");
+                mostrarToast("Usuário atualizado com sucesso!", "sucesso");
             }
 
             if (e.target.classList.contains("btn-excluir-linha")) {
 
-                const confirmar = confirm("Tem certeza que deseja excluir este perfil? Essa ação não pode ser desfeita.");
+                const confirmar = await confirmarAcao(
+                    "Essa ação não pode ser desfeita.",
+                    { titulo: "Excluir este perfil?", textoConfirmar: "Sim, excluir" }
+                );
                 if (!confirmar) return;
 
                 const { error } = await client
@@ -394,10 +401,11 @@
                     .eq("id", id);
 
                 if (error) {
-                    alert("Erro ao excluir: " + error.message);
+                    mostrarToast("Erro ao excluir: " + error.message, "erro");
                     return;
                 }
 
+                mostrarToast("Perfil excluído com sucesso.", "sucesso");
                 await carregarUsuarios();
             }
 
@@ -451,10 +459,11 @@
                 .insert({ nome, localizacao, nivel, status: nivel >= 80 ? "cheia" : "vazia" });
 
             if (error) {
-                alert("Erro ao adicionar máquina: " + error.message);
+                mostrarToast("Erro ao adicionar máquina: " + error.message, "erro");
                 return;
             }
 
+            mostrarToast(`Máquina "${nome}" adicionada com sucesso!`, "sucesso");
             e.target.reset();
             await carregarMaquinas();
         });
@@ -476,16 +485,19 @@
                     .eq("id", id);
 
                 if (error) {
-                    alert("Erro ao salvar: " + error.message);
+                    mostrarToast("Erro ao salvar: " + error.message, "erro");
                     return;
                 }
 
-                alert("Máquina atualizada!");
+                mostrarToast("Máquina atualizada!", "sucesso");
             }
 
             if (e.target.classList.contains("btn-excluir-maquina")) {
 
-                const confirmar = confirm("Excluir esta máquina?");
+                const confirmar = await confirmarAcao(
+                    "Essa ação não pode ser desfeita.",
+                    { titulo: "Excluir esta máquina?", textoConfirmar: "Sim, excluir" }
+                );
                 if (!confirmar) return;
 
                 const { error } = await client
@@ -494,10 +506,11 @@
                     .eq("id", id);
 
                 if (error) {
-                    alert("Erro ao excluir: " + error.message);
+                    mostrarToast("Erro ao excluir: " + error.message, "erro");
                     return;
                 }
 
+                mostrarToast("Máquina excluída com sucesso.", "sucesso");
                 await carregarMaquinas();
             }
 

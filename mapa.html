@@ -435,7 +435,7 @@
                 <button id="btnMinhaLocalizacao"><i class="fa-solid fa-location-crosshairs"></i> Minha localização</button>
             </div>
 
-            <p class="dica-mapa">
+            <p class="dica-mapa" id="dicaMapa">
                 <i class="fa-solid fa-circle-info"></i>
                 Dica: clique em qualquer ponto do mapa para adicionar uma máquina naquele local exato.
             </p>
@@ -517,6 +517,8 @@
             });
         }
 
+        let podeAdicionarMaquina = false; // definido em iniciar(), conforme o papel do usuário
+
         function inicializarMapa() {
             map = L.map("mapaMaquinas").setView(CENTRO_PADRAO, 14);
 
@@ -526,9 +528,13 @@
             }).addTo(map);
 
             // Clique no mapa = adicionar máquina naquele ponto
-            map.on("click", (e) => {
-                abrirModalNaCoordenada(e.latlng.lat, e.latlng.lng, "Local selecionado no mapa");
-            });
+            // (só disponível para administradores — usuário padrão e
+            // catador só podem visualizar as máquinas no mapa)
+            if (podeAdicionarMaquina) {
+                map.on("click", (e) => {
+                    abrirModalNaCoordenada(e.latlng.lat, e.latlng.lng, "Local selecionado no mapa");
+                });
+            }
         }
 
         /* =====================================
@@ -843,8 +849,18 @@
         ===================================== */
 
         async function iniciar() {
-            const acesso = await protegerPagina(["catador", "admin"]);
+            const acesso = await protegerPagina(["usuario", "catador", "admin"]);
             if (!acesso) return;
+
+            podeAdicionarMaquina = acesso.perfil.role === "admin";
+
+            // Ajusta a dica do topo do mapa conforme o que o usuário pode fazer
+            const dica = document.getElementById("dicaMapa");
+            if (dica) {
+                dica.innerHTML = podeAdicionarMaquina
+                    ? `<i class="fa-solid fa-circle-info"></i> Dica: clique em qualquer ponto do mapa para adicionar uma máquina naquele local exato.`
+                    : `<i class="fa-solid fa-circle-info"></i> Aqui você pode visualizar as máquinas de coleta perto de você.`;
+            }
 
             document.getElementById("logoutBtn").addEventListener("click", async () => {
                 await client.auth.signOut();
