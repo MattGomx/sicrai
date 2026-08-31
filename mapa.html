@@ -10,13 +10,14 @@
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    
+    <!-- LEAFLET (mapa real, gratuito, sem chave de API) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
@@ -38,9 +39,14 @@
             flex-wrap:wrap;
         }
 
-        .busca-local input{
+        .busca-container{
+            position:relative;
             flex:1;
             min-width:220px;
+        }
+
+        .busca-container input{
+            width:100%;
             padding:14px 18px;
             border-radius:12px;
             border:1px solid #ddd;
@@ -49,8 +55,66 @@
             font-size:.95rem;
         }
 
-        .busca-local input:focus{
+        .busca-container input:focus{
             border-color:#249341;
+        }
+
+        .sugestoes-lista{
+            position:absolute;
+            top:calc(100% + 8px);
+            left:0;
+            right:0;
+            background:white;
+            border-radius:14px;
+            box-shadow:0 12px 30px rgba(0,0,0,.15);
+            max-height:280px;
+            overflow-y:auto;
+            z-index:2000;
+            display:none;
+            overflow:hidden;
+        }
+
+        .sugestoes-lista.show{
+            display:block;
+        }
+
+        .sugestao-item{
+            padding:13px 18px;
+            cursor:pointer;
+            font-size:.88rem;
+            color:#333;
+            border-bottom:1px solid #f0f0f0;
+            display:flex;
+            align-items:flex-start;
+            gap:10px;
+        }
+
+        .sugestao-item i{
+            color:#249341;
+            margin-top:3px;
+        }
+
+        .sugestao-item:last-child{
+            border-bottom:none;
+        }
+
+        .sugestao-item:hover,
+        .sugestao-item.ativo{
+            background:#f0f8f2;
+        }
+
+        body.dark .sugestoes-lista{
+            background:#242424;
+        }
+
+        body.dark .sugestao-item{
+            color:#eee;
+            border-bottom-color:#333;
+        }
+
+        body.dark .sugestao-item:hover,
+        body.dark .sugestao-item.ativo{
+            background:#2a3a2c;
         }
 
         .busca-local button{
@@ -251,7 +315,7 @@
             background:#1e1e1e;
         }
 
-        body.dark .busca-local input{
+        body.dark .busca-container input{
             background:#2a2a2a;
             border-color:#444;
             color:white;
@@ -363,7 +427,10 @@
         <div class="mapa-wrapper">
 
             <div class="busca-local">
-                <input type="text" id="campoBusca" placeholder="Digite um endereço, bairro ou cidade...">
+                <div class="busca-container">
+                    <input type="text" id="campoBusca" placeholder="Digite um endereço, bairro ou cidade..." autocomplete="off">
+                    <div class="sugestoes-lista" id="sugestoesLista"></div>
+                </div>
                 <button id="btnBuscar"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
                 <button id="btnMinhaLocalizacao"><i class="fa-solid fa-location-crosshairs"></i> Minha localização</button>
             </div>
@@ -383,6 +450,10 @@
         </div>
 
     </main>
+
+    <!-- NOTIFICAÇÕES -->
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <!-- MODAL ADICIONAR MÁQUINA -->
 
@@ -414,6 +485,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/toast.js"></script>
     <script src="assets/js/role-guard.js"></script>
 
     <!-- LEAFLET JS -->
@@ -426,7 +498,10 @@
         let coordenadaSelecionada = null;
         const marcadoresMaquinas = [];
 
-        const CENTRO_PADRAO = [-20.5134624, -43.7130801]; 
+        // Centro inicial do mapa: Ouro Branco, MG
+        const CENTRO_PADRAO = [-20.5197, -43.6905];
+
+        // mostrarToast() e confirmarAcao() vêm de assets/js/toast.js
 
         function criarIconeColorido(cor) {
             return L.divIcon({
@@ -443,7 +518,7 @@
         }
 
         function inicializarMapa() {
-            map = L.map("mapaMaquinas").setView(CENTRO_PADRAO, 17);
+            map = L.map("mapaMaquinas").setView(CENTRO_PADRAO, 14);
 
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 maxZoom: 19,
@@ -457,6 +532,134 @@
         }
 
         /* =====================================
+           SUGESTÕES DE BUSCA (autocomplete, como no Google)
+        ===================================== */
+
+        const listaSugestoes = document.getElementById("sugestoesLista");
+        const campoBusca = document.getElementById("campoBusca");
+        let indiceAtivo = -1;
+        let ultimosResultados = [];
+        let timeoutBusca = null;
+
+        function esconderSugestoes() {
+            listaSugestoes.classList.remove("show");
+            listaSugestoes.innerHTML = "";
+            indiceAtivo = -1;
+        }
+
+        function renderizarSugestoes(resultados) {
+            ultimosResultados = resultados;
+
+            if (!resultados.length) {
+                esconderSugestoes();
+                return;
+            }
+
+            listaSugestoes.innerHTML = resultados.map((r, i) => `
+                <div class="sugestao-item" data-indice="${i}">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>${r.display_name}</span>
+                </div>
+            `).join("");
+
+            listaSugestoes.classList.add("show");
+
+            listaSugestoes.querySelectorAll(".sugestao-item").forEach(item => {
+                item.addEventListener("click", () => {
+                    selecionarSugestao(parseInt(item.dataset.indice));
+                });
+            });
+        }
+
+        function moverParaLocal(lat, lon, descricao) {
+            map.setView([lat, lon], 16);
+
+            if (marcadorTemporario) {
+                map.removeLayer(marcadorTemporario);
+            }
+
+            marcadorTemporario = L.marker([lat, lon], {
+                icon: criarIconeColorido("#888")
+            }).addTo(map);
+
+            marcadorTemporario.bindPopup(`
+                <div class="popup-maquina">
+                    <i class="fa-solid fa-location-dot"></i> ${descricao}
+                </div>
+            `).openPopup();
+        }
+
+        function selecionarSugestao(indice) {
+            const local = ultimosResultados[indice];
+            if (!local) return;
+
+            const lat = parseFloat(local.lat);
+            const lon = parseFloat(local.lon);
+
+            campoBusca.value = local.display_name;
+            esconderSugestoes();
+
+            moverParaLocal(lat, lon, local.display_name);
+        }
+
+        campoBusca.addEventListener("input", () => {
+            const termo = campoBusca.value.trim();
+
+            clearTimeout(timeoutBusca);
+
+            if (termo.length < 3) {
+                esconderSugestoes();
+                return;
+            }
+
+            timeoutBusca = setTimeout(async () => {
+                try {
+                    const resposta = await fetch(
+                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(termo)}&limit=5&countrycodes=br`
+                    );
+                    const resultados = await resposta.json();
+                    renderizarSugestoes(resultados || []);
+                } catch (err) {
+                    esconderSugestoes();
+                }
+            }, 400);
+        });
+
+        campoBusca.addEventListener("keydown", (e) => {
+            const itens = listaSugestoes.querySelectorAll(".sugestao-item");
+
+            if (e.key === "ArrowDown" && itens.length) {
+                e.preventDefault();
+                indiceAtivo = (indiceAtivo + 1) % itens.length;
+                itens.forEach(i => i.classList.remove("ativo"));
+                itens[indiceAtivo].classList.add("ativo");
+                itens[indiceAtivo].scrollIntoView({ block: "nearest" });
+            } else if (e.key === "ArrowUp" && itens.length) {
+                e.preventDefault();
+                indiceAtivo = (indiceAtivo - 1 + itens.length) % itens.length;
+                itens.forEach(i => i.classList.remove("ativo"));
+                itens[indiceAtivo].classList.add("ativo");
+                itens[indiceAtivo].scrollIntoView({ block: "nearest" });
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (indiceAtivo >= 0 && itens.length) {
+                    selecionarSugestao(indiceAtivo);
+                } else {
+                    esconderSugestoes();
+                    buscarEndereco();
+                }
+            } else if (e.key === "Escape") {
+                esconderSugestoes();
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".busca-container")) {
+                esconderSugestoes();
+            }
+        });
+
+        /* =====================================
            BUSCAR ENDEREÇO (geocodificação gratuita via Nominatim)
         ===================================== */
 
@@ -464,18 +667,20 @@
             const termo = document.getElementById("campoBusca").value.trim();
             if (!termo) return;
 
+            esconderSugestoes();
+
             const btn = document.getElementById("btnBuscar");
             btn.disabled = true;
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Buscando...`;
 
             try {
                 const resposta = await fetch(
-                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(termo)}&limit=1`
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(termo)}&limit=1&countrycodes=br`
                 );
                 const resultados = await resposta.json();
 
                 if (!resultados || resultados.length === 0) {
-                    alert("Endereço não encontrado. Tente ser mais específico.");
+                    mostrarToast("Endereço não encontrado. Tente ser mais específico.", "aviso");
                     return;
                 }
 
@@ -483,11 +688,10 @@
                 const lat = parseFloat(local.lat);
                 const lon = parseFloat(local.lon);
 
-                map.setView([lat, lon], 16);
-                abrirModalNaCoordenada(lat, lon, local.display_name);
+                moverParaLocal(lat, lon, local.display_name);
 
             } catch (err) {
-                alert("Erro ao buscar endereço. Verifique sua conexão.");
+                mostrarToast("Erro ao buscar endereço. Verifique sua conexão.", "erro");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Buscar`;
@@ -495,23 +699,17 @@
         }
 
         document.getElementById("btnBuscar").addEventListener("click", buscarEndereco);
-        document.getElementById("campoBusca").addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                buscarEndereco();
-            }
-        });
 
         document.getElementById("btnMinhaLocalizacao").addEventListener("click", () => {
             if (!navigator.geolocation) {
-                alert("Seu navegador não suporta geolocalização.");
+                mostrarToast("Seu navegador não suporta geolocalização.", "aviso");
                 return;
             }
             navigator.geolocation.getCurrentPosition((pos) => {
                 const { latitude, longitude } = pos.coords;
                 map.setView([latitude, longitude], 16);
             }, () => {
-                alert("Não foi possível obter sua localização.");
+                mostrarToast("Não foi possível obter sua localização.", "erro");
             });
         });
 
@@ -556,7 +754,7 @@
             const nivel = Math.max(0, Math.min(100, parseInt(document.getElementById("inputNivel").value) || 0));
 
             if (!nome) {
-                alert("Digite um nome para a máquina.");
+                mostrarToast("Digite um nome para a máquina.", "aviso");
                 return;
             }
 
@@ -581,11 +779,14 @@
             btn.textContent = "Adicionar";
 
             if (error) {
-                alert("Erro ao salvar máquina: " + error.message +
-                    "\n\nVerifique se as colunas 'latitude' e 'longitude' existem na tabela 'maquinas' do Supabase.");
+                mostrarToast(
+                    "Erro ao salvar máquina. Verifique se as colunas 'latitude' e 'longitude' existem na tabela 'maquinas' do Supabase.",
+                    "erro"
+                );
                 return;
             }
 
+            mostrarToast(`Máquina "${nome}" adicionada com sucesso!`, "sucesso");
             fecharModal();
             await carregarMaquinasNoMapa();
         });

@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/sidebar-toggle.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -757,8 +758,11 @@
 
     </main>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/toast.js"></script>
     <script src="assets/js/role-guard.js"></script>
 
 
@@ -838,12 +842,12 @@
             if (!arquivo) return;
 
             if (!arquivo.type.startsWith("image/")) {
-                alert("Selecione um arquivo de imagem (PNG, JPG ou WEBP).");
+                mostrarToast("Selecione um arquivo de imagem (PNG, JPG ou WEBP).", "aviso");
                 return;
             }
 
             if (arquivo.size > 2 * 1024 * 1024) {
-                alert("A imagem deve ter no máximo 2MB.");
+                mostrarToast("A imagem deve ter no máximo 2MB.", "aviso");
                 return;
             }
 
@@ -862,7 +866,7 @@
             if (erroUpload) {
                 btnFoto.disabled = false;
                 btnFoto.innerHTML = iconeOriginal;
-                alert("Erro ao enviar a imagem: " + erroUpload.message);
+                mostrarToast("Erro ao enviar a imagem: " + erroUpload.message, "erro");
                 return;
             }
 
@@ -877,7 +881,7 @@
             btnFoto.innerHTML = iconeOriginal;
 
             if (erroUpdate) {
-                alert("Imagem enviada, mas houve um erro ao salvar no perfil: " + erroUpdate.message);
+                mostrarToast("Imagem enviada, mas houve um erro ao salvar no perfil: " + erroUpdate.message, "erro");
                 return;
             }
 
@@ -891,7 +895,7 @@
             const nome = document.getElementById("nomeInput").value.trim();
 
             if (nome === "") {
-                alert("Digite seu nome completo.");
+                mostrarToast("Digite seu nome completo.", "aviso");
                 return;
             }
 
@@ -906,14 +910,14 @@
             btn.innerHTML = original;
 
             if (error) {
-                alert(error.message);
+                mostrarToast(error.message, "erro");
                 return;
             }
 
             document.getElementById("nomeHeader").textContent = nome;
             renderizarAvatar(nome, usuarioAtual.user_metadata?.avatar_url || "");
 
-            alert("Perfil atualizado com sucesso!");
+            mostrarToast("Perfil atualizado com sucesso!", "sucesso");
         }
 
         /* ── ALTERAR EMAIL ── */
@@ -925,17 +929,17 @@
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailRegex.test(novoEmail)) {
-                alert("Digite um email válido.");
+                mostrarToast("Digite um email válido.", "aviso");
                 return;
             }
 
             if (novoEmail.toLowerCase() === usuarioAtual.email.toLowerCase()) {
-                alert("O novo email precisa ser diferente do atual.");
+                mostrarToast("O novo email precisa ser diferente do atual.", "aviso");
                 return;
             }
 
             if (senhaAtual === "") {
-                alert("Digite sua senha atual para confirmar a alteração.");
+                mostrarToast("Digite sua senha atual para confirmar a alteração.", "aviso");
                 return;
             }
 
@@ -953,7 +957,7 @@
             if (erroAuth) {
                 btn.disabled = false;
                 btn.innerHTML = original;
-                alert("Senha atual incorreta.");
+                mostrarToast("Senha atual incorreta.", "erro");
                 return;
             }
 
@@ -965,14 +969,14 @@
             btn.innerHTML = original;
 
             if (error) {
-                alert(error.message);
+                mostrarToast(error.message, "erro");
                 return;
             }
 
             document.getElementById("senhaAtualEmail").value = "";
             document.getElementById("novoEmailInput").value = "";
 
-            alert(`Enviamos um link de confirmação para ${novoEmail}. Seu email só muda depois que você confirmar.`);
+            mostrarToast(`Enviamos um link de confirmação para ${novoEmail}. Seu email só muda depois que você confirmar.`, "sucesso");
         }
 
         /* ── ALTERAR SENHA: ETAPA 1 -> 2 (ENVIAR CÓDIGO) ── */
@@ -990,7 +994,7 @@
             btn.innerHTML = original;
 
             if (error) {
-                alert(error.message);
+                mostrarToast(error.message, "erro");
                 return;
             }
 
@@ -1023,7 +1027,7 @@
             const codigo = document.getElementById("codigoSeg").value.trim();
 
             if (codigo.length !== 6) {
-                alert("Digite o código de 6 dígitos enviado para seu email.");
+                mostrarToast("Digite o código de 6 dígitos enviado para seu email.", "aviso");
                 return;
             }
 
@@ -1042,7 +1046,7 @@
             btn.innerHTML = original;
 
             if (error) {
-                alert("Código inválido ou expirado. Tente novamente.");
+                mostrarToast("Código inválido ou expirado. Tente novamente.", "erro");
                 return;
             }
 
@@ -1057,12 +1061,12 @@
             const confirmarSenha = document.getElementById("confirmarSenha").value;
 
             if (novaSenha.length < 6) {
-                alert("A senha deve ter pelo menos 6 caracteres.");
+                mostrarToast("A senha deve ter pelo menos 6 caracteres.", "aviso");
                 return;
             }
 
             if (novaSenha !== confirmarSenha) {
-                alert("As senhas não coincidem.");
+                mostrarToast("As senhas não coincidem.", "aviso");
                 return;
             }
 
@@ -1077,14 +1081,14 @@
             btn.innerHTML = original;
 
             if (error) {
-                alert(error.message);
+                mostrarToast(error.message, "erro");
                 return;
             }
 
             document.getElementById("novaSenha").value = "";
             document.getElementById("confirmarSenha").value = "";
 
-            alert("Senha atualizada com sucesso!");
+            mostrarToast("Senha atualizada com sucesso!", "sucesso");
 
             // Volta pro início do fluxo, pronta pra próxima vez
             document.getElementById("segEtapa3").style.display = "none";
@@ -1124,8 +1128,9 @@
 
         document.getElementById("btnRemoverLatinha").addEventListener("click", async () => {
 
-            const confirmar = confirm(
-                "⚠️ Atenção!\n\nTem certeza que deseja remover 1 latinha?\nVocê perderá 5 pontos e essa ação não pode ser desfeita."
+            const confirmar = await confirmarAcao(
+                "Você perderá 5 pontos e essa ação não pode ser desfeita.",
+                { titulo: "Remover 1 latinha?", textoConfirmar: "Sim, remover" }
             );
             if (!confirmar) return;
 
@@ -1148,14 +1153,14 @@
                 .single();
 
             if (erroGet || !perfil) {
-                alert("Erro ao buscar seus dados. Tente novamente.");
+                mostrarToast("Erro ao buscar seus dados. Tente novamente.", "erro");
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
                 return;
             }
 
             if ((perfil.latinhas || 0) <= 0) {
-                alert("Você não tem latinhas para remover.");
+                mostrarToast("Você não tem latinhas para remover.", "aviso");
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
                 return;
@@ -1170,12 +1175,13 @@
                 .eq("id", session.user.id);
 
             if (error) {
-                alert("Erro ao remover latinha. Tente novamente.");
+                mostrarToast("Erro ao remover latinha. Tente novamente.", "erro");
                 btn.disabled = false;
                 btn.innerHTML = `<i class="fa-solid fa-trash"></i> Remover 1 Latinha`;
                 return;
             }
 
+            mostrarToast("Latinha removida com sucesso.", "sucesso");
             btn.innerHTML = `<i class="fa-solid fa-check"></i> Latinha removida!`;
             setTimeout(() => {
                 btn.disabled = false;
@@ -1191,12 +1197,13 @@
             const senha = document.getElementById("senhaExcluirConta").value;
 
             if (senha === "") {
-                alert("Digite sua senha atual para confirmar.");
+                mostrarToast("Digite sua senha atual para confirmar.", "aviso");
                 return;
             }
 
-            const confirmar = confirm(
-                "⚠️ ATENÇÃO!\n\nIsso vai apagar permanentemente seus pontos, latinhas e histórico de reciclagens.\nVocê será desconectado e essa ação não pode ser desfeita.\n\nDeseja continuar?"
+            const confirmar = await confirmarAcao(
+                "Isso vai apagar permanentemente seus pontos, latinhas e histórico de reciclagens. Você será desconectado e essa ação não pode ser desfeita.",
+                { titulo: "Excluir sua conta?", textoConfirmar: "Sim, excluir conta" }
             );
             if (!confirmar) return;
 
@@ -1214,7 +1221,7 @@
             if (erroAuth) {
                 btn.disabled = false;
                 btn.innerHTML = original;
-                alert("Senha incorreta.");
+                mostrarToast("Senha incorreta.", "erro");
                 return;
             }
 
@@ -1235,7 +1242,7 @@
             } catch (e) {
                 btn.disabled = false;
                 btn.innerHTML = original;
-                alert("Não foi possível conectar ao servidor. Tente novamente.");
+                mostrarToast("Não foi possível conectar ao servidor. Tente novamente.", "erro");
                 return;
             }
 
@@ -1244,14 +1251,16 @@
             if (!resposta.ok) {
                 btn.disabled = false;
                 btn.innerHTML = original;
-                alert("Erro ao excluir conta: " + (resultado.error || "tente novamente."));
+                mostrarToast("Erro ao excluir conta: " + (resultado.error || "tente novamente."), "erro");
                 return;
             }
 
-            alert("Sua conta foi excluída permanentemente.");
+            mostrarToast("Sua conta foi excluída permanentemente.", "sucesso");
 
-            await client.auth.signOut();
-            window.location.href = "index.html";
+            setTimeout(async () => {
+                await client.auth.signOut();
+                window.location.href = "index.html";
+            }, 1500);
         });
 
     </script>

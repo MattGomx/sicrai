@@ -9,6 +9,7 @@
     <title>Cadastro | SICRAI</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -92,8 +93,11 @@
 
     </div>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/supabase.js"></script>
+    <script src="assets/js/toast.js"></script>
 
     <script>
 
@@ -109,12 +113,12 @@
                 const confirmar = document.getElementById("confirmarSenha").value;
 
                 if (senha.length < 6) {
-                    alert("A senha deve possuir pelo menos 6 caracteres.");
+                    mostrarToast("A senha deve possuir pelo menos 6 caracteres.", "aviso");
                     return;
                 }
 
                 if (senha !== confirmar) {
-                    alert("As senhas não coincidem.");
+                    mostrarToast("As senhas não coincidem.", "aviso");
                     return;
                 }
 
@@ -127,13 +131,15 @@
                 });
 
                 if (error) {
-                    alert(error.message);
+                    mostrarToast(error.message, "erro");
                     return;
                 }
 
-                alert("Cadastro realizado com sucesso! Acesse seu email para verificar a conta");
-                window.location.href = "login.html";
-                
+                mostrarToast("Cadastro realizado com sucesso!", "sucesso");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1500);
+
             });
 
     </script>
