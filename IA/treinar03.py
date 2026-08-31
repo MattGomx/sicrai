@@ -1,8 +1,9 @@
 import tensorflow as tf
 from tensorflow.keras import layers, models
+from tensorflow.keras.applications.resnet_v2 import preprocess_input
 from tensorflow.keras.applications import ResNet50V2
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications.resnet_v2 import preprocess_input
+
 # ----------------------------
 # Configurações
 # ----------------------------
@@ -17,7 +18,7 @@ DATASET_DIR = r"C:\Users\pdv\Downloads\dataset"
 # ResNet50V2, assim como o EfficientNetB0, já tem normalização embutida.
 # Por isso NÃO usamos rescale=1./255 aqui.
 train_datagen = ImageDataGenerator(
-    preprocessing_function=preprocess_input,  # em vez de rescale
+    preprocessing_function=preprocess_input,
     rotation_range=25,
     width_shift_range=0.15,
     height_shift_range=0.15,
